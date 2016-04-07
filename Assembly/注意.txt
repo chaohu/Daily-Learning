@@ -1,0 +1,27 @@
+    该汇编程序为6.0版（也可以使用MASM5.0以上版或Borland C 软件
+包中的TASM 4.1等相似汇编程序）。
+
+上机编程的运行环境要求：
+（1）推荐操作系统：MS DOS6.2，WINDOWS下需要运行DOSBOX或者VMWare虚拟机软件）。
+（2）机器：INTEL 80X86及兼容机。
+    将本软件包释放到你自己的某个目录后，在该目录下即可按下列步骤
+实验了。
+
+上机实验步骤：
+
+1. 用EDIT（或记事本NOTEPAD.EXE）录入源程序，如DEMO.ASM（注意：一定要将扩展名改为ASM。
+最好在DOS下用DIR命令确认其扩展名为ASM，或用ren命令、copy命令修改文件名）。
+
+   也可以用其他类似编辑器，如：SK、C语言的编辑器，或其他计算机高级语言的编辑器。
+
+2. 在MS-DOS 窗口中的提示符后输入：MASM DEMO.ASM  回车。
+   注意MASM.EXE和DEMO.ASM要在同一个目录下。有错误时会显示
+   错误信息，如：DEMO.asm(14):error A2006: undefined symbol: hell
+                 其中圆括号里的数字14，表示源程序第14行有错误。
+
+3. 上一步无错误时，在MS-DOS 窗口中的提示符后输入：LINK DEMO.OBJ  回车。
+   注意LINK.EXE和DEMO.OBJ要在同一个目录下。有错误时会显示错误信息。
+
+4. 在MS-DOS 窗口中的提示符后输入DEMO执行该程序。或用TD.EXE调试程序，即：
+   TD DEMO.EXE回车。
+ 
