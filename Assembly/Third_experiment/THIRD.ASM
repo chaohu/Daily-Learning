@@ -1,26 +1,25 @@
 .386
-STACK   SEGMENT USE16   STACK
-        DB      200     DUP(0)
-STACK   ENDS
-DATA    SEGMENT USE16
-N	EQU  1000
-BUF	DB  	'zhangsan', 0, 0, 100, 85, 80, ?
-	DB  	'lisi', 6 DUP(0), 80, 100,70, ?
-	DB  	N-4 DUP( 'TempValue',0,80,90,95,?)
-	DB  	'wangwu', 4 dup(0), 70, 60, 80, 0
-	DB  	'xuxiaohua', 0, 40, 55, 61, 0
-IN_NAME DB      10,6,'wangwu'
+STACK	SEGMENT	USE16	STACK
+	DB	200	DUP(0)
+STACK	ENDS
+DATA	SEGMENT	USE16
+N	EQU	1000
+BUF	DB	'zhangsan', 0, 0, 100, 85, 80, ?
+	DB	'lisi', 6 DUP(0), 80, 100,70, ?
+	DB	N-4 DUP( 'TempValue',0,80,90,95,?)
+	DB	'wangwu', 4 dup(0), 70, 60, 80, 0
+	DB	'xuxiaohua', 0, 40, 55, 61, 0
+IN_NAME	DB	10,8,'zhangsan'
 COUNT	DD	1000
 POIN	DW	4	DUP(0)
 TIP2	DB	'This name not exit!',0AH,'$'
-DATA    ENDS
-CODE    SEGMENT	USE16
-        ASSUME  CS:CODE,DS:DATA,SS:STACK
-START:  MOV     AX,DATA
-        MOV     DS,AX
-
+DATA	ENDS
+CODE	SEGMENT	USE16
+	ASSUME	CS:CODE,DS:DATA,SS:STACK
+START:  MOV	AX,DATA
+	MOV	DS,AX
 	MOV	AX,0
-	CALL TIMER
+	CALL	TIMER
 LOPA:	MOV	SI,-1
 	MOV	DX,-1
 	MOV	AX,0
@@ -29,13 +28,13 @@ NEXT:	INC	DX
 	MOV	CL,0		;输入姓名已比较字符串长度
 	MOV	DI,AX
 	DEC	DI
-	MOV     SI,-1		;偏移量
+	MOV	SI,-1		;偏移量
 	CMP	DX,1000		;是否循环完毕
 	JNE	CBUF		;跳转至比较学生姓名字符
 	LEA	DX,TIP2		;提示学生不存在
 	MOV	AH,9
 	INT	21H
-	JNC	E		;转到开始
+	JNC	E		;转到结束
 CBUF:	INC	SI
 	INC	CL
 	INC	DI
@@ -78,7 +77,7 @@ AVG:	MOV	AX,DI
 	SUB	COUNT,1
 	CMP	COUNT,0
 	JNE	LOPA
-	MOV	AH,1
+	MOV	AX,1
 	CALL TIMER
 E:	MOV	AH,4CH
 	INT	21H
