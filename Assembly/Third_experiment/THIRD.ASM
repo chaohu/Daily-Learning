@@ -10,7 +10,7 @@ BUF	DB	'zhangsan', 0, 0, 100, 85, 80, ?
 	DB	'wangwu', 4 dup(0), 70, 60, 80, 0
 	DB	'xuxiaohua', 0, 40, 55, 61, 0
 IN_NAME	DB	10,6,'wangwu'
-COUNT	DD	1000
+COUNT	DD	1000000
 POIN	DW	4	DUP(0)
 TIP2	DB	'This name not exit!',0AH,'$'
 DATA	ENDS
@@ -29,7 +29,7 @@ NEXT:	INC	DX
 	MOV	DI,AX
 	DEC	DI
 	MOV	SI,-1		;偏移量
-	CMP	DX,1000		;是否循环完毕
+	CMP	DX,N 		;是否循环完毕
 	JNE	CBUF		;跳转至比较学生姓名字符
 	LEA	DX,TIP2		;提示学生不存在
 	MOV	AH,9
@@ -48,23 +48,24 @@ CBUF:	INC	SI
 TNEXT:	ADD	AX,14
 	JMP	NEXT
 
-;计算平均成绩
-AVG:	MOV	AX,DI
+	MOV	AX,DI
 	MOV	AH,0
 	INC	AL
 	SUB	AL,IN_NAME[1]
 	MOV	POIN,OFFSET BUF
 	ADD	POIN,AX
 	ADD	POIN,10
-	MOV	DI,POIN
+	MOV	CX,N
+;计算平均成绩
+AVG:	LEA	DI,BUF+10
 	MOV	AL,BUF[DI]
 	MOV 	BL,2
 	MUL	BL
 	MOV	BL,AL
 	MOV	AL,BUF[DI+2]
 	MOV	AH,0
-	MOV 	CL,2
-	DIV	CL
+	MOV 	DL,2
+	DIV	DL
 	MOV	AH,0
 	ADD	AL,BL
 	MOV	BL,BUF[DI+1]
@@ -74,6 +75,8 @@ AVG:	MOV	AX,DI
 	MOV	BX,7
 	DIV	BX
 	MOV	BUF[DI+3],AL
+	ADD	DI,14
+	LOOP	AVG
 	SUB	COUNT,1
 	CMP	COUNT,0
 	JNE	LOPA
