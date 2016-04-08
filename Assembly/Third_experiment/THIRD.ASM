@@ -9,7 +9,7 @@ BUF	DB	'zhangsan', 0, 0, 100, 85, 80, ?
 	DB	N-4 DUP( 'TempValue',0,80,90,95,?)
 	DB	'wangwu', 4 dup(0), 70, 60, 80, 0
 	DB	'xuxiaohua', 0, 40, 55, 61, 0
-IN_NAME	DB	10,8,'zhangsan'
+IN_NAME	DB	10,6,'wangwu'
 COUNT	DD	1000
 POIN	DW	4	DUP(0)
 TIP2	DB	'This name not exit!',0AH,'$'
