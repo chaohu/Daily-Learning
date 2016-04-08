@@ -10,7 +10,7 @@ BUF	DB	'zhangsan', 0, 0, 100, 85, 80, ?
 	DB	'wangwu', 4 dup(0), 70, 60, 80, 0
 	DB	'xuxiaohua', 0, 40, 55, 61, 0
 IN_NAME	DB	10,6,'wangwu'
-COUNT	DD	1000000
+COUNT	DD	100000
 POIN	DW	4	DUP(0)
 TIP2	DB	'This name not exit!',0AH,'$'
 DATA	ENDS
@@ -44,11 +44,11 @@ CBUF:	INC	SI
 	CMP	CL,IN_NAME[1]	;输入姓名的字符是否比较完毕
 	JNE	CBUF		;跳转至比较姓名字符是否相同
 	CMP	BUF[DI+1],0	;检查数据段中姓名字符是否检查完毕
-	JE	AVG
+	JE	INIT
 TNEXT:	ADD	AX,14
 	JMP	NEXT
 
-	MOV	AX,DI
+INIT:	MOV	AX,DI
 	MOV	AH,0
 	INC	AL
 	SUB	AL,IN_NAME[1]

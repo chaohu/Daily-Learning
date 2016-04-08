@@ -9,7 +9,7 @@ BUF	DB	'zhangsan', 0, 0, 100, 85, 80, ?
 	DB	N-4 DUP( 'TempValue',0,80,90,95,?)
 	DB	'wangwu', 4 dup(0), 70, 60, 80, 0
 	DB	'xuxiaohua', 0, 40, 55, 61, 0
-IN_NAME	DB	10,4,'lisi'
+IN_NAME	DB	10,6,'wangwu'
 COUNT	DD	100000
 POIN	DW	4	DUP(0)
 TIP2	DB	'This name not exit!',0AH,'$'
@@ -18,12 +18,15 @@ CODE	SEGMENT	USE16
         ASSUME  CS:CODE,DS:DATA,SS:STACK
 START:  MOV	AX,DATA
 	MOV	DS,AX
+;优化：异或置零
 	MOV	AX,0
 	CALL TIMER
 LOPA:	MOV	DX,-1		;已比较姓名个数
+;优化：异或置零
 	MOV	AX,0
 ;匹配姓名是否存在
 NEXT:	INC	DX
+;优化：异或置零
 	MOV	CL,0		;输入姓名已比较字符串长度
 	MOV	DI,AX
 	DEC	DI
@@ -49,6 +52,7 @@ TNEXT:	ADD	AX,14
 	JMP	NEXT
 	
 INIT:	MOV	AX,DI
+;优化：异或置零
 	MOV	AH,0
 	INC	AL
 	SUB	AL,IN_NAME[1]
@@ -57,7 +61,7 @@ INIT:	MOV	AX,DI
 	ADD	POIN,10
 	MOV	CX,N
 ;计算平均成绩
-AVG2:	LEA	DI,BUF+10
+AVG:	LEA	DI,BUF+10
 	MOV	BL,BUF[DI]
 ;改进：乘改左移
 	SAL	BL,2
@@ -73,7 +77,7 @@ AVG2:	LEA	DI,BUF+10
 	DIV	BX
 	MOV	BUF[DI+3],AL
 	ADD	DI,14
-	LOOP	AVG2
+	LOOP	AVG
 	DEC	COUNT
 	JNZ	LOPA
 	MOV	AX,1
