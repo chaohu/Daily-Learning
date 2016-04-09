@@ -1,3 +1,11 @@
+;程序名：THIRD
+;功能：观察多重循环对CPU计算能力消耗的影响
+;所用寄存器：SI、AX、DI：偏移量。
+;	           DX：已查找学生人数。
+;	           CL：每个姓名已比较字符数
+;	          AH、AL、BL：中间寄存器
+;	          CX：循环计算平均成绩的计数器
+
 .386
 STACK	SEGMENT	USE16	STACK
 	DB	200	DUP(0)
@@ -12,7 +20,7 @@ BUF	DB	'zhangsan', 0, 0, 100, 85, 80, ?
 IN_NAME	DB	10,6,'wangwu'
 COUNT	DD	100000
 POIN	DW	4	DUP(0)
-TIP2	DB	'This name not exit!',0AH,'$'
+TIP	DB	'This name not exit!',0AH,'$'
 DATA	ENDS
 CODE	SEGMENT	USE16
 	ASSUME	CS:CODE,DS:DATA,SS:STACK
@@ -31,7 +39,7 @@ NEXT:	INC	DX
 	MOV	SI,-1		;偏移量
 	CMP	DX,N 		;是否循环完毕
 	JNE	CBUF		;跳转至比较学生姓名字符
-	LEA	DX,TIP2		;提示学生不存在
+	LEA	DX,TIP		;提示学生不存在
 	MOV	AH,9
 	INT	21H
 	JNC	E		;转到结束
