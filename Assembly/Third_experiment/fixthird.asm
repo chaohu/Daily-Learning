@@ -19,14 +19,12 @@ CODE	SEGMENT	USE16
 START:  MOV	AX,DATA
 	MOV	DS,AX
 ;优化：异或置零
-	MOV	AX,0
+	XOR	AX,AX
 	CALL TIMER
 LOPA:	MOV	DX,-1		;已比较姓名个数
-;优化：异或置零
 	MOV	AX,0
 ;匹配姓名是否存在
 NEXT:	INC	DX
-;优化：异或置零
 	MOV	CL,0		;输入姓名已比较字符串长度
 	MOV	DI,AX
 	DEC	DI
@@ -52,7 +50,6 @@ TNEXT:	ADD	AX,14
 	JMP	NEXT
 	
 INIT:	MOV	AX,DI
-;优化：异或置零
 	MOV	AH,0
 	INC	AL
 	SUB	AL,IN_NAME[1]
@@ -63,18 +60,18 @@ INIT:	MOV	AX,DI
 ;计算平均成绩
 AVG:	LEA	DI,BUF+10
 	MOV	BL,BUF[DI]
-;改进：乘改左移
-	SAL	BL,2
-	MOV	AL,BUF[DI+2]
-;改进：除改右移
-	SAR	AL,1
-	ADD	AL,BL
-	MOV	BL,BUF[DI+1]
-	ADD	AX,BX
-	MOV	BX,2
-	MUL	BX
-	MOV	BX,7
-	DIV	BX
+;优化：平均成绩计算过程,去掉乘法和除法过程
+	MOV	AL,BUF[DI+1]
+	LEA	EAX,[EAX+EBX*2]
+	MOV	BL,BUF[DI+2]
+	LEA	ESI,[EBX+EAX*2]
+	MOV	EAX,92492493H
+	IMUL	ESI
+	ADD	EDX,ESI
+	SAR 	EDX,2
+	MOV	EAX,EDX
+	SHR	EAX,1FH
+	ADD	EAX,EDX
 	MOV	BUF[DI+3],AL
 	ADD	DI,14
 	LOOP	AVG
