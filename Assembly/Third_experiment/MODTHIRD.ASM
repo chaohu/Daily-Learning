@@ -20,7 +20,7 @@ BUF	DB	'zhangsan', 0, 0, 100, 85, 80, ?
 IN_NAME	DB	10,6,'wangwu'
 COUNT	DD	100000
 POIN	DW	4	DUP(0)
-TIP2	DB	'This name not exit!',0AH,'$'
+TIP	DB	'This name not exit!',0AH,'$'
 DATA	ENDS
 CODE	SEGMENT	USE16
         ASSUME  CS:CODE,DS:DATA,SS:STACK
@@ -29,6 +29,7 @@ START:  MOV	AX,DATA
 ;优化：异或置零
 	XOR	AX,AX
 	CALL TIMER
+;优化：删掉31行多余的MOV	SI,-1
 LOPA:	MOV	DX,-1		;已比较姓名个数
 	MOV	AX,0
 ;匹配姓名是否存在
@@ -37,9 +38,9 @@ NEXT:	INC	DX
 	MOV	DI,AX
 	DEC	DI
 	MOV	SI,-1		;偏移量
-	CMP	DX,1000		;是否循环完毕
+	CMP	DX,N 		;是否循环完毕
 	JNE	CBUF		;跳转至比较学生姓名字符
-	LEA	DX,TIP2		;提示学生不存在
+	LEA	DX,TIP 		;提示学生不存在
 	MOV	AH,9
 	INT	21H
 	JNC	E
@@ -53,17 +54,16 @@ CBUF:	INC	SI
 	JNE	CBUF		;跳转至比较姓名字符是否相同
 	CMP	BUF[DI+1],0	;检查数据段中姓名字符是否检查完毕
 	JE	INIT
-;改进：乘改加
 TNEXT:	ADD	AX,14
 	JMP	NEXT
 	
 INIT:	MOV	AX,DI
-	MOV	AH,0
-	INC	AL
-	SUB	AL,IN_NAME[1]
+	MOV	BL,IN_NAME[1]
+;优化：删掉62行的INC	AX，把65行改为ADD	POIN,11。
+	SUB	AX,BX
 	MOV	POIN,OFFSET BUF
 	ADD	POIN,AX
-	ADD	POIN,10
+	ADD	POIN,11
 	MOV	CX,N
 ;计算平均成绩
 AVG:	LEA	DI,BUF+10
