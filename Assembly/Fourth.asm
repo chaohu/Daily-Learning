@@ -7,13 +7,12 @@
 ;	          CX：循环计算平均成绩的计数器
 
 PUBLIC	NUM, BUF
-EXTRN	SORT:NEAR, PRINT:NEAR
+EXTRN	SORT:NEAR, PRINT:NEAR, F10T2:NEAR
 .386
 INCLUDE	MACRO.LIB
 STACK   SEGMENT USE16   STACK
         DB      200     DUP(0)
 STACK   ENDS
-EXTRN	F10T2:NEAR
 DATA    SEGMENT USE16		PUBLIC
 BUF	DB	5 	DUP(0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 IN_NAME	DB	13
@@ -25,12 +24,12 @@ IN_SCORE	DB	6
 POIN	DW	0
 NUM	DW	1
 N 		EQU		5
-MENU	DB	'1=Enter the student',27H,' name and score',0AH,'2=Calculation of average',0AH,'3=Sort the score',0AH,'4=Print the list of score',0AH,'5=exit',0AH,'$'
-CERR	DB	'Error chose,please chose again:',0AH,'$'
+MENU	DB	'1=Enter the student',27H,' name and score',0AH,0DH,'2=Calculation of average',0AH,0DH,'3=Sort the score',0AH,0DH,'4=Print the list of score',0AH,0DH,'5=exit',0AH,0DH,'$'
+CERR	DB	'Error chose,please chose again:',0AH,0DH,'$'
 TIPN1	DB	'The student',27H,'number is $'
-TIPN2	DB	0AH,'Please enter the name:$'
+TIPN2	DB	0AH,0DH,'Please enter the name:$'
 TIPN3	DB	'Please enter the score:$'
-TIPF	DB	'Can',27H,'t enter more student!',0AH,'$'
+TIPF	DB	'Can',27H,'t enter more student!',0AH,0DH,'$'
 DATA	ENDS
 CODE	SEGMENT	USE16	PUBLIC
 	ASSUME  CS:CODE,DS:DATA,SS:STACK
@@ -40,6 +39,7 @@ START:  MOV	AX,DATA
 CHOSE:	NINE	MENU
 	ONE
 	TWO	0AH
+	TWO	0DH
 	CMP	AL,'1'
 	JNE	AVG1
 	CALL	ENTRY
@@ -92,9 +92,11 @@ I_NAME:	INC	BX
 	ADD	DI,9
 	MOV	BX,0
 	TWO	0AH
+	TWO	0DH
 I_SCORE:	NINE	TIPN3 
 	TEN	IN_SCORE
 	TWO	0AH
+	TWO	0DH
 	INC BX
 	INC DI
 	LEA	SI,IN_SCORE[2]
@@ -106,10 +108,10 @@ I_SCORE:	NINE	TIPN3
 	JNE	I_SCORE
 	INC	NUM
 	ADD	POIN,14
-	POP	BX
-	POP	DI
-	POP	CX
 	POP	SI
+	POP	CX
+	POP	DI
+	POP	BX
 EX:	RET
 ENTRY	ENDP
 
