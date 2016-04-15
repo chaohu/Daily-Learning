@@ -1,5 +1,7 @@
 ;程序名：THIRD
-;功能：观察多重循环对CPU计算能力消耗的影响
+;作者：胡超     
+;同组：张丹朱
+;功能：学生成绩输入与查询
 ;所用寄存器：SI、AX、DI：偏移量。
 ;	           DX：已查找学生人数。
 ;	           CL：每个姓名已比较字符数
@@ -97,8 +99,8 @@ I_SCORE:	NINE	TIPN3
 	TEN	IN_SCORE
 	TWO	0AH
 	TWO	0DH
-	INC BX
-	INC DI
+	INC 	BX
+	INC 	DI
 	LEA	SI,IN_SCORE[2]
 	MOV	DX,16
 	MOV	CL,IN_SCORE[1]
@@ -125,10 +127,9 @@ AVER	PROC
 	MOV 	CX,N
 	LEA	DI,BUF+10
 AVG:	MOVSX	BX,BUF[DI]
-;优化：平均成绩计算过程,去掉乘法和除法过程
 	MOVSX	AX,BUF[DI+1]
 	LEA	AX,[EAX+EBX*2]
-	MOV	BL,BUF[DI+2]
+	MOVSX	BX,BUF[DI+2]
 	LEA	ESI,[EBX+EAX*2]
 	MOV	EAX,92492493H
 	IMUL	ESI
