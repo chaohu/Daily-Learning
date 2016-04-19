@@ -1,3 +1,15 @@
+.386
+STACK   SEGMENT USE16   STACK
+        DB      200     DUP(0)
+STACK   ENDS
+DATA    SEGMENT USE16
+N	EQU  1000
+BUF	DB	'zhangsan', 0, 0, 100, 85, 80, ?
+	DB	'lisi', 6 DUP(0), 80, 100,70, ?
+	DB	N-4 DUP( 'TempValue',0,80,90,95,?)
+	DB	'wangwu', 4 dup(0), 70, 60, 80, 0
+	DB	'xuxiaohua', 0, 40, 55, 61, 0
+DATA	ENDS
 LOPA:	MOV	DX,-1		;已比较姓名个数
 				MOV	AX,0
 			;匹配姓名是否存在

@@ -1,34 +1,13 @@
 #include <stdio.h>
 #include <string.h>
-
+extern	"C"	int Serch(char *);
 #define	N 	1000
-
-char BUF_NAME[N][11];
-int BUF_SCORE[N][5];
 
 int Input();
 int Judge(char IN_NAME[11]);
 
 int main(int argc,char * argv[])
 {
-	memset(BUF_NAME,0,N*11*sizeof(char));
-	memset(BUF_SCORE,0,N*5*sizeof(int));
-	strcpy(BUF_NAME[0],"zhangsan");
-	strcpy(BUF_NAME[1],"lisi");
-	strcpy(BUF_NAME[998],"wangwu");
-	strcpy(BUF_NAME[999],"xuxiaohua");
-	BUF_SCORE[0][0]=100;
-	BUF_SCORE[0][1]=85;
-	BUF_SCORE[0][2]=80;
-	BUF_SCORE[1][0]=80;
-	BUF_SCORE[1][1]=100;
-	BUF_SCORE[1][2]=70;
-	BUF_SCORE[998][0]=70;
-	BUF_SCORE[998][1]=60;
-	BUF_SCORE[998][2]=80;
-	BUF_SCORE[999][0]=40;
-	BUF_SCORE[999][1]=55;
-	BUF_SCORE[999][2]=61;
 	Input();
 }
 
@@ -40,7 +19,7 @@ int Input()
 	gets(IN_NAME);
 	while(Judge(IN_NAME)!=0)
 	{
-		
+		yes=Serch(IN_NAME);
 		if(yes==1)
 		{
 			if(BUF_SCORE[]>=90) printf("A");
