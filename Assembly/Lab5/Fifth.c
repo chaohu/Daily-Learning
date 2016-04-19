@@ -5,6 +5,10 @@
 
 char BUF_NAME[N][11];
 int BUF_SCORE[N][5];
+
+int Input();
+int Judge(char IN_NAME[11]);
+
 int main(int argc,char * argv[])
 {
 	memset(BUF_NAME,0,N*11*sizeof(char));
@@ -25,22 +29,16 @@ int main(int argc,char * argv[])
 	BUF_SCORE[999][0]=40;
 	BUF_SCORE[999][1]=55;
 	BUF_SCORE[999][2]=61;
+	Input();
 }
 
-int input()
+int Input()
 {
-	int IN_NAME[11];
+	char IN_NAME[11];
+	int 	yes=0;
 	printf("Please enter the student's name:\n");
 	gets(IN_NAME);
-	if(IN_NAME[0]=='q')
-	{
-		if(IN_NAME[1]=='\0')
-		{
-			return 0;
-		}
-	}
-	if(IN_NAME[0]==0x0D)
-	else
+	while(Judge(IN_NAME)!=0)
 	{
 		__asm
 		{
@@ -57,6 +55,7 @@ int input()
 				LEA	DX,TIP 		;提示学生不存在
 				MOV	AH,9
 				INT	21H
+				MOV	yes,0
 				JNC	E
 			CBUF:	INC	SI
 				INC	CL
@@ -99,9 +98,27 @@ int input()
 				JNZ	LOPA
 				MOV	AX,1
 		}
+		if(yes==1)
+		{
+			if(BUF_SCORE[]>=90) printf("A");
+			else if(BUF_SCORE[]>=80) printf("B");
+			else if(BUF_SCORE[]>=70) printf("C");
+			else if(BUF_SCORE[]>=60) printf("D");
+			else printf("F");
+		}
+		else printf("This name not exit!\n");
 	}
-	output();
-	return 0
+	return 0;
 }
 
-int 
+int Judge(char IN_NAME[11])
+{
+	if(IN_NAME[0]=='q')
+	{
+		if(IN_NAME[1]=='\0')
+		{
+			return 0;
+		}
+	}
+	else return 1;
+}
