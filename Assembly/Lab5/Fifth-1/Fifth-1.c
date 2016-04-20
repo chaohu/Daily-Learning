@@ -59,7 +59,7 @@ int Input(char BUF_NAME[40],int BUF_SCORE[16])
 					JZ	INIT
 				TNEXT:	
 					INC	n
-					ADD	AX,10
+					ADD	EAX,10
 					JMP	NEXT
 
 				INIT:
