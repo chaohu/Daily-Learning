@@ -158,7 +158,11 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int thirdBits(void) {
-
+    int x=2,y=73;
+    x=x<<8|y;
+    x=x<<12|x;
+    x=y<<24|x;
+    return x;
 }
 /*
  * fitsBits - return 1 if x can be represented as an
@@ -170,6 +174,10 @@ int thirdBits(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
+    int m=32+~n+1;
+    int z=(x<<m)>>m;
+    x=!(x^z);
+    return x;
 }
 /*
  * sign - return 1 if positive, 0 if zero, and -1 if negative
@@ -180,6 +188,9 @@ int fitsBits(int x, int n) {
  *  Rating: 2
  */
 int sign(int x) {
+    int z=x&(1<<31);
+    int y=!(!x);
+    return (z>>30)|y;
 }
 /*
  * getByte - Extract byte n from word x
@@ -190,8 +201,8 @@ int sign(int x) {
  *   Rating: 2
  */
 int getByte(int x, int n) {
-  /* Shift x n*8 positions right */
-  /* Mask byte */
+    int y=n<<3;
+    return ((x&(255<<y))>>y)&255;
 }
 /*
  * logicalShift - shift x to the right by n, using a logical shift
@@ -202,9 +213,9 @@ int getByte(int x, int n) {
  *   Rating: 3
  */
 int logicalShift(int x, int n) {
-    /* Create mask for n = 0 */
-    /* Arithmetic shift right by n */
-    /* Mask off upper 1's */
+    int y=(1<<31)>>31;
+    int z=31+~n+1;
+    return (x>>n)&(~((y<<z)<<1));
 }
 /*
  * addOK - Determine if can compute x+y without overflow
