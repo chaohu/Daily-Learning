@@ -158,6 +158,7 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int thirdBits(void) {
+
 }
 /*
  * fitsBits - return 1 if x can be represented as an
