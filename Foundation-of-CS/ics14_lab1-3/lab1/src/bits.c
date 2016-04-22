@@ -226,7 +226,11 @@ int logicalShift(int x, int n) {
  *   Rating: 3
  */
 int addOK(int x, int y) {
-  /* Overflow when x and y have same sign, but s is different */
+    int i=1<<31;
+    int z=(((x+y)&i)>>31)&1;
+    int m=((x&i)>>31)&1;
+    int n=((y&i)>>31)&1;
+    return (!n&!z)|(!m&n)|(m&z);
 }
 /*
  * bang - Compute !x without using !
@@ -236,8 +240,7 @@ int addOK(int x, int y) {
  *   Rating: 4
  */
 int bang(int x) {
-  /* Cute trick: 0 is the only value of x
-   * for which neither x nor -x are negative */
+
 }
 /*
  * conditional - same as x ? y : z
@@ -247,6 +250,7 @@ int bang(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
+
 }
 /*
  * isPower2 - returns 1 if x is a power of 2, and 0 otherwise
