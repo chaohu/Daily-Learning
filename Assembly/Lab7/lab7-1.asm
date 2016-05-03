@@ -27,7 +27,8 @@ IN_PASS	DB	9,?,9 DUP(0)
 IN_NAME DB      15
 	DB	?
 	DB	10	DUP(0)
-POIN	DW	4	DUP(0)
+POIN1	DW	4	DUP(0)
+POIN2	DW	0
 STR1	DB 	'PLEASE ENTER PASSWORD:$'
 CHAR	DB	0
 TIP1	DB	'Please enter the student',27H,'s name:$'
@@ -68,13 +69,15 @@ START:
 	MOV	AH,2CH
 	INT 	21H
 	PUSH	DX                   ;保存获取的秒和百分秒
+	MOV 	POIN2,OFFSET E
        	MOV 	AH,2CH             	;获取第二次秒与百分秒
 	INT  	21h
 	STI
 	CMP	DX,[ESP]            ;计时是否相同
 	POP  	DX
 	JZ   	OK1                   ;如果计时相同，通过本次计时反跟踪   
-	JMP	E		;如果计时不同，结束程序
+	MOV 	DI,POIN2
+	JMP	DI		;如果计时不同，结束程序
 OK1:	MOV	DI,0
 	MOV	CX,PASS[0]
         	XOR	CX,'I'
@@ -86,13 +89,13 @@ CPASS:
 	SHL	BX,1
 	MOV	SI,DI
 	ADD	SI,SI
-	CMP	BX,PASS[SI];比较密码字符是否相同
+	CMP	BX,PASS[SI]	;比较密码字符是否相同
 	JNE	E		;跳转至结束
 	MOV	BX,DI
 	CMP	BL,IN_PASS[1]	;输入密码的字符是否比较完毕
 	JNE	CPASS		;跳转至比较密码字符是否相同
 	CMP	CX,DI 		;检查数据段中密码字符是否检查完毕
-	JNE	E 		;跳转至结束
+	JNE	E		;跳转至结束
 	MOV	DL,0DH
 	MOV	AH,2
 	INT	21H
@@ -148,11 +151,11 @@ TNEXT:	ADD	AX,14
 
 INIT:
 	ADD	AX,10
-	MOV	POIN,OFFSET BUF
-	ADD	POIN,AX
+	MOV	POIN1,OFFSET BUF
+	ADD	POIN1,AX
 
 	MOV 	CX,4
-	MOV	DI,POIN
+	MOV	DI,POIN1
 	MOV	CHAR,'A'
 	MOVZX	EBX,BUF[DI]
 	XOR	BL,CHAR
