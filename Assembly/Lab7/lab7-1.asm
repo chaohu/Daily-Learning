@@ -32,13 +32,33 @@ STR1	DB 	'PLEASE ENTER PASSWORD:$'
 CHAR	DB	0
 TIP1	DB	'Please enter the student',27H,'s name:$'
 TIP2	DB	'This name not exit!',0AH,'$'
+OLDINT1 DW  0,0               	;1号中断的原中断矢量（用于中断矢量表反跟踪）
+OLDINT3 DW  0,0               	;3号中断的原中断矢量
 DATA    ENDS
 CODE    SEGMENT	USE16
         ASSUME  CS:CODE,DS:DATA,SS:STACK
 START: 
 	MOV     AX,DATA
        	MOV     DS,AX
-       	LEA	DX,STR1	;提示输入密码
+       	XOR	AX,AX                ;接管调试用中断，中断矢量表反跟踪
+	MOV 	ES,AX
+	MOV 	AX,ES:[1*4]	;保存原1号和3号中断矢量
+	MOV 	OLDINT1,AX
+	MOV 	AX,ES:[1*4+2]
+	MOV 	OLDINT1+2,AX
+ 	MOV 	AX,ES:[3*4]
+	MOV  	OLDINT3,AX
+	MOV  	AX,es:[3*4+2]
+	MOV  	OLDINT3+2,AX
+	CLI 			;设置新的中断矢量
+	MOV 	AX,OFFSET NEWINT
+	MOV 	ES:[1*4],AX
+	MOV 	ES:[1*4+2],CS
+	MOV 	ES:[3*4],AX
+	MOV 	ES:[3*4+2],CS
+	STI
+	
+	LEA	DX,STR1	;提示输入密码
        	MOV	AH,9
        	INT	21H
        	LEA	DX,IN_PASS	;输入密码
@@ -200,6 +220,20 @@ PF:	MOV	DL,46H
 	MOV	AH,2
 	INT	21H
 	JMP	LOPA
+
+NEWINT: 
+	IRET
+OVER:
+	CLI                           ;还原中断矢量
+	MOV  AX,OLDINT1
+	MOV  ES:[1*4],AX
+	MOV  AX,OLDINT1+2
+	MOV  ES:[1*4+2],AX
+	MOV  AX,OLDINT3
+	MOV  ES:[3*4],AX
+	MOV  AX,OLDINT3+2
+	MOV  ES:[3*4+2],AX 
+	STI
 E:	MOV	AH,4CH
 	INT	21H
 CODE	ENDS
