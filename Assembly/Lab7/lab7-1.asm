@@ -44,14 +44,21 @@ START:
        	LEA	DX,IN_PASS	;输入密码
         	MOV     AH,10
         	INT     	21H
-        	MOV	DI,0
-        	MOV	CX,PASS[0]
-        	XOR	CX,'I'
-CPASS:	
-	CLI			;计时反跟踪开始 
+        	CLI			;计时反跟踪开始 
 	MOV	AH,2CH
 	INT 	21H
 	PUSH	DX                   ;保存获取的秒和百分秒
+       	MOV 	AH,2CH             	;获取第二次秒与百分秒
+	INT  	21h
+	STI
+	CMP	DX,[ESP]            ;计时是否相同
+	POP  	DX
+	JZ   	OK1                   ;如果计时相同，通过本次计时反跟踪   
+	JMP	E		;如果计时不同，结束程序
+OK1:	MOV	DI,0
+	MOV	CX,PASS[0]
+        	XOR	CX,'I'
+CPASS:	
 	INC	DI
 	MOV	BX,0
 	MOV	BL,IN_PASS[DI+1]
@@ -62,14 +69,7 @@ CPASS:
 	CMP	BX,PASS[SI];比较密码字符是否相同
 	JNE	E		;跳转至结束
 	MOV	BX,DI
-	MOV 	AH,2CH             	;获取第二次秒与百分秒
-	INT  	21h
-	STI
-	CMP	DX,[ESP]            ;计时是否相同
-	POP  	DX
-	JZ   	OK1                   ;如果计时相同，通过本次计时反跟踪   
-	JMP	E		;如果计时不同，结束程序
-OK1:	CMP	BL,IN_PASS[1]	;输入密码的字符是否比较完毕
+	CMP	BL,IN_PASS[1]	;输入密码的字符是否比较完毕
 	JNE	CPASS		;跳转至比较密码字符是否相同
 	CMP	CX,DI 		;检查数据段中密码字符是否检查完毕
 	JNE	E 		;跳转至结束
