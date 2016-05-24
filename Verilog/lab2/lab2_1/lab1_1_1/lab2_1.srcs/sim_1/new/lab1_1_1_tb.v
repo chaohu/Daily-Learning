@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 2016/05/23 20:30:29
+// Create Date: 2016/05/24 15:54:00
 // Design Name: 
 // Module Name: lab1_1_1_tb
 // Project Name: 
@@ -21,6 +21,7 @@
 
 
 module lab1_1_1_tb(
+
     );
     reg x, y, s;
     wire m;
@@ -30,14 +31,13 @@ module lab1_1_1_tb(
     initial
     begin
       x = 0; y = 0; s = 0;
-      #10 s = 1;
-      #10 y = 1; s = 0;
-      #10 s = 1;
-      #10 x = 1; y = 0; s = 0;
-      #10 s = 1;
-      #10 y = 1; s = 0;
-      #10 s = 1;
+      #10 x = 1;
+      #10 y = 1; x = 0;
+      #10 x = 1;
+      #10 s = 1; y = 0; x = 0;
+      #10 x = 1;
+      #10 y = 1; x = 0;
+      #10 x = 1;
     #20;
     end
-    
 endmodule

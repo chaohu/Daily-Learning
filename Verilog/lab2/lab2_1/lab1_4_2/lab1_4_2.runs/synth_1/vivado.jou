@@ -1,0 +1,10 @@
+#-----------------------------------------------------------
+# Vivado v2015.2 (64-bit)
+# SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
+# IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
+# Start of session at: Tue May 24 19:29:26 2016
+# Process ID: 21895
+# Log file: /home/huchao/Daily-Learning/Verilog/lab2/lab2_1/lab1_4_2/lab1_4_2.runs/synth_1/bcdto7segment_dataflow.vds
+# Journal file: /home/huchao/Daily-Learning/Verilog/lab2/lab2_1/lab1_4_2/lab1_4_2.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source bcdto7segment_dataflow.tcl -notrace
