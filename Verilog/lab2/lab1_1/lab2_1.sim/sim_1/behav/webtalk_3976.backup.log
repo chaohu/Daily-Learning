@@ -1,0 +1,16 @@
+#-----------------------------------------------------------
+# Webtalk v2015.2 (64-bit)
+# SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
+# IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
+# Start of session at: Mon May 23 21:19:58 2016
+# Process ID: 5680
+# Log file: D:/Veriloghu/lab2/lab2_1/lab2_1.sim/sim_1/behav/webtalk.log
+# Journal file: D:/Veriloghu/lab2/lab2_1/lab2_1.sim/sim_1/behav\webtalk.jou
+#-----------------------------------------------------------
+source D:/Veriloghu/lab2/lab2_1/lab2_1.sim/sim_1/behav/xsim.dir/lab1_1_1_tb_behav/webtalk/xsim_webtalk.tcl -notrace
+webtalk_transmit: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 62.656 ; gain = 0.020
+
+    while executing
+"webtalk_transmit -clientid 3442369715 -regid "" -xml D:/Veriloghu/lab2/lab2_1/lab2_1.sim/sim_1/behav/xsim.dir/lab1_1_1_tb_behav/webtalk/usage_statisti..."
+    (file "D:/Veriloghu/lab2/lab2_1/lab2_1.sim/sim_1/behav/xsim.dir/lab1_1_1_tb_behav/webtalk/xsim_webtalk.tcl" line 41)
+INFO: [Common 17-206] Exiting Webtalk at Mon May 23 21:20:04 2016...
