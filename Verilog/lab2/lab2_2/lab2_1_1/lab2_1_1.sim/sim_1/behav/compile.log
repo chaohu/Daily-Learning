@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab2/lab2_2/lab2_1_1/lab2_1_1.srcs/sources_1/new/bcdto7segment_dataflow.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bcdto7segment_dataflow
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab2/lab2_2/lab2_1_1/lab2_1_1.srcs/sources_1/new/lab2_1_1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lab2_1_1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab2/lab2_2/lab2_1_1/lab2_1_1.srcs/sim_1/new/lab2_1_1_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lab2_1_1_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab2/lab2_2/lab2_1_1/lab2_1_1.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
