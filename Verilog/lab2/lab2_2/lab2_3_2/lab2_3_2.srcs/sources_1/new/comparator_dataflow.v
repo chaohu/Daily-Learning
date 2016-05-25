@@ -21,13 +21,15 @@
 
 
 module comparator_dataflow(
-    input cin
     input [3:0] v,
-    output wire z,
-    output wire seg
+    input cin,
+    output z,
+    output [3:0] s2
     );
+    wire [3:0] m;
     
-    assign z = ((cin ==1) || (v > 9)) ? 1 : 0;
-    assign seg = (v > 9) ? 9
+    assign z = ((cin ==1) | (v > 9)) ? 1 : 0;
+    assign m = (v > 9) ? (v-10) : v;
+    assign s2 = (cin == 1) ? (m+6) : m;
     
 endmodule

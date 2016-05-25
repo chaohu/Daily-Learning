@@ -30,7 +30,7 @@ module lab2_3_2_tb(
     
     integer i,j;
     
-    lab1_3_2 DUT (a,b,cout,seg);
+    lab2_3_2 DUT (a,b,cout,seg);
     
  
     initial
@@ -40,7 +40,7 @@ module lab2_3_2_tb(
       begin
         for(j=0;j<=9;j=j+1)
         begin
-            #10 a = i;b=j;
+            #10 a = i;b = j;
         end
       end
     end

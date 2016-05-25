@@ -28,14 +28,16 @@ module lab2_3_2(
     
     wire [1:0] carr;
     wire [2:0] cin;
-    wire [3:0] s;
-    assign #1 cin1[0] = 0;
+    wire [3:0] s1,s2;
+    assign #1 cin[0] = 0;
     
     fulladder_dataflow dut1(x[0],y[0],cin[0],s1[0],carr[0]);
-    fulladder_dataflow dut2(x[1],y[1],carr[0],s1[1],cin1[1]);
+    fulladder_dataflow dut2(x[1],y[1],carr[0],s1[1],cin[1]);
     fulladder_dataflow dut3(x[2],y[2],cin[1],s1[2],carr[1]);
     fulladder_dataflow dut4(x[3],y[3],carr[1],s1[3],cin[2]);
-    comparator_dataflow dut5(cin[2],s,cout,seg);
-    bcdto7segment_dataflow dut6(s,seg);
+    
+    comparator_dataflow dut5(s1,cin[2],cout,s2);
+    
+    bcdto7segment_dataflow dut6(s2,seg);
     
 endmodule
