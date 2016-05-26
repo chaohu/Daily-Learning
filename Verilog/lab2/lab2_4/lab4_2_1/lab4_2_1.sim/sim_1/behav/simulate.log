@@ -1,0 +1,9 @@
+Vivado Simulator 2015.2
+Time resolution is 1 ps
+ain=0110, bin=1010, sum=10000 at time=                2000
+ain=0110, bin=1010, sum=10000 at time=                9000
+ain=0111, bin=1011, sum=10010 at time=               16000
+ain=1001, bin=1101, sum=10110 at time=               23000
+ain=1100, bin=0000, sum=01100 at time=               30000
+ain=0000, bin=0100, sum=00100 at time=               37000
+Simulation Done

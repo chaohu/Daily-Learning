@@ -1,0 +1,9 @@
+Vivado Simulator 2015.2
+Time resolution is 1 ps
+ain=4a, number_of_ones=3 at time=                7000
+ain=4a, number_of_ones=3 at time=               14000
+ain=4b, number_of_ones=4 at time=               21000
+ain=4d, number_of_ones=4 at time=               28000
+ain=50, number_of_ones=2 at time=               35000
+ain=54, number_of_ones=3 at time=               42000
+Simulation Done

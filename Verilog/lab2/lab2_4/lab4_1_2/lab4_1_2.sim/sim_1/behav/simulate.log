@@ -1,0 +1,9 @@
+Vivado Simulator 2015.2
+Time resolution is 1 ps
+ain=a8, parity=x, at time=                   0
+ain=a8, parity=1, at time=                5000
+ain=a9, parity=1, at time=               10000
+ain=ab, parity=0, at time=               15000
+ain=ae, parity=1, at time=               20000
+ain=b2, parity=1, at time=               25000
+Simulation Done

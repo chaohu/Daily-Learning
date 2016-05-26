@@ -1,0 +1,1 @@
+-wto "28c1bdf668b84d468a3f3706824aa4ee" --debug "typical" --relax --mt "8" -L "xil_defaultlib" -L "unisims_ver" -L "unimacro_ver" -L "secureip" --snapshot "add_two_values_task_tb_behav" "xil_defaultlib.add_two_values_task_tb" "xil_defaultlib.glbl" -log "elaborate.log" 
