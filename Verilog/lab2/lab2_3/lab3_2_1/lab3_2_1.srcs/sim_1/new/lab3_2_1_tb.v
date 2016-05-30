@@ -34,9 +34,9 @@ module lab3_2_1_tb(
     
     initial
     begin
-        for (i=0; i < 511; i=i+16)
+        for (i=0; i < 511; i=i+1)
         begin
-            #50 {en_in_n,v} = i;
+             #2 {en_in_n,v} = i;
         end
     end
       
