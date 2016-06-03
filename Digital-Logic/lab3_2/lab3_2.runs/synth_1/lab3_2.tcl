@@ -3,7 +3,6 @@
 # 
 
 debug::add_scope template.lib 1
-set_msg_config -id {Common-41} -limit 4294967295
 set_msg_config -id {HDL 9-1061} -limit 100000
 set_msg_config -id {HDL 9-1654} -limit 100000
 create_project -in_memory -part xc7a100tcsg324-1
@@ -15,10 +14,12 @@ set_property parent.project_path /home/huchao/Daily-Learning/Digital-Logic/lab3_
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 read_verilog -library xil_defaultlib {
-  /home/huchao/Daily-Learning/Digital-Logic/lab3_2/lab3_2.srcs/sources_1/new/iniset.v
   /home/huchao/Daily-Learning/Digital-Logic/lab3_2/lab3_2.srcs/sources_1/new/jk_ff.v
   /home/huchao/Daily-Learning/Digital-Logic/lab3_2/lab3_2.srcs/sources_1/new/lab3_2.v
 }
+read_xdc /home/huchao/Daily-Learning/Digital-Logic/lab3_2/lab3_2.srcs/constrs_1/new/lab3_2.xdc
+set_property used_in_implementation false [get_files /home/huchao/Daily-Learning/Digital-Logic/lab3_2/lab3_2.srcs/constrs_1/new/lab3_2.xdc]
+
 synth_design -top lab3_2 -part xc7a100tcsg324-1
 write_checkpoint -noxdef lab3_2.dcp
 catch { report_utilization -file lab3_2_utilization_synth.rpt -pb lab3_2_utilization_synth.pb }
