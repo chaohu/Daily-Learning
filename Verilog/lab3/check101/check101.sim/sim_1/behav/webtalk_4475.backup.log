@@ -1,0 +1,15 @@
+#-----------------------------------------------------------
+# Webtalk v2015.2 (64-bit)
+# SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
+# IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
+# Start of session at: Mon Jun  6 17:35:42 2016
+# Process ID: 4383
+# Log file: /home/huchao/Daily-Learning/Verilog/lab3/check101/check101.sim/sim_1/behav/webtalk.log
+# Journal file: /home/huchao/Daily-Learning/Verilog/lab3/check101/check101.sim/sim_1/behav/webtalk.jou
+#-----------------------------------------------------------
+source /home/huchao/Daily-Learning/Verilog/lab3/check101/check101.sim/sim_1/behav/xsim.dir/check101_tb_behav/webtalk/xsim_webtalk.tcl -notrace
+
+    while executing
+"webtalk_transmit -clientid 222277 -regid "" -xml /home/huchao/Daily-Learning/Verilog/lab3/check101/check101.sim/sim_1/behav/xsim.dir/check101_tb_behav..."
+    (file "/home/huchao/Daily-Learning/Verilog/lab3/check101/check101.sim/sim_1/behav/xsim.dir/check101_tb_behav/webtalk/xsim_webtalk.tcl" line 41)
+INFO: [Common 17-206] Exiting Webtalk at Mon Jun  6 17:35:42 2016...

@@ -31,12 +31,12 @@ module lab3_3_tb(
     begin
         for(CLK = 0;CLK >= 0;CLK = CLK + 1)
         begin
-            #20;
+            #10;
         end
     end
     initial
     begin
-        #10 INPUT = 1;
+        INPUT = 1;
         #40 INPUT = 0;
         #20 INPUT = 1;
         #20 INPUT = 0;

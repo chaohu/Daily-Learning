@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1464925606">
+<GenRun Id="impl_1" LaunchPart="xc7a100tcsg324-1" LaunchTime="1464936874">
+  <File Type="BITSTR-RBT" Name="lab3_2.rbt"/>
   <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="BITSTR-NKY" Name="lab3_2.nky"/>
+  <File Type="PHYSOPT-DRC" Name="lab3_2_drc_physopted.rpt"/>
   <File Type="RDI-RDI" Name="lab3_2.vdi"/>
+  <File Type="BITSTR-SYSDEF" Name="lab3_2.sysdef"/>
   <File Type="BG-DRC" Name="lab3_2.drc"/>
   <File Type="BG-BGN" Name="lab3_2.bgn"/>
-  <File Type="BITSTR-SYSDEF" Name="lab3_2.sysdef"/>
   <File Type="BITSTR-MMI" Name="lab3_2.mmi"/>
   <File Type="BITSTR-BMM" Name="lab3_2_bd.bmm"/>
-  <File Type="BITSTR-NKY" Name="lab3_2.nky"/>
-  <File Type="BITSTR-RBT" Name="lab3_2.rbt"/>
   <File Type="BITSTR-MSK" Name="lab3_2.msk"/>
   <File Type="BG-BIN" Name="lab3_2.bin"/>
   <File Type="BG-BIT" Name="lab3_2.bit"/>
@@ -26,8 +27,8 @@
   <File Type="ROUTE-PWR" Name="lab3_2_power_routed.rpt"/>
   <File Type="ROUTE-DRC-PB" Name="lab3_2_drc_routed.pb"/>
   <File Type="ROUTE-DRC" Name="lab3_2_drc_routed.rpt"/>
+  <File Type="PA-TCL" Name="lab3_2.tcl"/>
   <File Type="ROUTE-DCP" Name="lab3_2_routed.dcp"/>
-  <File Type="PHYSOPT-DRC" Name="lab3_2_drc_physopted.rpt"/>
   <File Type="PHYSOPT-DCP" Name="lab3_2_physopt.dcp"/>
   <File Type="POSTPLACE-PWROPT-DCP" Name="lab3_2_postplace_pwropt.dcp"/>
   <File Type="PLACE-PRE-SIMILARITY" Name="lab3_2_incremental_reuse_pre_placed.rpt"/>
@@ -44,7 +45,6 @@
   <File Type="OPT-DRC" Name="lab3_2_drc_opted.rpt"/>
   <File Type="OPT-DCP" Name="lab3_2_opt.dcp"/>
   <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="lab3_2_timing_summary_postroute_physopted.pb"/>
-  <File Type="PA-TCL" Name="lab3_2.tcl"/>
   <File Type="RUN-STRAT" Name="$PDATADIR/runs/impl_1/impl_1.psg"/>
   <File Type="RUN-SRCS" Name="$PDATADIR/runs/impl_1/sources.xml"/>
   <File Type="RUN-CONSTRS" Name="$PDATADIR/runs/impl_1/constrs_in.xml"/>

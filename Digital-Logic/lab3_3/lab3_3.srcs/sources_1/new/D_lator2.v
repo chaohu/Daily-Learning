@@ -23,9 +23,9 @@
 module D_lator2(
     input INPUT,CLK,
     output reg Q
-);
-always @(posedge CLK)
-begin
-    #1 Q = INPUT;
-end 
+	);
+	always @(posedge CLK)
+	begin
+		#1 Q = INPUT;
+	end 
 endmodule

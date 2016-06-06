@@ -1,7 +1,7 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date         : Fri Jun  3 11:47:15 2016
+| Date         : Fri Jun  3 14:55:02 2016
 | Host         : ajay running 64-bit Ubuntu 14.04.4 LTS
 | Command      : report_utilization -file lab3_2_utilization_synth.rpt -pb lab3_2_utilization_synth.pb
 | Design       : lab3_2

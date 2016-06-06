@@ -2,6 +2,8 @@
 ############################
 # On-board Slide Switches  #
 ############################
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets x_IBUF]
+
 set_property PACKAGE_PIN U9 [get_ports x]
 set_property IOSTANDARD LVCMOS33 [get_ports x]
 

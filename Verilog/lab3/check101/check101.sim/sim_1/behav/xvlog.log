@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab3/check101/check101.srcs/sources_1/new/jk_ff.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module jk_ff
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab3/check101/check101.srcs/sources_1/new/check101.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module check101
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab3/check101/check101.srcs/sim_1/new/check101_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module check101_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab3/check101/check101.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

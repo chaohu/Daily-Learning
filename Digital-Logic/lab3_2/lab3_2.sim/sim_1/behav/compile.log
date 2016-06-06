@@ -1,8 +1,8 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab3_2/lab3_2.srcs/sources_1/new/jk_ff.v" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/Desktop/lab3_2/lab3_2.srcs/sources_1/new/jk_ff.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module jk_ff
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab3_2/lab3_2.srcs/sources_1/new/lab3_2.v" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/Desktop/lab3_2/lab3_2.srcs/sources_1/new/lab3_2.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module lab3_2
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab3_2/lab3_2.srcs/sim_1/new/lab3_2_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/Desktop/lab3_2/lab3_2.srcs/sim_1/new/lab3_2_tb.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module lab3_2_tb
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab3_2/lab3_2.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/Desktop/lab3_2/lab3_2.sim/sim_1/behav/glbl.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module glbl
