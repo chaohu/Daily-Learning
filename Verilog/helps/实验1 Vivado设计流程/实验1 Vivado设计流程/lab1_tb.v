@@ -17,7 +17,7 @@ module lab1_tb(
     function [7:0] expected_led;
        input [7:0] swt;
     begin      
-       expected_led[0] = swt[0];
+       expected_led[0] = ~swt[0];
        expected_led[1] = swt[1] & ~swt[2];
        expected_led[3] = swt[2] & swt[3];
        expected_led[2] = expected_led[1] | expected_led[3];
