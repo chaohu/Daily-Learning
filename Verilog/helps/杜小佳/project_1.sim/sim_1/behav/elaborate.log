@@ -1,0 +1,16 @@
+Vivado Simulator 2015.2
+Copyright 1986-1999, 2001-2015 Xilinx, Inc. All Rights Reserved.
+Running: D:/VIVADO/Vivado/2015.2/bin/unwrapped/win64.o/xelab.exe -wto b82643ef40af4f478c6a33f8f10d4214 --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot jishuqi_tb_behav xil_defaultlib.jishuqi_tb xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-278] actual bit length 32 differs from formal bit length 1 for port j [D:/project_1/project_1.srcs/sources_1/new/jishuqi.v:25]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.JK
+Compiling module xil_defaultlib.jishuqi
+Compiling module xil_defaultlib.jishuqi_tb
+Compiling module xil_defaultlib.glbl
+Waiting for 2 sub-compilation(s) to finish...
+Built simulation snapshot jishuqi_tb_behav
