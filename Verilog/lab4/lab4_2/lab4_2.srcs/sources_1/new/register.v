@@ -27,6 +27,6 @@ module register(
     );
     always @(posedge Clk)
     begin
-       Z = A;
+       Z <= A;
     end
 endmodule

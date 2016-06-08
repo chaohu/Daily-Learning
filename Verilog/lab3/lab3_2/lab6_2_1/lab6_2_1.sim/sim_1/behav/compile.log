@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab3/lab3_2/lab6_2_1/lab6_2_1.srcs/sources_1/new/t_ff.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module t_ff
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab3/lab3_2/lab6_2_1/lab6_2_1.srcs/sources_1/new/lab6_2_1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lab6_2_1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab3/lab3_2/lab6_2_1/lab6_2_1.srcs/sim_1/new/lab6_2_1_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lab6_2_1_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab3/lab3_2/lab6_2_1/lab6_2_1.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
