@@ -1,0 +1,16 @@
+#-----------------------------------------------------------
+# Webtalk v2015.2 (64-bit)
+# SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
+# IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
+# Start of session at: Wed Jun  8 15:33:45 2016
+# Process ID: 8139
+# Log file: /home/huchao/Daily-Learning/Verilog/lab3/lab3_2/lab6_2_3/lab6_2_3.sim/sim_1/behav/webtalk.log
+# Journal file: /home/huchao/Daily-Learning/Verilog/lab3/lab3_2/lab6_2_3/lab6_2_3.sim/sim_1/behav/webtalk.jou
+#-----------------------------------------------------------
+source /home/huchao/Daily-Learning/Verilog/lab3/lab3_2/lab6_2_3/lab6_2_3.sim/sim_1/behav/xsim.dir/lab6_2_3_tb_behav/webtalk/xsim_webtalk.tcl -notrace
+webtalk_transmit: Time (s): cpu = 00:00:00.12 ; elapsed = 00:00:06 . Memory (MB): peak = 233.938 ; gain = 0.004 ; free physical = 3740 ; free virtual = 14467
+
+    while executing
+"webtalk_transmit -clientid 2390546401 -regid "" -xml /home/huchao/Daily-Learning/Verilog/lab3/lab3_2/lab6_2_3/lab6_2_3.sim/sim_1/behav/xsim.dir/lab6_2..."
+    (file "/home/huchao/Daily-Learning/Verilog/lab3/lab3_2/lab6_2_3/lab6_2_3.sim/sim_1/behav/xsim.dir/lab6_2_3_tb_behav/webtalk/xsim_webtalk.tcl" line 41)
+INFO: [Common 17-206] Exiting Webtalk at Wed Jun  8 15:33:50 2016...

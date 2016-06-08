@@ -30,7 +30,7 @@ module d_ff(
     end
     always @(posedge Clk)
     begin
-        q = q ^ d;
+        q = d;
         qbar = ~q;
     end
 endmodule

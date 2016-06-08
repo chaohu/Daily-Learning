@@ -24,12 +24,16 @@ module lab6_2_2(
     input Enable,Clk,
     output Z
     );
-    wire O1,O2,O3,O4,Q1,Q1bar,Q2,Q2bar,Q3,Q3bar,Q4bar;
+    wire A1,A2,A3,O1,O2,O3,O4,Q1,Q1bar,Q2,Q2bar,Q3,Q3bar,Q4bar;
+    and
+        ua1(A1,Enable,Q1),
+        ua2(A2,A1,Q2),
+        ua3(A3,A2,Q3);
     xor
-        uo1(O1,Enable,Q1),
-        uo2(O2,Q1,Q2),
-        uo3(O3,Q2,Q3),
-        uo4(O4,Q3,Z);
+        ux1(O1,Enable,Q1),
+        ux2(O2,A1,Q2),
+        ux3(O3,A2,Q3),
+        ux4(O4,A3,Z);
     d_ff
         t1(O1,Clk,Q1,Q1bar),
         t2(O2,Clk,Q2,Q2bar),
