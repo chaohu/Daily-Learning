@@ -21,8 +21,9 @@
 
 
 module register(
-    input [7:0] A,Clk,
-    output [7:0] Z
+    input [7:0] A,
+    input Clk,
+    output reg [7:0] Z
     );
     always @(posedge Clk)
     begin

@@ -21,7 +21,8 @@
 
 
 module multiplexer(
-    input [7:0] A,B,S0,
+    input [7:0] A,B,
+    input S0,
     output [7:0] Z
     );
     assign 

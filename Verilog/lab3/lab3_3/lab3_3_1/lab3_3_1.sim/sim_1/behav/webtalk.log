@@ -2,15 +2,11 @@
 # Webtalk v2015.2 (64-bit)
 # SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
 # IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
-# Start of session at: Wed Jun  8 16:05:09 2016
-# Process ID: 9549
+# Start of session at: Thu Jun  9 13:13:51 2016
+# Process ID: 10305
 # Log file: /home/huchao/Daily-Learning/Verilog/lab3/lab3_3/lab3_3_1/lab3_3_1.sim/sim_1/behav/webtalk.log
 # Journal file: /home/huchao/Daily-Learning/Verilog/lab3/lab3_3/lab3_3_1/lab3_3_1.sim/sim_1/behav/webtalk.jou
 #-----------------------------------------------------------
 source /home/huchao/Daily-Learning/Verilog/lab3/lab3_3/lab3_3_1/lab3_3_1.sim/sim_1/behav/xsim.dir/lab3_3_1_tb_behav/webtalk/xsim_webtalk.tcl -notrace
-webtalk_transmit: Time (s): cpu = 00:00:00.12 ; elapsed = 00:00:06 . Memory (MB): peak = 222.863 ; gain = 0.004 ; free physical = 3515 ; free virtual = 14310
-
-    while executing
-"webtalk_transmit -clientid 1881483704 -regid "" -xml /home/huchao/Daily-Learning/Verilog/lab3/lab3_3/lab3_3_1/lab3_3_1.sim/sim_1/behav/xsim.dir/lab3_3..."
-    (file "/home/huchao/Daily-Learning/Verilog/lab3/lab3_3/lab3_3_1/lab3_3_1.sim/sim_1/behav/xsim.dir/lab3_3_1_tb_behav/webtalk/xsim_webtalk.tcl" line 32)
-INFO: [Common 17-206] Exiting Webtalk at Wed Jun  8 16:05:15 2016...
+INFO: [Common 17-186] '/home/huchao/Daily-Learning/Verilog/lab3/lab3_3/lab3_3_1/lab3_3_1.sim/sim_1/behav/xsim.dir/lab3_3_1_tb_behav/webtalk/usage_statistics_ext_xsim.xml' has been successfully sent to Xilinx on Thu Jun  9 13:13:53 2016. For additional details about this file, please refer to the WebTalk help file at /home/huchao/vivado/Vivado/2015.2/doc/webtalk_introduction.html.
+INFO: [Common 17-206] Exiting Webtalk at Thu Jun  9 13:13:53 2016...

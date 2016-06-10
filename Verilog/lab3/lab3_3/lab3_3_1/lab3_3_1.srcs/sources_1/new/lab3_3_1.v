@@ -26,19 +26,15 @@ module lab3_3_1(
     );
     reg [1:0] com;
     reg [2:0] ROM [2:0];
-    initial $readmemb ("com_data.txt", ROM, 0, 2);
+    initial $readmemb ("/home/huchao/Daily-Learning/Verilog/lab3/lab3_3/lab3_3_1/com_data.txt", ROM, 0, 2);
     always @(a or b)
     begin
+        begin
         if(a > b)
-        begin
             com = 0;
-        end
         else if(a == b)
-        begin
             com = 1;
-        end
         else if(a < b)
-        begin
             com = 2;
         end
         {lt,gt,eq} = ROM[com];
