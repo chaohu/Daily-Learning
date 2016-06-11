@@ -1,0 +1,7 @@
+Vivado Simulator 2015.2
+Copyright 1986-1999, 2001-2015 Xilinx, Inc. All Rights Reserved.
+Running: /home/huchao/vivado/Vivado/2015.2/bin/unwrapped/lnx64.o/xelab -wto 10a65e65e26543238c5f66cfe7499c49 --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L secureip --snapshot lab4_1_2_tb_func_synth xil_defaultlib.lab4_1_2_tb xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+ERROR: [VRFC 10-2063] Module <lab4_1_2> not found while processing module instance <dut> [/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1_2/lab4_1_2.srcs/sim_1/new/lab4_1_2_tb.v:28]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.

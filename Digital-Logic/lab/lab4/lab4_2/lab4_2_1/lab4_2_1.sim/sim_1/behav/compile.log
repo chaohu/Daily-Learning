@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_2/lab4_2_1/lab4_2_1.srcs/sources_1/new/one_comparator.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module one_comparator
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_2/lab4_2_1/lab4_2_1.srcs/sources_1/new/lab4_2_1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lab4_2_1
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_2/lab4_2_1/lab4_2_1.srcs/sim_1/new/lab4_2_1_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module lab4_2_1_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_2/lab4_2_1/lab4_2_1.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
