@@ -14,16 +14,11 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
 INFO: [Common 17-1223] The version limit for your license is '2016.05' and will expire in -10 days. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for any updates or new releases.
-ERROR: [Synth 8-2715] syntax error near endcase [/home/huchao/Daily-Learning/Verilog/lab5/lab5_1/lab5_1_1/lab5_1_1.srcs/sources_1/new/lab5_1_1.v:47]
-ERROR: [Synth 8-2576] procedural assignment to a non-register count is not permitted [/home/huchao/Daily-Learning/Verilog/lab5/lab5_1/lab5_1_1/lab5_1_1.srcs/sources_1/new/lab5_1_1.v:32]
-ERROR: [Synth 8-2576] procedural assignment to a non-register count is not permitted [/home/huchao/Daily-Learning/Verilog/lab5/lab5_1/lab5_1_1/lab5_1_1.srcs/sources_1/new/lab5_1_1.v:35]
-ERROR: [Synth 8-1031] x is not declared [/home/huchao/Daily-Learning/Verilog/lab5/lab5_1/lab5_1_1/lab5_1_1.srcs/sources_1/new/lab5_1_1.v:49]
-ERROR: [Synth 8-1031] x is not declared [/home/huchao/Daily-Learning/Verilog/lab5/lab5_1/lab5_1_1/lab5_1_1.srcs/sources_1/new/lab5_1_1.v:53]
-ERROR: [Synth 8-1031] x is not declared [/home/huchao/Daily-Learning/Verilog/lab5/lab5_1/lab5_1_1/lab5_1_1.srcs/sources_1/new/lab5_1_1.v:55]
+ERROR: [Synth 8-2715] syntax error near endcase [/home/huchao/Daily-Learning/Verilog/lab5/lab5_1/lab5_1_1/lab5_1_1.srcs/sources_1/new/lab5_1_1.v:52]
 INFO: [Synth 8-2350] module lab5_1_1 ignored due to previous errors [/home/huchao/Daily-Learning/Verilog/lab5/lab5_1/lab5_1_1/lab5_1_1.srcs/sources_1/new/lab5_1_1.v:23]
 Failed to read verilog '/home/huchao/Daily-Learning/Verilog/lab5/lab5_1/lab5_1_1/lab5_1_1.srcs/sources_1/new/lab5_1_1.v'
 INFO: [Common 17-83] Releasing license: Synthesis
-4 Infos, 0 Warnings, 0 Critical Warnings and 7 Errors encountered.
+4 Infos, 0 Warnings, 0 Critical Warnings and 2 Errors encountered.
 synth_design failed
 ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
-INFO: [Common 17-206] Exiting Vivado at Fri Jun 10 17:46:14 2016...
+INFO: [Common 17-206] Exiting Vivado at Fri Jun 10 23:35:50 2016...

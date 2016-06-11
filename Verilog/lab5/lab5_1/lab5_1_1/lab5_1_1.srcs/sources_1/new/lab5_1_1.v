@@ -22,16 +22,39 @@
 
 module lab5_1_1(
     input ain,clk,reset,
-    input [3:0] count,
+    output reg [3:0] count,
     output reg yout
     );
-    reg state,nextstate;
-    parameter S0 = 0,S1 = 1,S2 = 2,s3 = 3;
+    reg [1:0] state,nextstate;
+    parameter S0 = 0,S1 = 1,S2 = 2,S3 = 3;
+    initial
+    begin
+        nextstate = S2;
+    end
     always @(posedge clk)
+    begin
     if(reset)
-        count <= 0;
+    begin
+        count = 4'b0000;
+        state  = S0;
+    end
     else
-        count = count + 1;
+    begin
+        if(ain)
+        begin
+            if(count == 15)
+            begin
+                count = 0;
+                state = S0;
+            end
+            else
+            begin
+                count = count + 1;
+                state = nextstate;
+            end
+        end
+    end
+    end
         
     always @(state or ain or reset)
     begin
@@ -41,24 +64,40 @@ module lab5_1_1(
             yout = 1;
         S1: if(ain & (~reset))
             yout = 1;
-        default:  
+        default: yout = 1'b0;
         endcase
     end
     always @(state or ain)
     begin
         case(state)
         S0: 
-        if(ain)
-            nextstate = S2;
-        else
-            nextstate = S0;
+        begin
+            if(ain)
+                nextstate = S2;
+            else
+                nextstate = S0;
+        end
         S1:
-        if(ain)
-            nextstate = S0;
-        else
-            nextstate = S1;
-            
-            
+        begin
+            if(ain)
+                nextstate = S2;
+            else
+                nextstate = S1;
+        end
+        S2:
+        begin
+            if(ain)
+                nextstate = S3;
+            else
+                nextstate = S2;
+        end
+        S3:
+        begin
+            if(ain)
+                nextstate = S1;
+            else
+                nextstate = S3;
+        end    
         endcase
     end
     
