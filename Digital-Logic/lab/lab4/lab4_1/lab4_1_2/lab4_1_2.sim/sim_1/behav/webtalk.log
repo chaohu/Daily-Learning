@@ -2,12 +2,11 @@
 # Webtalk v2015.2 (64-bit)
 # SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
 # IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
-# Start of session at: Sun Jun 12 16:52:37 2016
-# Process ID: 5332
-# Log file: C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_2/lab4_1_2.sim/sim_1/behav/webtalk.log
-# Journal file: C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_2/lab4_1_2.sim/sim_1/behav\webtalk.jou
+# Start of session at: Mon Jun 13 15:18:29 2016
+# Process ID: 6910
+# Log file: /home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.sim/sim_1/behav/webtalk.log
+# Journal file: /home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.sim/sim_1/behav/webtalk.jou
 #-----------------------------------------------------------
-source C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_2/lab4_1_2.sim/sim_1/behav/xsim.dir/lab4_1_2_tb_behav/webtalk/xsim_webtalk.tcl -notrace
-INFO: [Common 17-186] 'C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_2/lab4_1_2.sim/sim_1/behav/xsim.dir/lab4_1_2_tb_behav/webtalk/usage_statistics_ext_xsim.xml' has been successfully sent to Xilinx on Sun Jun 12 16:52:44 2016. For additional details about this file, please refer to the WebTalk help file at C:/Xilinx/Vivado/2015.2/doc/webtalk_introduction.html.
-webtalk_transmit: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 62.188 ; gain = 0.020
-INFO: [Common 17-206] Exiting Webtalk at Sun Jun 12 16:52:44 2016...
+source /home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.sim/sim_1/behav/xsim.dir/lab4_1_2_tb_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-186] '/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.sim/sim_1/behav/xsim.dir/lab4_1_2_tb_behav/webtalk/usage_statistics_ext_xsim.xml' has been successfully sent to Xilinx on Mon Jun 13 15:18:32 2016. For additional details about this file, please refer to the WebTalk help file at /home/huchao/vivado/Vivado/2015.2/doc/webtalk_introduction.html.
+INFO: [Common 17-206] Exiting Webtalk at Mon Jun 13 15:18:32 2016...

@@ -35,7 +35,7 @@ module lab4_3_1_tb(
     end
     initial
     begin
-        m = 0;
-        #300 m = 1;
+        m = 1;
+        #300 m = 0;
     end
 endmodule

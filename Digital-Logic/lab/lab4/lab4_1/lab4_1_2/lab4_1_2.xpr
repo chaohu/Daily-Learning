@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="5" Path="C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_2/lab4_1_2.xpr">
+<Project Version="7" Minor="5" Path="/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="10a65e65e26543238c5f66cfe7499c49"/>
@@ -87,9 +87,6 @@
     </Simulator>
     <Simulator Name="Riviera">
       <Option Name="Description" Val="Riviera-PRO Simulator"/>
-    </Simulator>
-    <Simulator Name="ActiveHDL">
-      <Option Name="Description" Val="Active-HDL Simulator"/>
     </Simulator>
   </Simulators>
   <Runs Version="1" Minor="9">
