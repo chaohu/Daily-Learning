@@ -13,36 +13,37 @@ Command: synth_design -top lab4_1 -part xc7a100tcsg324-1
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
-INFO: [Common 17-1223] The version limit for your license is '2016.05' and will expire in -9 days. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for any updates or new releases.
+INFO: [Common 17-1223] The version limit for your license is '2016.05' and will expire in -13 days. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for any updates or new releases.
 ---------------------------------------------------------------------------------
-Starting Synthesize : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 937.320 ; gain = 154.520 ; free physical = 3745 ; free virtual = 14187
+Starting Synthesize : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 937.316 ; gain = 154.520 ; free physical = 5143 ; free virtual = 14568
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-638] synthesizing module 'lab4_1' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/lab4_1.v:23]
+	Parameter width bound to: 8 - type: integer 
 INFO: [Synth 8-638] synthesizing module 'multiplexer' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/multiplexer.v:23]
+	Parameter width bound to: 8 - type: integer 
 INFO: [Synth 8-256] done synthesizing module 'multiplexer' (1#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/multiplexer.v:23]
 INFO: [Synth 8-638] synthesizing module 'register' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/register.v:23]
+	Parameter width bound to: 8 - type: integer 
 INFO: [Synth 8-256] done synthesizing module 'register' (2#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/register.v:23]
 INFO: [Synth 8-638] synthesizing module 'e_fulladder' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/e_fulladder.v:23]
-INFO: [Synth 8-638] synthesizing module 'o_fulladder' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/o_fulladder.v:23]
-INFO: [Synth 8-256] done synthesizing module 'o_fulladder' (3#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/o_fulladder.v:23]
-INFO: [Synth 8-256] done synthesizing module 'e_fulladder' (4#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/e_fulladder.v:23]
-INFO: [Synth 8-256] done synthesizing module 'lab4_1' (5#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/lab4_1.v:23]
+	Parameter width bound to: 8 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'e_fulladder' (3#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/e_fulladder.v:23]
+INFO: [Synth 8-256] done synthesizing module 'lab4_1' (4#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/lab4_1.v:23]
 ---------------------------------------------------------------------------------
-Finished Synthesize : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 973.609 ; gain = 190.809 ; free physical = 3708 ; free virtual = 14149
+Finished Synthesize : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 973.605 ; gain = 190.809 ; free physical = 5105 ; free virtual = 14531
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 973.609 ; gain = 190.809 ; free physical = 3707 ; free virtual = 14149
+Finished Constraint Validation : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 973.605 ; gain = 190.809 ; free physical = 5105 ; free virtual = 14531
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a100tcsg324-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 981.609 ; gain = 198.809 ; free physical = 3707 ; free virtual = 14149
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 981.605 ; gain = 198.809 ; free physical = 5105 ; free virtual = 14531
 ---------------------------------------------------------------------------------
-INFO: [Device 21-403] Loading part xc7a100tcsg324-1
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 989.617 ; gain = 206.816 ; free physical = 3700 ; free virtual = 14142
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 989.613 ; gain = 206.816 ; free physical = 5097 ; free virtual = 14523
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -55,10 +56,12 @@ No constraint files found.
 Start RTL Component Statistics 
 ---------------------------------------------------------------------------------
 Detailed RTL Component Info : 
-+---XORs : 
-	   2 Input      1 Bit         XORs := 48    
++---Adders : 
+	   2 Input      8 Bit       Adders := 1     
 +---Registers : 
 	                8 Bit    Registers := 3     
++---Muxes : 
+	   2 Input      8 Bit        Muxes := 4     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -68,36 +71,43 @@ Start RTL Hierarchical Component Statistics
 Hierarchical RTL Component report 
 Module multiplexer 
 Detailed RTL Component Info : 
-+---XORs : 
-	   2 Input      1 Bit         XORs := 8     
++---Muxes : 
+	   2 Input      8 Bit        Muxes := 1     
 Module register 
 Detailed RTL Component Info : 
 +---Registers : 
 	                8 Bit    Registers := 1     
-Module o_fulladder 
+Module e_fulladder 
 Detailed RTL Component Info : 
-+---XORs : 
-	   2 Input      1 Bit         XORs := 2     
++---Adders : 
+	   2 Input      8 Bit       Adders := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Hierarchical Component Statistics
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Part Resource Summary
 ---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
 Part Resources:
 DSPs: 240 (col length:80)
 BRAMs: 270 (col length: RAMB18 80 RAMB36 40)
 ---------------------------------------------------------------------------------
 Finished Part Resource Summary
 ---------------------------------------------------------------------------------
-Start Parallel Synthesis Optimization  : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1086.621 ; gain = 303.820 ; free physical = 3608 ; free virtual = 14050
+Start Parallel Synthesis Optimization  : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1087.617 ; gain = 304.820 ; free physical = 5003 ; free virtual = 14429
 ---------------------------------------------------------------------------------
 Start Cross Boundary Optimization
 ---------------------------------------------------------------------------------
+WARNING: [Synth 8-3330] design lab4_1 has an empty top module
+WARNING: [Synth 8-3331] design lab4_1 has unconnected port S0
+WARNING: [Synth 8-3331] design lab4_1 has unconnected port S1
+WARNING: [Synth 8-3331] design lab4_1 has unconnected port S2
+WARNING: [Synth 8-3331] design lab4_1 has unconnected port S3
+WARNING: [Synth 8-3331] design lab4_1 has unconnected port Clk
 ---------------------------------------------------------------------------------
-Finished Cross Boundary Optimization : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1087.629 ; gain = 304.828 ; free physical = 3604 ; free virtual = 14046
+Finished Cross Boundary Optimization : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4995 ; free virtual = 14420
 ---------------------------------------------------------------------------------
-Finished Parallel Reinference  : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1087.629 ; gain = 304.828 ; free physical = 3604 ; free virtual = 14046
+Finished Parallel Reinference  : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4995 ; free virtual = 14420
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
@@ -105,50 +115,26 @@ Report RTL Partitions:
 +-+--------------+------------+----------+
 +-+--------------+------------+----------+
 No constraint files found.
-WARNING: [Synth 8-3332] Sequential element (\r0/Z_reg[7] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r0/Z_reg[6] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r0/Z_reg[5] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r0/Z_reg[4] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r0/Z_reg[3] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r0/Z_reg[2] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r0/Z_reg[1] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r0/Z_reg[0] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r1/Z_reg[7] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r1/Z_reg[6] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r1/Z_reg[5] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r1/Z_reg[4] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r1/Z_reg[3] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r1/Z_reg[2] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r1/Z_reg[1] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\r1/Z_reg[0] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\acc/Z_reg[7] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\acc/Z_reg[6] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\acc/Z_reg[5] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\acc/Z_reg[4] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\acc/Z_reg[3] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\acc/Z_reg[2] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\acc/Z_reg[1] ) is unused and will be removed from module lab4_1.
-WARNING: [Synth 8-3332] Sequential element (\acc/Z_reg[0] ) is unused and will be removed from module lab4_1.
 ---------------------------------------------------------------------------------
 Start Area Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Area Optimization : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1087.629 ; gain = 304.828 ; free physical = 3604 ; free virtual = 14046
+Finished Area Optimization : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4995 ; free virtual = 14420
 ---------------------------------------------------------------------------------
-Finished Parallel Area Optimization  : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1087.629 ; gain = 304.828 ; free physical = 3604 ; free virtual = 14046
+Finished Parallel Area Optimization  : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4995 ; free virtual = 14420
 
 Report RTL Partitions: 
 +-+--------------+------------+----------+
 | |RTL Partition |Replication |Instances |
 +-+--------------+------------+----------+
 +-+--------------+------------+----------+
-Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1087.629 ; gain = 304.828 ; free physical = 3604 ; free virtual = 14046
+Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4995 ; free virtual = 14420
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 No constraint files found.
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1087.629 ; gain = 304.828 ; free physical = 3604 ; free virtual = 14046
+Finished Timing Optimization : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4995 ; free virtual = 14420
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -160,7 +146,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1088.637 ; gain = 305.836 ; free physical = 3604 ; free virtual = 14046
+Finished Technology Mapping : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4992 ; free virtual = 14418
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -178,7 +164,7 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1088.637 ; gain = 305.836 ; free physical = 3604 ; free virtual = 14046
+Finished IO Insertion : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4992 ; free virtual = 14418
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -191,7 +177,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1088.637 ; gain = 305.836 ; free physical = 3604 ; free virtual = 14046
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4992 ; free virtual = 14418
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -203,13 +189,13 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1088.637 ; gain = 305.836 ; free physical = 3604 ; free virtual = 14046
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4992 ; free virtual = 14418
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Start Renaming Generated Ports : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1088.637 ; gain = 305.836 ; free physical = 3604 ; free virtual = 14046
+Start Renaming Generated Ports : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4992 ; free virtual = 14418
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1088.637 ; gain = 305.836 ; free physical = 3604 ; free virtual = 14046
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4992 ; free virtual = 14418
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -234,11 +220,11 @@ Report Instance Areas:
 |1     |top      |       |     0|
 +------+---------+-------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1088.637 ; gain = 305.836 ; free physical = 3604 ; free virtual = 14046
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4992 ; free virtual = 14417
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 24 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1088.637 ; gain = 189.316 ; free physical = 3604 ; free virtual = 14046
-Synthesis Optimization Complete : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1088.637 ; gain = 305.836 ; free physical = 3604 ; free virtual = 14046
+Synthesis finished with 0 errors, 0 critical warnings and 6 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1095.625 ; gain = 196.309 ; free physical = 4992 ; free virtual = 14417
+Synthesis Optimization Complete : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1095.625 ; gain = 312.828 ; free physical = 4992 ; free virtual = 14417
 INFO: [Project 1-571] Translating synthesized netlist
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
@@ -246,8 +232,8 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
 INFO: [Common 17-83] Releasing license: Synthesis
-18 Infos, 24 Warnings, 0 Critical Warnings and 0 Errors encountered.
+16 Infos, 6 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 1161.637 ; gain = 270.316 ; free physical = 3530 ; free virtual = 13972
-report_utilization: Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.10 . Memory (MB): peak = 1193.656 ; gain = 0.000 ; free physical = 3528 ; free virtual = 13970
-INFO: [Common 17-206] Exiting Vivado at Thu Jun  9 14:30:17 2016...
+synth_design: Time (s): cpu = 00:00:08 ; elapsed = 00:00:08 . Memory (MB): peak = 1161.625 ; gain = 270.309 ; free physical = 4927 ; free virtual = 14352
+report_utilization: Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.10 . Memory (MB): peak = 1193.645 ; gain = 0.000 ; free physical = 4926 ; free virtual = 14352
+INFO: [Common 17-206] Exiting Vivado at Mon Jun 13 19:43:21 2016...

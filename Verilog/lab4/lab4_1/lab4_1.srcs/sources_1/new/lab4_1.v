@@ -23,15 +23,16 @@
 module lab4_1(
     input S0,S1,S2,S3,Clk
     );
-    wire [7:0] S0O,S1O,S2O,S3O,R0O,R1O,ADDO,ACCO;
-    multiplexer 
+    parameter width = 8;
+    wire [width-1:0] S0O,S1O,S2O,S3O,R0O,R1O,ADDO,ACCO;
+    multiplexer #(width)
         s0(S3O,R0O,S0,S0O),
         s1(S3O,R1O,S1,S1O),
         s2(R0O,R1O,S2,S2O),
         s3(S2O,ACCO,S3,S3O);
-    register
+    register #(width)
         r0(S0O,Clk,R0O),
         r1(S1O,Clk,R1O),
         acc(ADDO,Clk,ACCO); 
-    e_fulladder e_add(S2O,ACCO,ADDO);
+    e_fulladder #(width) e_add(S2O,ACCO,ADDO);
 endmodule

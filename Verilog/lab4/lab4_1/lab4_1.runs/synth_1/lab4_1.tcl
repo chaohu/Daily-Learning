@@ -14,7 +14,6 @@ set_property parent.project_path /home/huchao/Daily-Learning/Verilog/lab4/lab4_1
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 read_verilog -library xil_defaultlib {
-  /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/o_fulladder.v
   /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/register.v
   /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/multiplexer.v
   /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.srcs/sources_1/new/e_fulladder.v
