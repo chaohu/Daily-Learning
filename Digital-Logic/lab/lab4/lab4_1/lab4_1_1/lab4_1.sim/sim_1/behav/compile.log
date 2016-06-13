@@ -1,6 +1,6 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1.srcs/sources_1/new/lab4_1.v" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_1/lab4_1.srcs/sources_1/new/lab4_1.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module lab4_1
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1.srcs/sim_1/new/lab4_1_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_1/lab4_1.srcs/sim_1/new/lab4_1_tb.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module lab4_1_tb
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_1/lab4_1.sim/sim_1/behav/glbl.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module glbl

@@ -1,8 +1,8 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date         : Sat Jun 11 23:00:55 2016
-| Host         : ajay running 64-bit Ubuntu 14.04.4 LTS
+| Tool Version : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Sun Jun 12 15:12:00 2016
+| Host         : 804-066 running 64-bit Service Pack 1  (build 7601)
 | Command      : report_control_sets -verbose -file lab4_1_control_sets_placed.rpt
 | Design       : lab4_1
 | Device       : xc7a100t
@@ -48,7 +48,6 @@ Table of Contents
 +---------------------------+---------------+--------------------------+------------------+----------------+
 |        Clock Signal       | Enable Signal |     Set/Reset Signal     | Slice Load Count | Bel Load Count |
 +---------------------------+---------------+--------------------------+------------------+----------------+
-|  CP_IBUF_BUFG             |               | count_reg[2]_LDC_i_2_n_0 |                1 |              1 |
 |  count_reg[3]_LDC_i_1_n_0 |               | count_reg[3]_LDC_i_2_n_0 |                1 |              1 |
 |  count_reg[3]_LDC_i_1_n_0 |               | Qd_reg_LDC_i_1_n_0       |                1 |              1 |
 |  count_reg[2]_LDC_i_1_n_0 |               | count_reg[2]_LDC_i_2_n_0 |                1 |              1 |
@@ -59,7 +58,7 @@ Table of Contents
 |  count_reg[0]_LDC_i_1_n_0 |               | Qa_reg_LDC_i_1_n_0       |                1 |              1 |
 |  CP_IBUF_BUFG             |               | count_reg[3]_LDC_i_2_n_0 |                1 |              1 |
 |  CP_IBUF_BUFG             |               | count_reg[3]_LDC_i_1_n_0 |                1 |              1 |
-|  CP_IBUF_BUFG             |               | Qa_reg_LDC_i_1_n_0       |                1 |              1 |
+|  CP_IBUF_BUFG             |               | count_reg[2]_LDC_i_2_n_0 |                1 |              1 |
 |  CP_IBUF_BUFG             |               | count_reg[2]_LDC_i_1_n_0 |                1 |              1 |
 |  CP_IBUF_BUFG             |               | count_reg[1]_LDC_i_2_n_0 |                1 |              1 |
 |  CP_IBUF_BUFG             |               | count_reg[1]_LDC_i_1_n_0 |                1 |              1 |
@@ -69,6 +68,7 @@ Table of Contents
 |  CP_IBUF_BUFG             |               | Qcc_i_2_n_0              |                1 |              1 |
 |  CP_IBUF_BUFG             |               | Qc_reg_LDC_i_1_n_0       |                1 |              1 |
 |  CP_IBUF_BUFG             |               | Qb_reg_LDC_i_1_n_0       |                1 |              1 |
+|  CP_IBUF_BUFG             |               | Qa_reg_LDC_i_1_n_0       |                1 |              1 |
 +---------------------------+---------------+--------------------------+------------------+----------------+
 
 

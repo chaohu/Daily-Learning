@@ -1,8 +1,8 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date         : Sat Jun 11 23:05:14 2016
-| Host         : ajay running 64-bit Ubuntu 14.04.4 LTS
+| Tool Version : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Sun Jun 12 16:48:00 2016
+| Host         : 804-066 running 64-bit Service Pack 1  (build 7601)
 | Command      : report_timing_summary -warn_on_violation -max_paths 10 -file lab4_1_2_timing_summary_routed.rpt -rpx lab4_1_2_timing_summary_routed.rpx
 | Design       : lab4_1_2
 | Device       : 7a100t-csg324
@@ -50,7 +50,7 @@ Table of Contents
 
 1. checking no_clock
 --------------------
- There are 6 register/latch pins with no clock driven by root clock pin: CP (HIGH)
+ There are 4 register/latch pins with no clock driven by root clock pin: CP (HIGH)
 
 
 2. checking constant_clock
@@ -65,14 +65,14 @@ Table of Contents
 
 4. checking unconstrained_internal_endpoints
 --------------------------------------------
- There are 10 pins that are not constrained for maximum delay. (HIGH)
+ There are 8 pins that are not constrained for maximum delay. (HIGH)
 
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
 
 5. checking no_input_delay
 --------------------------
- There is 1 input port with no input delay specified. (HIGH)
+ There are 2 input ports with no input delay specified. (HIGH)
 
  There are 0 input ports with no input delay but user has a false path constraint.
 

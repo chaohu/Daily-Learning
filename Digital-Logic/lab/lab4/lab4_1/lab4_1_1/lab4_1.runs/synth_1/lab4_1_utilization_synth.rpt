@@ -1,8 +1,8 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date         : Sat Jun 11 23:00:27 2016
-| Host         : ajay running 64-bit Ubuntu 14.04.4 LTS
+| Tool Version : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Sun Jun 12 15:11:39 2016
+| Host         : 804-066 running 64-bit Service Pack 1  (build 7601)
 | Command      : report_utilization -file lab4_1_utilization_synth.rpt -pb lab4_1_utilization_synth.pb
 | Design       : lab4_1
 | Device       : xc7a100t

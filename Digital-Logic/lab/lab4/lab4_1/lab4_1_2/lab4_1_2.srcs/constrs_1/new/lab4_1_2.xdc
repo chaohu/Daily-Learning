@@ -5,8 +5,10 @@
 
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets CP_IBUF]
 
-set_property PACKAGE_PIN U9 [get_ports CP]
+set_property PACKAGE_PIN F15 [get_ports CP]
 set_property IOSTANDARD LVCMOS33 [get_ports CP]
+set_property PACKAGE_PIN U9 [get_ports M]
+set_property IOSTANDARD LVCMOS33 [get_ports M]
 
 ############################
 # On-board led             #

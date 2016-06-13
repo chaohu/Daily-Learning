@@ -1,8 +1,8 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------
-| Tool Version     : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date             : Sat Jun 11 23:01:22 2016
-| Host             : ajay running 64-bit Ubuntu 14.04.4 LTS
+| Tool Version     : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date             : Sun Jun 12 15:12:28 2016
+| Host             : 804-066 running 64-bit Service Pack 1  (build 7601)
 | Command          : 
 | Design           : lab4_1
 | Device           : xc7a100tcsg324-1
@@ -30,12 +30,12 @@ Table of Contents
 ----------
 
 +--------------------------+-------+
-| Total On-Chip Power (W)  | 4.934 |
-| Dynamic (W)              | 4.804 |
-| Device Static (W)        | 0.129 |
+| Total On-Chip Power (W)  | 5.019 |
+| Dynamic (W)              | 4.896 |
+| Device Static (W)        | 0.123 |
 | Effective TJA (C/W)      | 4.6   |
-| Max Ambient (C)          | 62.5  |
-| Junction Temperature (C) | 47.5  |
+| Max Ambient (C)          | 62.1  |
+| Junction Temperature (C) | 47.9  |
 | Confidence Level         | Low   |
 | Setting File             | ---   |
 | Simulation Activity File | ---   |
@@ -49,15 +49,15 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Slice Logic    |     0.102 |       49 |       --- |             --- |
-|   LUT as Logic |     0.089 |       19 |     63400 |            0.03 |
+| Slice Logic    |     0.097 |       49 |       --- |             --- |
+|   LUT as Logic |     0.084 |       19 |     63400 |            0.03 |
 |   Register     |     0.007 |       21 |    126800 |            0.02 |
 |   BUFG         |     0.006 |        1 |        32 |            3.13 |
 |   Others       |     0.000 |        2 |       --- |             --- |
-| Signals        |     0.177 |       55 |       --- |             --- |
-| I/O            |     4.525 |       13 |       210 |            6.19 |
-| Static Power   |     0.129 |          |           |                 |
-| Total          |     4.934 |          |           |                 |
+| Signals        |     0.162 |       54 |       --- |             --- |
+| I/O            |     4.638 |       13 |       210 |            6.19 |
+| Static Power   |     0.123 |          |           |                 |
+| Total          |     5.019 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -67,11 +67,11 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.347 |       0.311 |      0.036 |
-| Vccaux    |       1.800 |     0.187 |       0.167 |      0.020 |
-| Vcco33    |       3.300 |     1.260 |       1.256 |      0.004 |
+| Vccint    |       1.000 |     0.327 |       0.291 |      0.036 |
+| Vccaux    |       1.800 |     0.189 |       0.169 |      0.020 |
+| Vcco33    |       3.300 |     1.308 |       1.304 |      0.004 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
-| Vcco18    |       1.800 |     0.030 |       0.026 |      0.004 |
+| Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |
 | Vcco15    |       1.500 |     0.000 |       0.000 |      0.000 |
 | Vcco135   |       1.350 |     0.000 |       0.000 |      0.000 |
 | Vcco12    |       1.200 |     0.000 |       0.000 |      0.000 |
@@ -134,7 +134,7 @@ Table of Contents
 +--------+-----------+
 | Name   | Power (W) |
 +--------+-----------+
-| lab4_1 |     4.804 |
+| lab4_1 |     4.896 |
 +--------+-----------+
 
 

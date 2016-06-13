@@ -1,8 +1,8 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------
-| Tool Version     : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date             : Sat Jun 11 23:05:14 2016
-| Host             : ajay running 64-bit Ubuntu 14.04.4 LTS
+| Tool Version     : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date             : Sun Jun 12 16:48:00 2016
+| Host             : 804-066 running 64-bit Service Pack 1  (build 7601)
 | Command          : 
 | Design           : lab4_1_2
 | Device           : xc7a100tcsg324-1
@@ -30,12 +30,12 @@ Table of Contents
 ----------
 
 +--------------------------+--------+
-| Total On-Chip Power (W)  | 12.992 |
-| Dynamic (W)              | 12.725 |
-| Device Static (W)        | 0.267  |
+| Total On-Chip Power (W)  | 12.384 |
+| Dynamic (W)              | 12.136 |
+| Device Static (W)        | 0.248  |
 | Effective TJA (C/W)      | 4.6    |
-| Max Ambient (C)          | 25.7   |
-| Junction Temperature (C) | 84.3   |
+| Max Ambient (C)          | 28.5   |
+| Junction Temperature (C) | 81.5   |
 | Confidence Level         | Low    |
 | Setting File             | ---    |
 | Simulation Activity File | ---    |
@@ -49,15 +49,15 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Slice Logic    |     0.062 |       16 |       --- |             --- |
-|   LUT as Logic |     0.051 |        3 |     63400 |           <0.01 |
+| Slice Logic    |     0.079 |       12 |       --- |             --- |
+|   LUT as Logic |     0.069 |        4 |     63400 |           <0.01 |
 |   BUFG         |     0.006 |        1 |        32 |            3.13 |
-|   Register     |     0.005 |        6 |    126800 |           <0.01 |
-|   Others       |     0.000 |        3 |       --- |             --- |
-| Signals        |     0.089 |        8 |       --- |             --- |
-| I/O            |    12.574 |        6 |       210 |            2.86 |
-| Static Power   |     0.267 |          |           |                 |
-| Total          |    12.992 |          |           |                 |
+|   Register     |     0.004 |        4 |    126800 |           <0.01 |
+|   Others       |     0.000 |        1 |       --- |             --- |
+| Signals        |     0.089 |       10 |       --- |             --- |
+| I/O            |    11.967 |        7 |       210 |            3.33 |
+| Static Power   |     0.248 |          |           |                 |
+| Total          |    12.384 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -67,16 +67,16 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.305 |       0.155 |      0.150 |
-| Vccaux    |       1.800 |     0.496 |       0.461 |      0.035 |
-| Vcco33    |       3.300 |     3.562 |       3.558 |      0.004 |
+| Vccint    |       1.000 |     0.312 |       0.177 |      0.135 |
+| Vccaux    |       1.800 |     0.472 |       0.438 |      0.034 |
+| Vcco33    |       3.300 |     3.389 |       3.385 |      0.004 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
 | Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |
 | Vcco15    |       1.500 |     0.000 |       0.000 |      0.000 |
 | Vcco135   |       1.350 |     0.000 |       0.000 |      0.000 |
 | Vcco12    |       1.200 |     0.000 |       0.000 |      0.000 |
 | Vccaux_io |       1.800 |     0.000 |       0.000 |      0.000 |
-| Vccbram   |       1.000 |     0.004 |       0.000 |      0.004 |
+| Vccbram   |       1.000 |     0.003 |       0.000 |      0.003 |
 | MGTAVcc   |       1.000 |     0.000 |       0.000 |      0.000 |
 | MGTAVtt   |       1.200 |     0.000 |       0.000 |      0.000 |
 | Vccadc    |       1.800 |     0.020 |       0.000 |      0.020 |
@@ -134,8 +134,8 @@ Table of Contents
 +----------+-----------+
 | Name     | Power (W) |
 +----------+-----------+
-| lab4_1_2 |    12.725 |
-|   cou1   |     0.118 |
+| lab4_1_2 |    12.136 |
+|   cou1   |     0.153 |
 +----------+-----------+
 
 

@@ -21,22 +21,22 @@
 
 
 module lab4_1_2(
-    input CP,
+    input CP,M,
     output wire Qd,Qc,Qb,Qa,
     output reg Z
     );
-    reg LD,CLR;
+    reg LD;
     wire Qcc;
-    fb_count cou1(CP,1,0,0,1,0,LD,CLR,Qd,Qc,Qb,Qa,Qcc);
+    fb_count cou1(CP,M,0,0,1,0,LD,1,Qd,Qc,Qb,Qa,Qcc);
     initial
     begin
-        LD = 0;CLR = 1;
-        #1 LD = 1;
+        LD = 0;
+        #2 LD = 1;
     end
-    always @(posedge CP)
+    always @(Qd or Qc or Qb or Qa)
     begin
-        CLR = ~(Qc & Qb & Qa);
-        Z = Qc & Qb & Qa;
+            LD = ~(Qd & (~Qc) & Qb & (~Qa));
+            Z = (~Qd) & (~Qc) & Qb & (~Qa);
     end
     
 endmodule

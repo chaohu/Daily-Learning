@@ -1,8 +1,8 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------
-| Tool Version      : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date              : Sat Jun 11 23:01:22 2016
-| Host              : ajay running 64-bit Ubuntu 14.04.4 LTS
+| Tool Version      : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date              : Sun Jun 12 15:12:28 2016
+| Host              : 804-066 running 64-bit Service Pack 1  (build 7601)
 | Command           : report_clock_utilization -file lab4_1_clock_utilization_routed.rpt
 | Design            : lab4_1
 | Device            : 7a100t-csg324
@@ -107,7 +107,7 @@ Table of Contents
 
 
 # Location of BUFG Primitives 
-set_property LOC BUFGCTRL_X0Y0 [get_cells CP_IBUF_BUFG_inst]
+set_property LOC BUFGCTRL_X0Y16 [get_cells CP_IBUF_BUFG_inst]
 
 # Location of IO Clock Primitives
 
@@ -124,37 +124,37 @@ set_property LOC BUFGCTRL_X0Y0 [get_cells CP_IBUF_BUFG_inst]
 # Location of IO Primitives which is load of clock spine
 
 # Location of clock ports
-set_property LOC IOB_X1Y58 [get_ports CP]
+set_property LOC IOB_X0Y122 [get_ports CP]
 
-# Clock net "CP_IBUF_BUFG" driven by instance "CP_IBUF_BUFG_inst" located at site "BUFGCTRL_X0Y0"
+# Clock net "CP_IBUF_BUFG" driven by instance "CP_IBUF_BUFG_inst" located at site "BUFGCTRL_X0Y16"
 #startgroup
 create_pblock {CLKAG_CP_IBUF_BUFG}
 add_cells_to_pblock [get_pblocks  {CLKAG_CP_IBUF_BUFG}] [get_cells -filter { PRIMITIVE_GROUP != I/O && IS_PRIMITIVE==1 && PRIMITIVE_LEVEL !=INTERNAL } -of_object [get_pins -filter {DIRECTION==IN} -of_objects [get_nets -hierarchical -filter {PARENT=="CP_IBUF_BUFG"}]]]
 resize_pblock [get_pblocks {CLKAG_CP_IBUF_BUFG}] -add {CLOCKREGION_X1Y1:CLOCKREGION_X1Y1}
 #endgroup
 
-# Clock net "count_reg[0]_LDC_i_1_n_0" driven by instance "count_reg[0]_LDC_i_1" located at site "SLICE_X86Y59"
+# Clock net "count_reg[0]_LDC_i_1_n_0" driven by instance "count_reg[0]_LDC_i_1" located at site "SLICE_X87Y58"
 #startgroup
 create_pblock {CLKAG_count_reg[0]_LDC_i_1_n_0}
 add_cells_to_pblock [get_pblocks  {CLKAG_count_reg[0]_LDC_i_1_n_0}] [get_cells -filter { PRIMITIVE_GROUP != I/O && IS_PRIMITIVE==1 && PRIMITIVE_LEVEL !=INTERNAL } -of_object [get_pins -filter {DIRECTION==IN} -of_objects [get_nets -hierarchical -filter {PARENT=="count_reg[0]_LDC_i_1_n_0"}]]]
 resize_pblock [get_pblocks {CLKAG_count_reg[0]_LDC_i_1_n_0}] -add {CLOCKREGION_X1Y1:CLOCKREGION_X1Y1}
 #endgroup
 
-# Clock net "count_reg[1]_LDC_i_1_n_0" driven by instance "count_reg[1]_LDC_i_1" located at site "SLICE_X86Y60"
+# Clock net "count_reg[1]_LDC_i_1_n_0" driven by instance "count_reg[1]_LDC_i_1" located at site "SLICE_X88Y59"
 #startgroup
 create_pblock {CLKAG_count_reg[1]_LDC_i_1_n_0}
 add_cells_to_pblock [get_pblocks  {CLKAG_count_reg[1]_LDC_i_1_n_0}] [get_cells -filter { PRIMITIVE_GROUP != I/O && IS_PRIMITIVE==1 && PRIMITIVE_LEVEL !=INTERNAL } -of_object [get_pins -filter {DIRECTION==IN} -of_objects [get_nets -hierarchical -filter {PARENT=="count_reg[1]_LDC_i_1_n_0"}]]]
 resize_pblock [get_pblocks {CLKAG_count_reg[1]_LDC_i_1_n_0}] -add {CLOCKREGION_X1Y1:CLOCKREGION_X1Y1}
 #endgroup
 
-# Clock net "count_reg[2]_LDC_i_1_n_0" driven by instance "count_reg[2]_LDC_i_1" located at site "SLICE_X88Y58"
+# Clock net "count_reg[2]_LDC_i_1_n_0" driven by instance "count_reg[2]_LDC_i_1" located at site "SLICE_X89Y57"
 #startgroup
 create_pblock {CLKAG_count_reg[2]_LDC_i_1_n_0}
 add_cells_to_pblock [get_pblocks  {CLKAG_count_reg[2]_LDC_i_1_n_0}] [get_cells -filter { PRIMITIVE_GROUP != I/O && IS_PRIMITIVE==1 && PRIMITIVE_LEVEL !=INTERNAL } -of_object [get_pins -filter {DIRECTION==IN} -of_objects [get_nets -hierarchical -filter {PARENT=="count_reg[2]_LDC_i_1_n_0"}]]]
 resize_pblock [get_pblocks {CLKAG_count_reg[2]_LDC_i_1_n_0}] -add {CLOCKREGION_X1Y1:CLOCKREGION_X1Y1}
 #endgroup
 
-# Clock net "count_reg[3]_LDC_i_1_n_0" driven by instance "count_reg[3]_LDC_i_1" located at site "SLICE_X89Y60"
+# Clock net "count_reg[3]_LDC_i_1_n_0" driven by instance "count_reg[3]_LDC_i_1" located at site "SLICE_X89Y59"
 #startgroup
 create_pblock {CLKAG_count_reg[3]_LDC_i_1_n_0}
 add_cells_to_pblock [get_pblocks  {CLKAG_count_reg[3]_LDC_i_1_n_0}] [get_cells -filter { PRIMITIVE_GROUP != I/O && IS_PRIMITIVE==1 && PRIMITIVE_LEVEL !=INTERNAL } -of_object [get_pins -filter {DIRECTION==IN} -of_objects [get_nets -hierarchical -filter {PARENT=="count_reg[3]_LDC_i_1_n_0"}]]]

@@ -1,8 +1,8 @@
 Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
-| Date         : Sat Jun 11 23:00:55 2016
-| Host         : ajay running 64-bit Ubuntu 14.04.4 LTS
+| Tool Version : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Sun Jun 12 15:12:00 2016
+| Host         : 804-066 running 64-bit Service Pack 1  (build 7601)
 | Command      : report_utilization -file lab4_1_utilization_placed.rpt -pb lab4_1_utilization_placed.pb
 | Design       : lab4_1
 | Device       : xc7a100t
@@ -67,9 +67,9 @@ Table of Contents
 +-------------------------------------------------------------+-----------+-------+-----------+-------+
 |                          Site Type                          |    Used   | Fixed | Available | Util% |
 +-------------------------------------------------------------+-----------+-------+-----------+-------+
-| Slice                                                       |        21 |     0 |     15850 |  0.13 |
+| Slice                                                       |        22 |     0 |     15850 |  0.14 |
 |   SLICEL                                                    |        14 |     0 |           |       |
-|   SLICEM                                                    |         7 |     0 |           |       |
+|   SLICEM                                                    |         8 |     0 |           |       |
 | LUT as Logic                                                |        19 |     0 |     63400 |  0.03 |
 |   using O5 output only                                      |         0 |       |           |       |
 |   using O6 output only                                      |        13 |       |           |       |
@@ -115,8 +115,8 @@ Table of Contents
 +-----------------------------+------+-------+-----------+-------+
 |          Site Type          | Used | Fixed | Available | Util% |
 +-----------------------------+------+-------+-----------+-------+
-| Bonded IOB                  |   13 |    12 |       210 |  6.19 |
-|   IOB Master Pads           |    6 |       |           |       |
+| Bonded IOB                  |   13 |    13 |       210 |  6.19 |
+|   IOB Master Pads           |    7 |       |           |       |
 |   IOB Slave Pads            |    5 |       |           |       |
 | Bonded IPADs                |    0 |     0 |         2 |  0.00 |
 | PHY_CONTROL                 |    0 |     0 |         6 |  0.00 |

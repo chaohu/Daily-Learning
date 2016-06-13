@@ -23,9 +23,14 @@
 module lab4_1_2_tb(
 
     );
-    reg CP;
+    reg CP,M;
     wire Qd,Qc,Qb,Qa,Z;
-    lab4_1_2 dut(CP,Qd,Qc,Qb,Qa,Z);
+    lab4_1_2 dut(CP,M,Qd,Qc,Qb,Qa,Z);
+    initial
+    begin
+        M = 1;
+        #200 M = 0;
+    end
     initial
     begin
         for(CP = 0;CP >= 0;CP = CP + 1)

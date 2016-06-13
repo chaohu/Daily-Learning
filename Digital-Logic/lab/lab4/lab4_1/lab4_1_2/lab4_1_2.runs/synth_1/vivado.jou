@@ -2,9 +2,9 @@
 # Vivado v2015.2 (64-bit)
 # SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
 # IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
-# Start of session at: Sat Jun 11 23:03:51 2016
-# Process ID: 8375
-# Log file: /home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.runs/synth_1/lab4_1_2.vds
-# Journal file: /home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.runs/synth_1/vivado.jou
+# Start of session at: Sun Jun 12 16:46:45 2016
+# Process ID: 3920
+# Log file: C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_2/lab4_1_2.runs/synth_1/lab4_1_2.vds
+# Journal file: C:/Users/Administrator/Desktop/huchao/lab4/lab4_1/lab4_1_2/lab4_1_2.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
 source lab4_1_2.tcl -notrace

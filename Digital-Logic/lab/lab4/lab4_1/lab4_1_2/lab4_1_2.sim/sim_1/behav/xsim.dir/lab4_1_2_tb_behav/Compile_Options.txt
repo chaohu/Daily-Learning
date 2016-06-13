@@ -1,1 +1,1 @@
--wto "10a65e65e26543238c5f66cfe7499c49" --debug "typical" --relax --mt "8" -L "xil_defaultlib" -L "unisims_ver" -L "unimacro_ver" -L "secureip" --snapshot "lab4_1_2_tb_behav" "xil_defaultlib.lab4_1_2_tb" "xil_defaultlib.glbl" -log "elaborate.log" 
+-wto "10a65e65e26543238c5f66cfe7499c49" --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "unisims_ver" -L "unimacro_ver" -L "secureip" --snapshot "lab4_1_2_tb_behav" "xil_defaultlib.lab4_1_2_tb" "xil_defaultlib.glbl" -log "elaborate.log" 

@@ -1,8 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.srcs/sources_1/new/fb_count.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module fb_count
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.srcs/sources_1/new/lab4_1_2.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module lab4_1_2
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.srcs/sim_1/new/lab4_1_2_tb.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module lab4_1_2_tb
-INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/lab4/lab4_1/lab4_1_2/lab4_1_2.sim/sim_1/behav/glbl.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module glbl
