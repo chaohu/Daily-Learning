@@ -24,8 +24,9 @@ module lab5_3_1_tb(
 
     );
     reg ain,reset,clk;
-    wire yout;
-    lab5_3_1 dut(ain,reset,clk,yout);
+    wire [2:0] yout;
+    wire [2:0] state,nextstate;
+    lab5_3_1 dut(ain,reset,clk,yout,state,nextstate);
     initial
     begin
         for(clk = 0;clk >= 0;clk = clk + 1)
@@ -36,8 +37,8 @@ module lab5_3_1_tb(
     initial
     begin
         ain = 0;reset = 1;
-        #5 reset = 0; 
-        #10 ain = 1;
+        #2 reset = 0; 
+        #15 ain = 1;
         #10 ain = 0;
         #10 ain = 1;
         #10 ain = 0;
