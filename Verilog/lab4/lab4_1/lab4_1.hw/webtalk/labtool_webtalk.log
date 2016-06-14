@@ -5,8 +5,5 @@
     ** Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 
 source /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/labtool_webtalk.tcl -notrace
-
-    while executing
-"webtalk_transmit -clientid 1276077960 -regid "" -xml /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/usage_statistics_ext_labtool.xm..."
-    (file "/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/labtool_webtalk.tcl" line 26)
-INFO: [Common 17-206] Exiting Webtalk at Mon Jun 13 19:47:26 2016...
+INFO: [Common 17-186] '/home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/usage_statistics_ext_labtool.xml' has been successfully sent to Xilinx on Tue Jun 14 22:08:32 2016. For additional details about this file, please refer to the WebTalk help file at /home/huchao/vivado/Vivado/2015.2/doc/webtalk_introduction.html.
+INFO: [Common 17-206] Exiting Webtalk at Tue Jun 14 22:08:32 2016...

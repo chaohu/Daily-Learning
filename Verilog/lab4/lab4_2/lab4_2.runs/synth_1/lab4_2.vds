@@ -2,8 +2,8 @@
 # Vivado v2015.2 (64-bit)
 # SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
 # IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
-# Start of session at: Tue Jun 14 17:35:57 2016
-# Process ID: 7198
+# Start of session at: Tue Jun 14 22:09:00 2016
+# Process ID: 20782
 # Log file: /home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.runs/synth_1/lab4_2.vds
 # Journal file: /home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.runs/synth_1/vivado.jou
 #-----------------------------------------------------------
@@ -13,12 +13,248 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
 INFO: [Common 17-1223] The version limit for your license is '2016.05' and will expire in -14 days. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for any updates or new releases.
-ERROR: [Synth 8-2576] procedural assignment to a non-register Z is not permitted [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/multiplexer.v:32]
-ERROR: [Synth 8-2576] procedural assignment to a non-register Z is not permitted [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/multiplexer.v:34]
-INFO: [Synth 8-2350] module multiplexer ignored due to previous errors [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/multiplexer.v:23]
-Failed to read verilog '/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/multiplexer.v'
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 937.312 ; gain = 154.520 ; free physical = 143 ; free virtual = 14098
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'lab4_2' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/lab4_2.v:23]
+	Parameter width bound to: 8 - type: integer 
+INFO: [Synth 8-638] synthesizing module 'e_fulladder' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/e_fulladder.v:23]
+	Parameter width bound to: 8 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'e_fulladder' (1#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/e_fulladder.v:23]
+INFO: [Synth 8-638] synthesizing module 'multiplexer' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/multiplexer.v:23]
+	Parameter width bound to: 8 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'multiplexer' (2#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/multiplexer.v:23]
+INFO: [Synth 8-638] synthesizing module 'register' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/register.v:23]
+	Parameter width bound to: 8 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'register' (3#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/register.v:23]
+INFO: [Synth 8-638] synthesizing module 'memory' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/memory.v:23]
+	Parameter width bound to: 8 - type: integer 
+INFO: [Synth 8-3876] $readmem data file 'mem_data.txt' is read successfully [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/memory.v:30]
+INFO: [Synth 8-256] done synthesizing module 'memory' (4#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/memory.v:23]
+INFO: [Synth 8-638] synthesizing module 'comparator' [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/comparator.v:23]
+	Parameter width bound to: 8 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'comparator' (5#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/comparator.v:23]
+INFO: [Synth 8-256] done synthesizing module 'lab4_2' (6#1) [/home/huchao/Daily-Learning/Verilog/lab4/lab4_2/lab4_2.srcs/sources_1/new/lab4_2.v:23]
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 973.602 ; gain = 190.809 ; free physical = 142 ; free virtual = 14059
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 973.602 ; gain = 190.809 ; free physical = 142 ; free virtual = 14059
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a100tcsg324-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 981.602 ; gain = 198.809 ; free physical = 142 ; free virtual = 14059
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
+INFO: [Synth 8-5544] ROM "MEM" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5546] ROM "Z" won't be mapped to RAM because it is too sparse
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 997.617 ; gain = 214.824 ; free physical = 126 ; free virtual = 14043
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      8 Bit       Adders := 2     
++---Registers : 
+	                8 Bit    Registers := 2     
++---Muxes : 
+	   2 Input      8 Bit        Muxes := 3     
+	  12 Input      8 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module e_fulladder 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      8 Bit       Adders := 1     
+Module multiplexer 
+Detailed RTL Component Info : 
++---Muxes : 
+	   2 Input      8 Bit        Muxes := 1     
+Module register 
+Detailed RTL Component Info : 
++---Registers : 
+	                8 Bit    Registers := 1     
+Module memory 
+Detailed RTL Component Info : 
++---Muxes : 
+	  12 Input      8 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 240 (col length:80)
+BRAMs: 270 (col length: RAMB18 80 RAMB36 40)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+Start Parallel Synthesis Optimization  : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1087.621 ; gain = 304.828 ; free physical = 117 ; free virtual = 13961
+---------------------------------------------------------------------------------
+Start Cross Boundary Optimization
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5546] ROM "co1/Z" won't be mapped to RAM because it is too sparse
+WARNING: [Synth 8-3331] design lab4_2 has unconnected port SUM_SEL
+WARNING: [Synth 8-3331] design lab4_2 has unconnected port LD_SUM
+---------------------------------------------------------------------------------
+Finished Cross Boundary Optimization : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13959
+---------------------------------------------------------------------------------
+Finished Parallel Reinference  : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13959
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+No constraint files found.
+WARNING: [Synth 8-3332] Sequential element (\re2/Z_reg[6] ) is unused and will be removed from module lab4_2.
+WARNING: [Synth 8-3332] Sequential element (\re2/Z_reg[5] ) is unused and will be removed from module lab4_2.
+WARNING: [Synth 8-3332] Sequential element (\re2/Z_reg[4] ) is unused and will be removed from module lab4_2.
+WARNING: [Synth 8-3332] Sequential element (\re2/Z_reg[3] ) is unused and will be removed from module lab4_2.
+WARNING: [Synth 8-3332] Sequential element (\re2/Z_reg[2] ) is unused and will be removed from module lab4_2.
+WARNING: [Synth 8-3332] Sequential element (\re2/Z_reg[1] ) is unused and will be removed from module lab4_2.
+WARNING: [Synth 8-3332] Sequential element (\re2/Z_reg[0] ) is unused and will be removed from module lab4_2.
+---------------------------------------------------------------------------------
+Start Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Area Optimization : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13959
+---------------------------------------------------------------------------------
+Finished Parallel Area Optimization  : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13959
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+Finished Parallel Synthesis Optimization  : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13959
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13959
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13959
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13958
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13958
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13958
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13958
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13958
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-----+------+
+|      |Cell |Count |
++------+-----+------+
+|1     |IBUF |     1|
+|2     |OBUF |     8|
++------+-----+------+
+
+Report Instance Areas: 
++------+---------+-------+------+
+|      |Instance |Module |Cells |
++------+---------+-------+------+
+|1     |top      |       |     9|
++------+---------+-------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13958
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 9 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1088.629 ; gain = 189.316 ; free physical = 120 ; free virtual = 13958
+Synthesis Optimization Complete : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1088.629 ; gain = 305.836 ; free physical = 120 ; free virtual = 13958
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 1 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
 INFO: [Common 17-83] Releasing license: Synthesis
-4 Infos, 0 Warnings, 0 Critical Warnings and 3 Errors encountered.
-synth_design failed
-ERROR: [Common 17-69] Command failed: Vivado Synthesis failed
-INFO: [Common 17-206] Exiting Vivado at Tue Jun 14 17:36:07 2016...
+26 Infos, 9 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1161.629 ; gain = 270.316 ; free physical = 142 ; free virtual = 13884
+report_utilization: Time (s): cpu = 00:00:00.09 ; elapsed = 00:00:00.14 . Memory (MB): peak = 1193.648 ; gain = 0.000 ; free physical = 152 ; free virtual = 13883
+INFO: [Common 17-206] Exiting Vivado at Tue Jun 14 22:09:19 2016...
