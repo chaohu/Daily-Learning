@@ -1,6 +1,6 @@
 webtalk_init -webtalk_dir /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/
 webtalk_register_client -client project
-webtalk_add_data -client project -key date_generated -value "Mon Jun 13 20:07:38 2016" -context "software_version_and_target_device"
+webtalk_add_data -client project -key date_generated -value "Mon Jun 13 21:42:26 2016" -context "software_version_and_target_device"
 webtalk_add_data -client project -key product_version -value "Vivado v2015.2 (64-bit)" -context "software_version_and_target_device"
 webtalk_add_data -client project -key build_version -value "1266856" -context "software_version_and_target_device"
 webtalk_add_data -client project -key os_platform -value "LIN64" -context "software_version_and_target_device"
@@ -14,14 +14,14 @@ webtalk_add_data -client project -key target_package -value "not_applicable" -co
 webtalk_add_data -client project -key target_speed -value "not_applicable" -context "software_version_and_target_device"
 webtalk_add_data -client project -key random_id -value "d05b0311-f476-4ec1-a5f2-e20e72ef52ab" -context "software_version_and_target_device"
 webtalk_add_data -client project -key project_id -value "3c6fe38a-17cb-4340-a758-816155b46795" -context "software_version_and_target_device"
-webtalk_add_data -client project -key project_iteration -value "3" -context "software_version_and_target_device"
+webtalk_add_data -client project -key project_iteration -value "4" -context "software_version_and_target_device"
 webtalk_add_data -client project -key os_name -value "Ubuntu" -context "user_environment"
 webtalk_add_data -client project -key os_release -value "Ubuntu 14.04.4 LTS" -context "user_environment"
 webtalk_add_data -client project -key cpu_name -value "Intel(R) Core(TM) i5-4210U CPU @ 1.70GHz" -context "user_environment"
-webtalk_add_data -client project -key cpu_speed -value "2425.875 MHz" -context "user_environment"
+webtalk_add_data -client project -key cpu_speed -value "2410.125 MHz" -context "user_environment"
 webtalk_add_data -client project -key total_processors -value "1" -context "user_environment"
 webtalk_add_data -client project -key system_ram -value "8.000 GB" -context "user_environment"
 webtalk_register_client -client labtool
 webtalk_add_data -client labtool -key pgmcnt -value "00:00:00" -context "labtool\\usage"
-webtalk_transmit -clientid 300679436 -regid "" -xml /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/usage_statistics_ext_labtool.xml -html /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/usage_statistics_ext_labtool.html -wdm /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/usage_statistics_ext_labtool.wdm -intro "<H3>LABTOOL Usage Report</H3><BR>"
+webtalk_transmit -clientid 3535973825 -regid "" -xml /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/usage_statistics_ext_labtool.xml -html /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/usage_statistics_ext_labtool.html -wdm /home/huchao/Daily-Learning/Verilog/lab4/lab4_1/lab4_1.hw/webtalk/usage_statistics_ext_labtool.wdm -intro "<H3>LABTOOL Usage Report</H3><BR>"
 webtalk_terminate
