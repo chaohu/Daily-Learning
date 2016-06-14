@@ -21,10 +21,11 @@
 
 
 module memory(
-    input [7:0] A,
-    output [7:0] Z
+    input [width-1:0] A,
+    output [width-1:0] Z
     );
-    reg [7:0] MEM [255:0];    // defining 255x7 ROM
+    parameter width = 8;
+    reg [width-1:0] MEM [2**width:0];    // defining 255x7 ROM
     assign Z = MEM [A];        // reading ROM content at the address ROM_addr
-    initial $readmemb  ("mem_data.txt", MEM, 0, 7);
+    initial $readmemb  ("mem_data.txt", MEM, 0, width-1);
 endmodule

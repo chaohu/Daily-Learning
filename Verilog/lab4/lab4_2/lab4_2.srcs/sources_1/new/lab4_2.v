@@ -22,21 +22,22 @@
 
 module lab4_2(
     input SUM_SEL,NEXT_SEL,A_SEL,LD_SUM,LD_NEXT,
-    output wire [7:0] NEXT_ZERO
+    output wire [width-1:0] NEXT_ZERO
     );
-    wire [7:0] SUO,NEO,SE1O,SE2O,SE3O,MEMO,ADD1O,ADD2O;
-    e_fulladder 
+    parameter width = 8;
+    wire [width-1:0] SUO,NEO,SE1O,SE2O,SE3O,MEMO,ADD1O,ADD2O;
+    e_fulladder #(width) 
         add1(SUO,MEMO,ADD1O),
         add2(1,NEO,ADD2O);
-    multiplexer
+    multiplexer #(width) 
         mu1(ADD1O,0,SUM_SEL,SE1O),
         mu2(MEMO,0,NEXT_SEL,SE2O),
         mu3(NEO,ADD2O,A_SEL,SE3O);
-    register
+    register #(width) 
         re1(SE1O,LD_SUM,SUO),
         re2(SE2O,LD_NEXT,NEO);
-    memory
+    memory #(width) 
         me1(SE3O,MEMO);
-    comparator
+    comparator #(width) 
         co1(SE2O,NEXT_ZERO);
 endmodule

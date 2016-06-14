@@ -5,7 +5,7 @@
 // 
 // Create Date: 2016/06/06 20:01:31
 // Design Name: 
-// Module Name: lab4_1_1
+// Module Name: lab4_1
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module lab4_1_1(
+module lab4_1(
     input S0,S1,S2,S3,Clk
     );
     parameter width = 8;

@@ -21,10 +21,11 @@
 
 
 module register(
-    input [7:0] A,
+    input [width-1:0] A,
     input Clk,
-    output reg [7:0] Z
+    output reg [width-1:0] Z
     );
+    parameter width = 8;
     always @(posedge Clk)
     begin
        Z <= A;
