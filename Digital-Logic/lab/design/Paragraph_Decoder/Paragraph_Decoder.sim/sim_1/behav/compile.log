@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/design/Paragraph_Decoder/Paragraph_Decoder.srcs/sources_1/new/Paragraph_Decoder.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Paragraph_Decoder
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/design/Paragraph_Decoder/Paragraph_Decoder.srcs/sim_1/new/Paragraph_Decoder_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Paragraph_Decoder_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Digital-Logic/lab/design/Paragraph_Decoder/Paragraph_Decoder.sim/sim_1/behav/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

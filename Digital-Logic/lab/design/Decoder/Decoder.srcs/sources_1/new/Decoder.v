@@ -29,5 +29,5 @@ module Decoder(
     );
     wire F;
     Paragraph_Decoder PD1(A[7],A[6],A[5],A[4],DIP,F);
-    Chip_Decoder CD1(A9,A8,F,A3,A2,AEN,IORbar,IOWbar,CSbar,Ebar,DIR);
+    Chip_Decoder CD1(A[9],A[8],F,A[3],A[2],AEN,IORbar,IOWbar,CSbar,Ebar,DIR);
 endmodule
