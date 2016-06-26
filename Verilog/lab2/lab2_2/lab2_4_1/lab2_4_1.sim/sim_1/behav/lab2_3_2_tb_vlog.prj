@@ -1,4 +1,6 @@
 # compile verilog/system verilog design source files
+verilog xil_defaultlib  "../../../lab2_4_1.srcs/sources_1/new/CLA.v"
+verilog xil_defaultlib  "../../../lab2_4_1.srcs/sources_1/new/fulladder_dataflow.v"
 verilog xil_defaultlib  "../../../lab2_4_1.srcs/sources_1/new/lab2_4_1.v"
 verilog xil_defaultlib  "../../../lab2_4_1.srcs/sim_1/new/lab2_4_2_tb.v"
 

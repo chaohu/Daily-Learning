@@ -3,7 +3,6 @@ Copyright 1986-1999, 2001-2015 Xilinx, Inc. All Rights Reserved.
 Running: /home/huchao/vivado/Vivado/2015.2/bin/unwrapped/lnx64.o/xelab -wto 24956da0f9b04ed7b2c0c41685f06a90 --debug typical --relax --mt 8 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot lab2_1_1_tb_behav xil_defaultlib.lab2_1_1_tb xil_defaultlib.glbl -log elaborate.log 
 Using 8 slave threads.
 Starting static elaboration
-WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 4 for port an [/home/huchao/Daily-Learning/Verilog/lab2/lab2_2/lab2_1_1/lab2_1_1.srcs/sources_1/new/lab2_1_1.v:29]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis

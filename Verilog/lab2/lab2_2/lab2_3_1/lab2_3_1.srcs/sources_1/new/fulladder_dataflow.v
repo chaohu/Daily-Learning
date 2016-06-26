@@ -26,6 +26,6 @@ module fulladder_dataflow(
     );
     
     assign #1 s = a ^ b ^ cin;
-    assign #1 cout = (a&b)|(a&cin)|(b&cin);
+    assign #1 cout = ((a ^ b) & cin) | (a & b);
     
 endmodule

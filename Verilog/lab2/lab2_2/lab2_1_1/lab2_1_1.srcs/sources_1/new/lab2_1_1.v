@@ -24,7 +24,7 @@ module lab2_1_1(
     input [3:0] num,
     output [6:0] seg
     );
-    wire an;
+    wire [3:0] an;
     
     bcdto7segment_dataflow dut(num,an,seg);
     

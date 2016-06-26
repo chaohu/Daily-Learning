@@ -31,8 +31,7 @@ module add_two_values_task(
         output cout;
         reg [4:0] k;
         begin
-            k = x + y;
-            {cout,z} = k;
+            {cout,z} = x + y;
         end
     endtask
     always

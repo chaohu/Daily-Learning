@@ -25,7 +25,7 @@ module fulladder_dataflow(
     output wire s,cout
     );
     
-    assign #1 s = a ^ b ^ cin;
-    assign #1 cout = (a&b)|(a&cin)|(b&cin);
+    assign #2 s = a ^ b ^ cin;
+    assign #2 cout = (a&b)|(a&cin)|(b&cin);
     
 endmodule

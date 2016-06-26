@@ -12,9 +12,9 @@ var WshShell = new ActiveXObject( "WScript.Shell" );
 var ProcEnv = WshShell.Environment( "Process" );
 var PathVal = ProcEnv("PATH");
 if ( PathVal.length == 0 ) {
-  PathVal = "/home/huchao/vivado/Vivado/2015.2/ids_lite/ISE/bin/lin64;/home/huchao/vivado/Vivado/2015.2/ids_lite/ISE/lib/lin64;/home/huchao/vivado/Vivado/2015.2/bin;";
+  PathVal = "/home/huchao/vivado/SDK/2015.2/bin:/home/huchao/vivado/Vivado/2015.2/ids_lite/ISE/bin/lin64;/home/huchao/vivado/Vivado/2015.2/ids_lite/ISE/lib/lin64;/home/huchao/vivado/Vivado/2015.2/bin;";
 } else {
-  PathVal = "/home/huchao/vivado/Vivado/2015.2/ids_lite/ISE/bin/lin64;/home/huchao/vivado/Vivado/2015.2/ids_lite/ISE/lib/lin64;/home/huchao/vivado/Vivado/2015.2/bin;" + PathVal;
+  PathVal = "/home/huchao/vivado/SDK/2015.2/bin:/home/huchao/vivado/Vivado/2015.2/ids_lite/ISE/bin/lin64;/home/huchao/vivado/Vivado/2015.2/ids_lite/ISE/lib/lin64;/home/huchao/vivado/Vivado/2015.2/bin;" + PathVal;
 }
 
 ProcEnv("PATH") = PathVal;
@@ -27,7 +27,7 @@ eval( EAInclude(ISEJScriptLib) );
 
 
 ISEStep( "vivado",
-         "-log lab1_3_1.vds -m64 -mode batch -messageDb vivado.pb -notrace -source lab1_3_1.tcl" );
+         "-log lab1_3_2.vds -m64 -mode batch -messageDb vivado.pb -notrace -source lab1_3_2.tcl" );
 
 
 

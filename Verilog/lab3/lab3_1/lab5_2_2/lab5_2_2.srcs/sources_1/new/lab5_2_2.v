@@ -28,17 +28,15 @@ module lab5_2_2(Clock,D,Qa,Qb,Qc);
     always @ (Clock or D)
     if(Clock)
     begin
-        Qa <= D & Clock;
+        Qa <= D;
     end
     
     always @ (posedge Clock)
-    if(Clock)
     begin
         Qb <= D;
     end
     
     always @ (negedge Clock)
-    if( ~Clock)
     begin
         Qc <= D;
     end

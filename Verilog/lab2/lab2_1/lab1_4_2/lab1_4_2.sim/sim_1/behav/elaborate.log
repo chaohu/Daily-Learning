@@ -10,4 +10,5 @@ Time Resolution for simulation is 1ps
 Compiling module xil_defaultlib.bcdto7segment_dataflow
 Compiling module xil_defaultlib.lab1_4_2_tb
 Compiling module xil_defaultlib.glbl
+Waiting for 1 sub-compilation(s) to finish...
 Built simulation snapshot lab1_4_2_tb_behav

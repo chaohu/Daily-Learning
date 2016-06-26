@@ -34,7 +34,7 @@ module lab2_2_2_tb(
     initial
     begin
       x = 0;
-    for(k=0; k < 16; k=k+1)
+    for(k=0; k < 10; k=k+1)
         #10 x = k;
     #30;
     end

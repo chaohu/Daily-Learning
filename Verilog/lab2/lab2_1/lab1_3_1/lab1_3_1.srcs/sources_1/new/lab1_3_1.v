@@ -24,8 +24,8 @@ module lab1_3_1(x,y,s,m);
     input x,y,s;
     output reg m;
     
-    always
-        @( x or y or s) begin
-            m = #3 (~s & x) | (s & y);
-         end
+    always @( x or y or s) 
+    begin
+        m = #3 (~s & x) | (s & y);
+    end
 endmodule

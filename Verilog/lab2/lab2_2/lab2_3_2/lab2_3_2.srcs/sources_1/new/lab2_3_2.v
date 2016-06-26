@@ -29,7 +29,7 @@ module lab2_3_2(
     wire [1:0] carr;
     wire [2:0] cin;
     wire [3:0] s1,s2;
-    assign #1 cin[0] = 0;
+    assign cin[0] = 0;
     
     fulladder_dataflow dut1(x[0],y[0],cin[0],s1[0],carr[0]);
     fulladder_dataflow dut2(x[1],y[1],carr[0],s1[1],cin[1]);

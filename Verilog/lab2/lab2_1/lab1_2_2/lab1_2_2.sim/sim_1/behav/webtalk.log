@@ -2,14 +2,11 @@
 # Webtalk v2015.2 (64-bit)
 # SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
 # IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
-# Start of session at: Tue May 24 12:51:00 2016
-# Process ID: 13681
+# Start of session at: Thu Jun 23 22:34:58 2016
+# Process ID: 3783
 # Log file: /home/huchao/Daily-Learning/Verilog/lab2/lab2_1/lab1_2_2/lab1_2_2.sim/sim_1/behav/webtalk.log
 # Journal file: /home/huchao/Daily-Learning/Verilog/lab2/lab2_1/lab1_2_2/lab1_2_2.sim/sim_1/behav/webtalk.jou
 #-----------------------------------------------------------
 source /home/huchao/Daily-Learning/Verilog/lab2/lab2_1/lab1_2_2/lab1_2_2.sim/sim_1/behav/xsim.dir/lab1_2_2_tb_behav/webtalk/xsim_webtalk.tcl -notrace
-
-    while executing
-"webtalk_transmit -clientid 2395338143 -regid "" -xml /home/huchao/Daily-Learning/Verilog/lab2/lab2_1/lab1_2_2/lab1_2_2.sim/sim_1/behav/xsim.dir/lab1_2..."
-    (file "/home/huchao/Daily-Learning/Verilog/lab2/lab2_1/lab1_2_2/lab1_2_2.sim/sim_1/behav/xsim.dir/lab1_2_2_tb_behav/webtalk/xsim_webtalk.tcl" line 32)
-INFO: [Common 17-206] Exiting Webtalk at Tue May 24 12:51:00 2016...
+INFO: [Common 17-186] '/home/huchao/Daily-Learning/Verilog/lab2/lab2_1/lab1_2_2/lab1_2_2.sim/sim_1/behav/xsim.dir/lab1_2_2_tb_behav/webtalk/usage_statistics_ext_xsim.xml' has been successfully sent to Xilinx on Thu Jun 23 22:35:00 2016. For additional details about this file, please refer to the WebTalk help file at /home/huchao/vivado/Vivado/2015.2/doc/webtalk_introduction.html.
+INFO: [Common 17-206] Exiting Webtalk at Thu Jun 23 22:35:00 2016...

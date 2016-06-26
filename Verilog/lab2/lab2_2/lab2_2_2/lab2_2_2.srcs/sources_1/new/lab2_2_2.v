@@ -24,15 +24,10 @@ module lab2_2_2(
     input [3:0] x,
     output wire [4:0] y
     );
-    wire z;
-    wire [3:0] m;
-    
-    lab2_2_1_partA par(x,z,m);
-    
-    assign #1 y[4] = z;
-    assign #1 y[3] = m[3];
-    assign #1 y[2] = m[2];
-    assign #1 y[1] = m[1];
-    assign #1 y[0] = m[0];
+    assign y[0] = ((~x[3])&(~x[2])&(~x[1]))|((~x[2])&x[1]&x[0])|(x[2]&x[1]&(~x[0]));
+    assign y[1] = ((~x[3])&(~x[2])&(~x[0]))|(x[2]&(~x[1])&(~x[0]))|(x[2]&x[1]&x[0]);
+    assign y[2] = (x[3]&(~x[1])&(~x[0]))|((~x[3])&(~x[1])&x[0])|((~x[2])&x[1]&(~x[0]));
+    assign y[3] = (x[2]&(~x[1]))|(x[3]&x[0])|((~x[2])&x[1]&x[0]);
+    assign y[4] = x[3]|(x[2]&x[1]);
     
 endmodule

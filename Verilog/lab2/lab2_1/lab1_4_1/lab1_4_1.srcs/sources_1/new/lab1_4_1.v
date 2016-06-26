@@ -20,12 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module lab1_4_1(u,y,w,s0,s1,m);
-    input u,y,w,s0,s1;
+module lab1_4_1(u,v,w,s0,s1,m);
+    input u,v,w,s0,s1;
     output wire m;
     wire med;
     
-    lab1_1_1 dut1(.x(u),.y(y),.s(s0),.m(med));
+    lab1_1_1 dut1(.x(u),.y(v),.s(s0),.m(med));
     lab1_1_1 dut2(.x(med),.y(w),.s(s1),.m(m));
     
 endmodule

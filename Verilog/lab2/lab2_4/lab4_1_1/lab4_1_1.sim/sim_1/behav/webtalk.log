@@ -2,11 +2,15 @@
 # Webtalk v2015.2 (64-bit)
 # SW Build 1266856 on Fri Jun 26 16:35:25 MDT 2015
 # IP Build 1264090 on Wed Jun 24 14:22:01 MDT 2015
-# Start of session at: Thu May 26 17:45:07 2016
-# Process ID: 11346
+# Start of session at: Fri Jun 24 10:08:58 2016
+# Process ID: 6378
 # Log file: /home/huchao/Daily-Learning/Verilog/lab2/lab2_4/lab4_1_1/lab4_1_1.sim/sim_1/behav/webtalk.log
 # Journal file: /home/huchao/Daily-Learning/Verilog/lab2/lab2_4/lab4_1_1/lab4_1_1.sim/sim_1/behav/webtalk.jou
 #-----------------------------------------------------------
 source /home/huchao/Daily-Learning/Verilog/lab2/lab2_4/lab4_1_1/lab4_1_1.sim/sim_1/behav/xsim.dir/add_two_values_task_tb_behav/webtalk/xsim_webtalk.tcl -notrace
-INFO: [Common 17-186] '/home/huchao/Daily-Learning/Verilog/lab2/lab2_4/lab4_1_1/lab4_1_1.sim/sim_1/behav/xsim.dir/add_two_values_task_tb_behav/webtalk/usage_statistics_ext_xsim.xml' has been successfully sent to Xilinx on Thu May 26 17:45:11 2016. For additional details about this file, please refer to the WebTalk help file at /home/huchao/vivado/Vivado/2015.2/doc/webtalk_introduction.html.
-INFO: [Common 17-206] Exiting Webtalk at Thu May 26 17:45:11 2016...
+webtalk_transmit: Time (s): cpu = 00:00:00.11 ; elapsed = 00:00:05 . Memory (MB): peak = 222.867 ; gain = 0.004 ; free physical = 5145 ; free virtual = 14668
+
+    while executing
+"webtalk_transmit -clientid 2141575509 -regid "" -xml /home/huchao/Daily-Learning/Verilog/lab2/lab2_4/lab4_1_1/lab4_1_1.sim/sim_1/behav/xsim.dir/add_tw..."
+    (file "/home/huchao/Daily-Learning/Verilog/lab2/lab2_4/lab4_1_1/lab4_1_1.sim/sim_1/behav/xsim.dir/add_two_values_task_tb_behav/webtalk/xsim_webtalk.tcl" line 32)
+INFO: [Common 17-206] Exiting Webtalk at Fri Jun 24 10:09:03 2016...

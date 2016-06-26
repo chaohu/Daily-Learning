@@ -121,8 +121,8 @@ function [f,a]=mycal(y,T,N)
 %=================================
 syms t k;
 A0=int(y,t,-T/2,T/2)/T;
-Ak=int(y*exp(-2*i*pi*k*t/T),t,-T/2,T/2)/T;
-fk=symmul(Ak,sym(exp(2*i*k*pi*t/T)));
+Ak=int(y*exp(-2*1i*pi*k*t/T),t,-T/2,T/2)/T;
+fk=symmul(Ak,sym(exp(2*1i*k*pi*t/T)));                         
 for m=-N:-1
    a(m+N+1)=numeric(subs(Ak,k,m));
 end

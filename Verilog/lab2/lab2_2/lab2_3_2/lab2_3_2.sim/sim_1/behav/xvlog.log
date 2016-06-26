@@ -2,6 +2,7 @@ INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog
 INFO: [VRFC 10-311] analyzing module comparator_dataflow
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab2/lab2_2/lab2_3_2/lab2_3_2.srcs/sources_1/new/fulladder_dataflow.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module fulladder_dataflow
+WARNING: [VRFC 10-2292] extra semicolon is not allowed here in this dialect. Use SystemVerilog mode [/home/huchao/Daily-Learning/Verilog/lab2/lab2_2/lab2_3_2/lab2_3_2.srcs/sources_1/new/fulladder_dataflow.v:29]
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab2/lab2_2/lab2_3_2/lab2_3_2.srcs/sources_1/new/bcdto7segment_dataflow.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module bcdto7segment_dataflow
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/huchao/Daily-Learning/Verilog/lab2/lab2_2/lab2_3_2/lab2_3_2.srcs/sources_1/new/lab2_3_2.v" into library xil_defaultlib

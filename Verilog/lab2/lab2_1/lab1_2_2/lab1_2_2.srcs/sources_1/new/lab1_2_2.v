@@ -26,6 +26,5 @@ module lab1_2_2(x,y,s,m);
     input s;
     output [1:0] m;
     
-    assign #3 m[0] = (~s & x[0]) | (s & y[0]);
-    assign #3 m[1] = (~s & x[1]) | (s & y[1]);
+    assign #3 m = (s) ? y : x;
 endmodule
