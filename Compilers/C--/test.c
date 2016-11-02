@@ -1,4 +1,1 @@
-int main(){
-	int i = 1;
-	int j = i;
-}
+1.0 + 2 * 3
