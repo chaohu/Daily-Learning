@@ -13,11 +13,11 @@
 %option yylineno
 %%
 int	{
-	yylval.type_sttree = cretree_c("TYPE",yylloc.first_line,3,"int");
+	yylval.type_sttree = cretree_c("TYPE",yylloc.first_line,2,"int");
 	return TYPE;
 	}
 float {
-	yylval.type_sttree = cretree_c("TYPE",yylloc.first_line,3,"float");
+	yylval.type_sttree = cretree_c("TYPE",yylloc.first_line,2,"float");
 	return TYPE;
 	}
 struct {
@@ -136,7 +136,7 @@ _?(_|[a-z]|[A-Z])* {
 [" "]+	{}
 [\t]+	{}
 [\n]	{ yycolumn = 1; }
-~ { printf("Error type A at Line %d:error:\'%s\'.\n",yylineno,yytext); }
+~ { printf("Error type A at Line %d: Mysterious character \"%s\".\n",yylineno,yytext); }
 [0-9][a-z|A-Z]+[0-9|a-z|A-Z]*	{ printf("Error type A at Line %d: error:\'%s\'.\n",yylineno,yytext); }
 . 	
 %%	{ printf("Error type A at Line %d: error:\'%s\'.\n",yylineno,yytext); }

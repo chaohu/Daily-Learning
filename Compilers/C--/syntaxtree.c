@@ -15,17 +15,16 @@ int syntaxtree(STTree *sttree) {
 		}
 		o_tree_c(sttree->C_next);
 		o_tree_b(sttree->B_next);
-		return 1;
 	}
-	else return 0;
+	return 1;
 }
 
 int o_tree_c(STTree *sttree) {
+	tabs++;
 	if(sttree != NULL) {
-		tabs++;
 		tabc = tabs;
-		while(tabc) {
-			printf("\t");
+		while(tabc > 0) {
+			printf("  ");
 			tabc--;
 		}
 		switch(sttree->t_value) {
@@ -39,15 +38,15 @@ int o_tree_c(STTree *sttree) {
 		o_tree_c(sttree->C_next);
 		o_tree_b(sttree->B_next);
 	}
+	tabs--;
 	return 1;
 }
 
 int o_tree_b(STTree *sttree) {
 	if(sttree != NULL) {
-		tabs--;
 		tabc = tabs;
-		while(tabc) {
-			printf("\t");
+		while(tabc > 0) {
+			printf("  ");
 			tabc--;
 		}
 		switch(sttree->t_value) {
@@ -71,6 +70,7 @@ STTree * cretree_i(char *content,int lineno,int t_value,int i_value) {
 	temp->value.i_value = i_value;
 	temp->t_value = t_value;
 	temp->C_next = NULL;
+	temp->B_next = NULL;
 	return temp;
 }
 
@@ -81,6 +81,7 @@ STTree * cretree_f(char *content,int lineno,int t_value,float f_value) {
 	temp->value.f_value = f_value;
 	temp->t_value = t_value;
 	temp->C_next = NULL;
+	temp->B_next = NULL;
 	return temp;
 }
 
@@ -91,6 +92,7 @@ STTree * cretree_c(char *content,int lineno,int t_value,char *c_value) {
 	strcpy(temp->value.c_value,c_value);
 	temp->t_value = t_value;
 	temp->C_next = NULL;
+	temp->B_next = NULL;
 	return temp;
 }
 
@@ -100,14 +102,16 @@ STTree * entree(char *content,int lineno,int n, ...){
 	STTree *root = (STTree *)malloc(sizeof(STTree));
 	strcpy(root->content,content);
 	root->lineno = lineno;
+	root->t_value = 0;
 	root->C_next = NULL;
 	root->B_next = NULL;
 	va_list vap;
 	va_start(vap, n);	
 	while(i < n){
 		temp[i] = va_arg(vap, STTree *);
+		if(temp[i] == NULL) n--;
 		// temp[i] = *((STTree **)((char *)(&n) + sizeof(int) + i * sizeof(STTree *)));
-		i++;
+		else i++;
 	}
 	va_end(vap);
 	i = 0;

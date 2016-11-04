@@ -879,7 +879,7 @@ case 1:
 YY_RULE_SETUP
 #line 15 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("TYPE",yylloc.first_line,3,"int");
+	yylval.type_sttree = cretree_c("TYPE",yylloc.first_line,2,"int");
 	return TYPE;
 	}
 	YY_BREAK
@@ -887,7 +887,7 @@ case 2:
 YY_RULE_SETUP
 #line 19 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("TYPE",yylloc.first_line,3,"float");
+	yylval.type_sttree = cretree_c("TYPE",yylloc.first_line,2,"float");
 	return TYPE;
 	}
 	YY_BREAK
@@ -1139,7 +1139,7 @@ YY_RULE_SETUP
 case 35:
 YY_RULE_SETUP
 #line 139 "lexical.l"
-{ printf("Error type A at Line %d:error:\'%s\'.\n",yylineno,yytext); }
+{ printf("Error type A at Line %d: Mysterious character \"%s\".\n",yylineno,yytext); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP

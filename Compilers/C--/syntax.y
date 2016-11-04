@@ -3,7 +3,10 @@
 %{
 	#include "ao.h"
 	#include "lex.yy.c"
-	int yyerror(char *);
+	//#undef YYDEBUG
+	//#define YYDEBUG 1
+	//yydebug = 1;
+	int yyerror(const char *);
 %}
 /* declared types */
 %union {
@@ -12,6 +15,11 @@
 	float type_float;
 	double type_double;
 }
+
+%error-verbose
+
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
 
 /* declared tokens */
 %token <type_sttree> TYPE STRUCT IF ELSE WHILE RETURN
@@ -53,7 +61,7 @@ Program
 	;
 ExtDefList 
 	: ExtDef ExtDefList	{ $$ = entree("ExtDefList",$1->lineno,2,$1,$2); }
-	|	{ }
+	|	{ $$ = NULL; }
 	;
 ExtDef 
 	: Specifier ExtDecList SEMI	{ $$ = entree("ExtDef",$1->lineno,3,$1,$2,$3); }
@@ -76,7 +84,7 @@ StructSpecifier
 	;
 OptTag
 	: ID	{ $$ = entree("OptTag",$1->lineno,1,$1); }
-	|	{ }
+	|	{ $$ = NULL; }
 	;
 Tag
 	: ID	{ $$ = entree("Tag",$1->lineno,1,$1); }
@@ -105,13 +113,13 @@ CompSt
 	;
 StmtList
 	: Stmt StmtList	{ $$ = entree("StmtList",$1->lineno,2,$1,$2); }
-	|	{ }
+	|	{ $$ = NULL; }
 	;
 Stmt
 	: Exp SEMI	{ $$ = entree("Stmt",$1->lineno,2,$1,$2); }
 	| CompSt	{ $$ = entree("Stmt",$1->lineno,1,$1); }
 	| RETURN Exp SEMI	{ $$ = entree("Stmt",$1->lineno,3,$1,$2,$3); }
-	| IF LP Exp RP Stmt	{ $$ = entree("Stmt",$1->lineno,5,$1,$2,$3,$4,$5); }
+	| IF LP Exp RP Stmt	%prec LOWER_THAN_ELSE { $$ = entree("Stmt",$1->lineno,5,$1,$2,$3,$4,$5); }
 	| IF LP Exp RP Stmt ELSE Stmt	{ $$ = entree("Stmt",$1->lineno,7,$1,$2,$3,$4,$5,$6,$7); }
 	| WHILE LP Exp RP Stmt	{ $$ = entree("Stmt",$1->lineno,5,$1,$2,$3,$4,$5); }
 	;
@@ -119,7 +127,7 @@ Stmt
 /* Local Definitions */
 DefList
 	: Def DefList	{ $$ = entree("DefList",$1->lineno,2,$1,$2); }
-	|	{ }
+	|	{ $$ = NULL; }
 	;
 Def
 	: Specifier DecList SEMI { $$ = entree("Def",$1->lineno,3,$1,$2,$3); }
@@ -160,6 +168,6 @@ Args
 	| Exp	{ $$ = entree("Args",$1->lineno,1,$1); }
 	;
 %%
-int yyerror(char *msg) {
-	fprintf(stderr, "Error type B at Line %d: Missing \"%s\"\n", yylloc.first_line,yytext);
+int yyerror(const char *msg) {
+	fprintf(stderr, "Error type B at Line %d: \"%s\"\n", yylloc.first_line, msg);
 }
