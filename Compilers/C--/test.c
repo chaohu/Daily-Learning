@@ -1,1 +1,4 @@
-1.0 + 2 * 3
+int main(){
+	int x = 0;
+	return 0;
+}
