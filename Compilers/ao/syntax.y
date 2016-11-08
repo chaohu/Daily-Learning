@@ -3,9 +3,9 @@
 %{
 	#include "ao.h"
 	#include "lex.yy.c"
-	//#undef YYDEBUG
-	//#define YYDEBUG 1
-	//yydebug = 1;
+	#undef YYDEBUG
+	#define YYDEBUG 1
+	yydebug = 1;
 	int yyerror(const char *);
 %}
 /* declared types */
@@ -55,117 +55,120 @@
 /* High-level Definition */
 Program	 
 	: ExtDefList	{
-		$$ = entree("Program",$1->lineno,1,$1);
+		$$ = entree("Program",@1,1,$1);
 		syntaxtree($$);
 		}
 	;
 ExtDefList 
-	: ExtDef ExtDefList	{ $$ = entree("ExtDefList",$1->lineno,2,$1,$2); }
+	: ExtDef ExtDefList	{ $$ = entree("ExtDefList",@1,2,$1,$2); }
 	|	{ $$ = NULL; }
 	;
 ExtDef 
-	: Specifier ExtDecList SEMI	{ $$ = entree("ExtDef",$1->lineno,3,$1,$2,$3); }
-	| Specifier SEMI	{ $$ = entree("ExtDef",$1->lineno,2,$1,$2); }
-	| Specifier FunDec CompSt	{ $$ = entree("ExtDef",$1->lineno,3,$1,$2,$3); }
+	: Specifier ExtDecList SEMI	{ $$ = entree("ExtDef",@1,3,$1,$2,$3); }
+	| Specifier SEMI	{ $$ = entree("ExtDef",@1,2,$1,$2); }
+	| Specifier FunDec CompSt	{ $$ = entree("ExtDef",@1,3,$1,$2,$3); }
+	| error FunDec CompSt { printf("缺少类型！\n"); }
 	;
 ExtDecList 
-	: VarDec	{ $$ = entree("ExtDecList",$1->lineno,1,$1); }
-	| VarDec COMMA ExtDecList	{ $$ = entree("ExtDecList",$1->lineno,3,$1,$2,$3); }
+	: VarDec	{ $$ = entree("ExtDecList",@1,1,$1); }
+	| VarDec COMMA ExtDecList	{ $$ = entree("ExtDecList",@1,3,$1,$2,$3); }
+	| VarDec COMMA error { printf("多余的逗号！\n"); }
 	;
 
 /* Specifier */
 Specifier 
-	: TYPE	{ $$ = entree("Specifier",$1->lineno,1,$1); }
-	| StructSpecifier	{ $$ = entree("Specifier",$1->lineno,1,$1); }
+	: TYPE	{ $$ = entree("Specifier",@1,1,$1); }
+	| StructSpecifier	{ $$ = entree("Specifier",@1,1,$1); }
 	;
 StructSpecifier
-	: STRUCT OptTag LC DefList RC	{ $$ = entree("StructSpecifier",$1->lineno,4,$1,$2,$3,$4); }
-	| STRUCT Tag	{ $$ = entree("StructSpecifier",$1->lineno,2,$1,$2); }
+	: STRUCT OptTag LC DefList RC	{ $$ = entree("StructSpecifier",@1,4,$1,$2,$3,$4); }
+	| STRUCT Tag	{ $$ = entree("StructSpecifier",@1,2,$1,$2); }
 	;
 OptTag
-	: ID	{ $$ = entree("OptTag",$1->lineno,1,$1); }
+	: ID	{ $$ = entree("OptTag",@1,1,$1); }
 	|	{ $$ = NULL; }
 	;
 Tag
-	: ID	{ $$ = entree("Tag",$1->lineno,1,$1); }
+	: ID	{ $$ = entree("Tag",@1,1,$1); }
 	;
 
 /* Declarators */
 VarDec
-	: ID	{ $$ = entree("VarDec",$1->lineno,1,$1); }
-	| VarDec LB DINT RB	{ $$ = entree("VarDec",$1->lineno,4,$1,$2,$3,$4); }
+	: ID	{ $$ = entree("VarDec",@1,1,$1); }
+	| VarDec LB DINT RB	{ $$ = entree("VarDec",@1,4,$1,$2,$3,$4); }
 	;
 FunDec
-	: ID LP VarList RP	{ $$ = entree("FunDec",$1->lineno,4,$1,$2,$3,$4); }
-	| ID LP RP	{ $$ = entree("FunDec",$1->lineno,3,$1,$2,$3); }
+	: ID LP VarList RP	{ $$ = entree("FunDec",@1,4,$1,$2,$3,$4); }
+	| ID LP RP	{ $$ = entree("FunDec",@1,3,$1,$2,$3); }
 	;
 VarList
-	: ParamDec COMMA VarList	{ $$ = entree("VarList",$1->lineno,3,$1,$2,$3); }
-	| ParamDec	{ $$ = entree("VarList",$1->lineno,1,$1); }
+	: ParamDec COMMA VarList	{ $$ = entree("VarList",@1,3,$1,$2,$3); }
+	| ParamDec	{ $$ = entree("VarList",@1,1,$1); }
 	;
 ParamDec
-	: Specifier VarDec	{ $$ = entree("ParamDec",$1->lineno,2,$1,$2); }
+	: Specifier VarDec	{ $$ = entree("ParamDec",@1,2,$1,$2); }
 	;
 
 /* Statements */
 CompSt
-	: LC DefList StmtList RC	{ $$ = entree("CompSt",$1->lineno,4,$1,$2,$3,$4); }
+	: LC DefList StmtList RC	{ $$ = entree("CompSt",@1,4,$1,$2,$3,$4); }
+	| error DefList StmtList RC { printf("缺少左括号！\n"); }
 	;
 StmtList
-	: Stmt StmtList	{ $$ = entree("StmtList",$1->lineno,2,$1,$2); }
+	: Stmt StmtList	{ $$ = entree("StmtList",@1,2,$1,$2); }
 	|	{ $$ = NULL; }
 	;
 Stmt
-	: Exp SEMI	{ $$ = entree("Stmt",$1->lineno,2,$1,$2); }
-	| CompSt	{ $$ = entree("Stmt",$1->lineno,1,$1); }
-	| RETURN Exp SEMI	{ $$ = entree("Stmt",$1->lineno,3,$1,$2,$3); }
-	| IF LP Exp RP Stmt	%prec LOWER_THAN_ELSE { $$ = entree("Stmt",$1->lineno,5,$1,$2,$3,$4,$5); }
-	| IF LP Exp RP Stmt ELSE Stmt	{ $$ = entree("Stmt",$1->lineno,7,$1,$2,$3,$4,$5,$6,$7); }
-	| WHILE LP Exp RP Stmt	{ $$ = entree("Stmt",$1->lineno,5,$1,$2,$3,$4,$5); }
+	: Exp SEMI	{ $$ = entree("Stmt",@1,2,$1,$2); }
+	| CompSt	{ $$ = entree("Stmt",@1,1,$1); }
+	| RETURN Exp SEMI	{ $$ = entree("Stmt",@1,3,$1,$2,$3); }
+	| IF LP Exp RP Stmt	%prec LOWER_THAN_ELSE { $$ = entree("Stmt",@1,5,$1,$2,$3,$4,$5); }
+	| IF LP Exp RP Stmt ELSE Stmt	{ $$ = entree("Stmt",@1,7,$1,$2,$3,$4,$5,$6,$7); }
+	| WHILE LP Exp RP Stmt	{ $$ = entree("Stmt",@1,5,$1,$2,$3,$4,$5); }
 	;
 
 /* Local Definitions */
 DefList
-	: Def DefList	{ $$ = entree("DefList",$1->lineno,2,$1,$2); }
+	: Def DefList	{ $$ = entree("DefList",@1,2,$1,$2); }
 	|	{ $$ = NULL; }
 	;
 Def
-	: Specifier DecList SEMI { $$ = entree("Def",$1->lineno,3,$1,$2,$3); }
+	: Specifier DecList SEMI { $$ = entree("Def",@1,3,$1,$2,$3); }
 	;
 DecList
-	: Dec	{ $$ = entree("DecList",$1->lineno,1,$1); }
-	| Dec COMMA DecList	{ $$ = entree("DecList",$1->lineno,3,$1,$2,$3); }
+	: Dec	{ $$ = entree("DecList",@1,1,$1); }
+	| Dec COMMA DecList	{ $$ = entree("DecList",@1,3,$1,$2,$3); }
 	;
 Dec
-	: VarDec	{ $$ = entree("Dec",$1->lineno,1,$1); }
-	| VarDec ASSIGNOP Exp	{ $$ = entree("Dec",$1->lineno,3,$1,$2,$3); }
+	: VarDec	{ $$ = entree("Dec",@1,1,$1); }
+	| VarDec ASSIGNOP Exp	{ $$ = entree("Dec",@1,3,$1,$2,$3); }
 
 	;
 
 /* Expressions */
 Exp
-	: Exp ASSIGNOP Exp	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| Exp AND Exp	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| Exp OR Exp	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| Exp RELOP Exp	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| Exp PLUS Exp	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| Exp MINUS Exp	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| Exp STAR Exp	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| Exp DIV Exp	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| LP Exp RP	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| MINUS Exp	{ $$ = entree("Exp",$1->lineno,2,$1,$2); }
-	| NOT Exp	{ $$ = entree("Exp",$1->lineno,2,$1,$2); }
-	| ID LP Args RP	{ $$ = entree("Exp",$1->lineno,4,$1,$2,$3,$4); }
-	| ID LP RP	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| Exp LB Exp RB	{ $$ = entree("Exp",$1->lineno,4,$1,$2,$3,$4); }
-	| Exp DOT ID	{ $$ = entree("Exp",$1->lineno,3,$1,$2,$3); }
-	| ID	{ $$ = entree("Exp",$1->lineno,1,$1); }
-	| DINT	{ $$ = entree("Exp",$1->lineno,1,$1); }
-	| FLOAT	{ $$ = entree("Exp",$1->lineno,1,$1); }
+	: Exp ASSIGNOP Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| Exp AND Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| Exp OR Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| Exp RELOP Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| Exp PLUS Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| Exp MINUS Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| Exp STAR Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| Exp DIV Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| LP Exp RP	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| MINUS Exp	{ $$ = entree("Exp",@1,2,$1,$2); }
+	| NOT Exp	{ $$ = entree("Exp",@1,2,$1,$2); }
+	| ID LP Args RP	{ $$ = entree("Exp",@1,4,$1,$2,$3,$4); }
+	| ID LP RP	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| Exp LB Exp RB	{ $$ = entree("Exp",@1,4,$1,$2,$3,$4); }
+	| Exp DOT ID	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
+	| ID	{ $$ = entree("Exp",@1,1,$1); }
+	| DINT	{ $$ = entree("Exp",@1,1,$1); }
+	| FLOAT	{ $$ = entree("Exp",@1,1,$1); }
 	;
 Args
-	: Exp COMMA Args	{ $$ = entree("Args",$1->lineno,3,$1,$2,$3); }
-	| Exp	{ $$ = entree("Args",$1->lineno,1,$1); }
+	: Exp COMMA Args	{ $$ = entree("Args",@1,3,$1,$2,$3); }
+	| Exp	{ $$ = entree("Args",@1,1,$1); }
 	;
 %%
 int yyerror(const char *msg) {
