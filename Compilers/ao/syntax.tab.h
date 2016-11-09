@@ -83,7 +83,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 12 "syntax.y" /* yacc.c:1909  */
+#line 9 "syntax.y" /* yacc.c:1909  */
 
 	STTree *type_sttree;
 	int type_int;

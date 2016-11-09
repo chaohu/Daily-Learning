@@ -136,7 +136,7 @@ _?(_|[a-z]|[A-Z])* {
 [" "]+	{}
 [\t]+	{}
 [\n]	{ yycolumn = 1; }
-~ { printf("Error type A at Line %d: Mysterious character \"%s\".\n",yylineno,yytext); }
+~ { printf("Error type A at Line %d and Column %d: Mysterious character \"%s\".\n",yylloc.first_line,yylloc.first_column,yytext); }
 [0-9][a-z|A-Z]+[0-9|a-z|A-Z]*	{ printf("Error type A at Line %d: error:\'%s\'.\n",yylineno,yytext); }
 . 	
-%%	{ printf("Error type A at Line %d: error:\'%s\'.\n",yylineno,yytext); }
+%%	{ printf("Error type A at Line %d and Column %d: error:\'%s\'.\n",yylloc.first_line,yylloc.first_column,yytext); }

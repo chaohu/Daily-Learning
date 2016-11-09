@@ -1,12 +1,9 @@
 %locations
+%error-verbose
 
 %{
 	#include "ao.h"
 	#include "lex.yy.c"
-	#undef YYDEBUG
-	#define YYDEBUG 1
-	yydebug = 1;
-	int yyerror(const char *);
 %}
 /* declared types */
 %union {
@@ -15,8 +12,6 @@
 	float type_float;
 	double type_double;
 }
-
-%error-verbose
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -67,12 +62,12 @@ ExtDef
 	: Specifier ExtDecList SEMI	{ $$ = entree("ExtDef",@1,3,$1,$2,$3); }
 	| Specifier SEMI	{ $$ = entree("ExtDef",@1,2,$1,$2); }
 	| Specifier FunDec CompSt	{ $$ = entree("ExtDef",@1,3,$1,$2,$3); }
-	| error FunDec CompSt { printf("缺少类型！\n"); }
+	| error FunDec CompSt { }
 	;
 ExtDecList 
 	: VarDec	{ $$ = entree("ExtDecList",@1,1,$1); }
 	| VarDec COMMA ExtDecList	{ $$ = entree("ExtDecList",@1,3,$1,$2,$3); }
-	| VarDec COMMA error { printf("多余的逗号！\n"); }
+	| error SEMI { }
 	;
 
 /* Specifier */
@@ -112,7 +107,7 @@ ParamDec
 /* Statements */
 CompSt
 	: LC DefList StmtList RC	{ $$ = entree("CompSt",@1,4,$1,$2,$3,$4); }
-	| error DefList StmtList RC { printf("缺少左括号！\n"); }
+	| error DefList StmtList RC { }
 	;
 StmtList
 	: Stmt StmtList	{ $$ = entree("StmtList",@1,2,$1,$2); }
@@ -125,6 +120,7 @@ Stmt
 	| IF LP Exp RP Stmt	%prec LOWER_THAN_ELSE { $$ = entree("Stmt",@1,5,$1,$2,$3,$4,$5); }
 	| IF LP Exp RP Stmt ELSE Stmt	{ $$ = entree("Stmt",@1,7,$1,$2,$3,$4,$5,$6,$7); }
 	| WHILE LP Exp RP Stmt	{ $$ = entree("Stmt",@1,5,$1,$2,$3,$4,$5); }
+	| error SEMI { }
 	;
 
 /* Local Definitions */
@@ -165,12 +161,13 @@ Exp
 	| ID	{ $$ = entree("Exp",@1,1,$1); }
 	| DINT	{ $$ = entree("Exp",@1,1,$1); }
 	| FLOAT	{ $$ = entree("Exp",@1,1,$1); }
+	| error RP { }
 	;
 Args
 	: Exp COMMA Args	{ $$ = entree("Args",@1,3,$1,$2,$3); }
 	| Exp	{ $$ = entree("Args",@1,1,$1); }
 	;
 %%
-int yyerror(const char *msg) {
-	fprintf(stderr, "Error type B at Line %d: \"%s\"\n", yylloc.first_line, msg);
+void yyerror(char const*msg) {
+	fprintf(stderr, "Error type B at Line %d and Column %d: \"%s\"\n", yylloc.first_line, yylloc.first_column, msg);
 }

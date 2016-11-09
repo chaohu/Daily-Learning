@@ -7,3 +7,6 @@ all:
 
 run:
 	./parser test.c
+
+debug:
+	./parser test.c -debug

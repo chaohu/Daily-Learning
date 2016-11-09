@@ -6,6 +6,14 @@
 #include <string.h>
 #include <stdarg.h>
 
+extern FILE* yyin;
+extern int yydebug;
+extern int yyparse(void);
+extern void yyerror(char const*);
+
+#undef YYDEBUG
+#define YYDEBUG 1
+
 #undef YYLTYPE
 #define YYLTYPE yyltype
 
@@ -15,6 +23,7 @@ typedef struct YYLTYPE {
 	int last_line;
 	int last_column;
 } yyltype;
+
 
 
 union T_value{
