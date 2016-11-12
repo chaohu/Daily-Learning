@@ -5,8 +5,11 @@ all:
 
 .PHONY=run
 
-run:
-	./parser test.c
+wrong:
+	./parser test1.c
+
+right:
+	./parser test2.c
 
 debug:
-	./parser test.c -debug
+	./parser test1.c -debug

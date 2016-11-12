@@ -53,28 +53,26 @@ extern int yydebug;
     WHILE = 263,
     RETURN = 264,
     ID = 265,
-    DINT = 266,
-    OINT = 267,
-    HINT = 268,
-    FLOAT = 269,
-    SEMI = 270,
-    COMMA = 271,
-    ASSIGNOP = 272,
-    RELOP = 273,
-    PLUS = 274,
-    MINUS = 275,
-    STAR = 276,
-    DIV = 277,
-    AND = 278,
-    OR = 279,
-    DOT = 280,
-    NOT = 281,
-    LP = 282,
-    RP = 283,
-    LB = 284,
-    RB = 285,
-    LC = 286,
-    RC = 287
+    INT = 266,
+    FLOAT = 267,
+    SEMI = 268,
+    COMMA = 269,
+    ASSIGNOP = 270,
+    RELOP = 271,
+    PLUS = 272,
+    MINUS = 273,
+    STAR = 274,
+    DIV = 275,
+    AND = 276,
+    OR = 277,
+    DOT = 278,
+    NOT = 279,
+    LP = 280,
+    RP = 281,
+    LB = 282,
+    RB = 283,
+    LC = 284,
+    RC = 285
   };
 #endif
 
@@ -90,7 +88,7 @@ union YYSTYPE
 	float type_float;
 	double type_double;
 
-#line 94 "syntax.tab.h" /* yacc.c:1909  */
+#line 92 "syntax.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

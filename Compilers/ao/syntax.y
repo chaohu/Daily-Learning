@@ -19,7 +19,7 @@
 /* declared tokens */
 %token <type_sttree> TYPE STRUCT IF ELSE WHILE RETURN
 %token <type_sttree> ID
-%token <type_sttree> DINT OINT HINT
+%token <type_sttree> INT
 %token <type_sttree> FLOAT
 %token <type_sttree> SEMI COMMA ASSIGNOP RELOP
 %token <type_sttree> PLUS MINUS STAR DIV
@@ -67,7 +67,6 @@ ExtDef
 ExtDecList 
 	: VarDec	{ $$ = entree("ExtDecList",@1,1,$1); }
 	| VarDec COMMA ExtDecList	{ $$ = entree("ExtDecList",@1,3,$1,$2,$3); }
-	| error SEMI { }
 	;
 
 /* Specifier */
@@ -90,7 +89,7 @@ Tag
 /* Declarators */
 VarDec
 	: ID	{ $$ = entree("VarDec",@1,1,$1); }
-	| VarDec LB DINT RB	{ $$ = entree("VarDec",@1,4,$1,$2,$3,$4); }
+	| VarDec LB INT RB	{ $$ = entree("VarDec",@1,4,$1,$2,$3,$4); }
 	;
 FunDec
 	: ID LP VarList RP	{ $$ = entree("FunDec",@1,4,$1,$2,$3,$4); }
@@ -107,7 +106,7 @@ ParamDec
 /* Statements */
 CompSt
 	: LC DefList StmtList RC	{ $$ = entree("CompSt",@1,4,$1,$2,$3,$4); }
-	| error DefList StmtList RC { }
+	//| error DefList StmtList RC { }
 	;
 StmtList
 	: Stmt StmtList	{ $$ = entree("StmtList",@1,2,$1,$2); }
@@ -159,7 +158,7 @@ Exp
 	| Exp LB Exp RB	{ $$ = entree("Exp",@1,4,$1,$2,$3,$4); }
 	| Exp DOT ID	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
 	| ID	{ $$ = entree("Exp",@1,1,$1); }
-	| DINT	{ $$ = entree("Exp",@1,1,$1); }
+	| INT	{ $$ = entree("Exp",@1,1,$1); }
 	| FLOAT	{ $$ = entree("Exp",@1,1,$1); }
 	| error RP { }
 	;

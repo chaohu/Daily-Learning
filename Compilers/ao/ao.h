@@ -33,7 +33,7 @@ union T_value{
 };
 
 typedef struct STTree{
-	char content[9];
+	char content[17];
 	yyltype loc_info;
 	union T_value value;
 	int t_value;
