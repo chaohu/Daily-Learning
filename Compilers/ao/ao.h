@@ -24,8 +24,6 @@ typedef struct YYLTYPE {
 	int last_column;
 } yyltype;
 
-
-
 union T_value{
 	int i_value;
 	float f_value;
