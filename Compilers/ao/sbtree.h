@@ -26,6 +26,7 @@ struct Identity {
 };
 
 struct Function {
+    char *name;
     Type retype;
     int paranum;
     Type paratype;
@@ -60,7 +61,9 @@ struct TOKEN {
         Variable variable;
         Structure structure;
     } symbol;
-    TOKEN* next;
+    TOKEN *next;
+    TOKEN *prev;
+    TOKEN *below;
 };
 
 struct SCOPE {
@@ -69,10 +72,11 @@ struct SCOPE {
 };
 
 TOKEN token[128];
+TOKEN *n_token;
 SCOPE* scope;
  
 unsigned hash_pjw(char* name);
 int addscope();
 int delscope();
-int looksymbol(char* name);
-int ensymbol(char* name);
+int looksymbol(char* name, int type, int i);
+int ensymbol(char* name, int type);
