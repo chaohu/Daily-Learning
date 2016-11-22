@@ -1,8 +1,8 @@
-typedef struct Type_* Type;
+typedef struct Type_ Type;
 typedef struct FieldList_* FieldList;
 
 struct Type_ {
-    enum { BASIC, ARRAY，STRUCTURE } kind;
+    enum { BASIC, ARRAY, STRUCTURE } kind;
     union
     {
         //基本类型
@@ -54,7 +54,7 @@ struct Structfield {
 };
 
 struct TOKEN {
-    enum { IDENTITY; FUNCTION; VARIABLE; STRUCTURE } kind;
+    enum { IDENTITY, FUNCTION, VARIABLE, STRUCTURE } kind;
     union {
         Identity identity;
         Function function;
@@ -73,10 +73,14 @@ struct SCOPE {
 
 TOKEN token[128];
 TOKEN *n_token;
-SCOPE* scope;
+SCOPE* scope = NULL;
  
 unsigned hash_pjw(char* name);
 int addscope();
 int delscope();
 int looksymbol(char* name, int type, int i);
 int ensymbol(char* name, int type);
+int pro_iden(char *name,TOKEN *token);
+int pro_func(char *name,TOKEN *token);
+int pro_vari(char *name,TOKEN *token);
+int pro_stru(char *name,TOKEN *token);
