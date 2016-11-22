@@ -1,4 +1,4 @@
-typedef struct Type_ Type;
+typedef struct Type_ *Type;
 typedef struct FieldList_* FieldList;
 
 struct Type_ {
@@ -29,7 +29,6 @@ struct Function {
     char *name;
     Type retype;
     int paranum;
-    Type paratype;
 };
 
  
@@ -78,9 +77,9 @@ SCOPE* scope = NULL;
 unsigned hash_pjw(char* name);
 int addscope();
 int delscope();
-int looksymbol(char* name, int type, int i);
-int ensymbol(char* name, int type);
-int pro_iden(char *name,TOKEN *token);
-int pro_func(char *name,TOKEN *token);
-int pro_vari(char *name,TOKEN *token);
-int pro_stru(char *name,TOKEN *token);
+int looksymbol(char* name);
+int ensymbol(char *name, TOKEN *t_token);
+int pro_iden(char *name, Type type);
+int pro_func(char *name, Type type);
+int pro_vari(char *name, Type type);
+int pro_stru(char *name, Type type);
