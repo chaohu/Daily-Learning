@@ -50,121 +50,122 @@
 /* High-level Definition */
 Program	 
 	: ExtDefList	{
-		$$ = entree("Program",@1,1,$1);
+		$$ = entree(0,"Program",@1,1,$1);
+        _sttree = $$;
 		syntaxtree($$);
 		}
 	;
 ExtDefList 
-	: ExtDef ExtDefList	{ $$ = entree("ExtDefList",@1,2,$1,$2); }
+	: ExtDef ExtDefList	{ $$ = entree(1,"ExtDefList",@1,2,$1,$2); }
 	|	{ $$ = NULL; }
 	;
 ExtDef 
-	: Specifier ExtDecList SEMI	{ $$ = entree("ExtDef",@1,3,$1,$2,$3); }
-	| Specifier SEMI	{ $$ = entree("ExtDef",@1,2,$1,$2); }
-	| Specifier FunDec CompSt	{ $$ = entree("ExtDef",@1,3,$1,$2,$3); }
+	: Specifier ExtDecList SEMI	{ $$ = entree(2,"ExtDef",@1,3,$1,$2,$3); }
+	| Specifier SEMI	{ $$ = entree(2,"ExtDef",@1,2,$1,$2); }
+	| Specifier FunDec CompSt	{ $$ = entree(2,"ExtDef",@1,3,$1,$2,$3); }
 	| error FunDec CompSt { }
 	;
 ExtDecList 
-	: VarDec	{ $$ = entree("ExtDecList",@1,1,$1); }
-	| VarDec COMMA ExtDecList	{ $$ = entree("ExtDecList",@1,3,$1,$2,$3); }
+	: VarDec	{ $$ = entree(3,"ExtDecList",@1,1,$1); }
+	| VarDec COMMA ExtDecList	{ $$ = entree(3,"ExtDecList",@1,3,$1,$2,$3); }
 	;
 
 /* Specifier */
 Specifier 
-	: TYPE	{ $$ = entree("Specifier",@1,1,$1); }
-	| StructSpecifier	{ $$ = entree("Specifier",@1,1,$1); }
+	: TYPE	{ $$ = entree(4,"Specifier",@1,1,$1); }
+	| StructSpecifier	{ $$ = entree(4,"Specifier",@1,1,$1); }
 	;
 StructSpecifier
-	: STRUCT OptTag LC DefList RC	{ $$ = entree("StructSpecifier",@1,4,$1,$2,$3,$4); }
-	| STRUCT Tag	{ $$ = entree("StructSpecifier",@1,2,$1,$2); }
+	: STRUCT OptTag LC DefList RC	{ $$ = entree(5,"StructSpecifier",@1,4,$1,$2,$3,$4); }
+	| STRUCT Tag	{ $$ = entree(5,"StructSpecifier",@1,2,$1,$2); }
 	;
 OptTag
-	: ID	{ $$ = entree("OptTag",@1,1,$1); }
+	: ID	{ $$ = entree(6,"OptTag",@1,1,$1); }
 	|	{ $$ = NULL; }
 	;
 Tag
-	: ID	{ $$ = entree("Tag",@1,1,$1); }
+	: ID	{ $$ = entree(7,"Tag",@1,1,$1); }
 	;
 
 /* Declarators */
 VarDec
-	: ID	{ $$ = entree("VarDec",@1,1,$1); }
-	| VarDec LB INT RB	{ $$ = entree("VarDec",@1,4,$1,$2,$3,$4); }
+	: ID	{ $$ = entree(8,"VarDec",@1,1,$1); }
+	| VarDec LB INT RB	{ $$ = entree(8,"VarDec",@1,4,$1,$2,$3,$4); }
 	;
 FunDec
-	: ID LP VarList RP	{ $$ = entree("FunDec",@1,4,$1,$2,$3,$4); }
-	| ID LP RP	{ $$ = entree("FunDec",@1,3,$1,$2,$3); }
+	: ID LP VarList RP	{ $$ = entree(9,"FunDec",@1,4,$1,$2,$3,$4); }
+	| ID LP RP	{ $$ = entree(9,"FunDec",@1,3,$1,$2,$3); }
 	;
 VarList
-	: ParamDec COMMA VarList	{ $$ = entree("VarList",@1,3,$1,$2,$3); }
-	| ParamDec	{ $$ = entree("VarList",@1,1,$1); }
+	: ParamDec COMMA VarList	{ $$ = entree(10,"VarList",@1,3,$1,$2,$3); }
+	| ParamDec	{ $$ = entree(10,"VarList",@1,1,$1); }
 	;
 ParamDec
-	: Specifier VarDec	{ $$ = entree("ParamDec",@1,2,$1,$2); }
+	: Specifier VarDec	{ $$ = entree(11,"ParamDec",@1,2,$1,$2); }
 	;
 
 /* Statements */
 CompSt
-	: LC DefList StmtList RC	{ $$ = entree("CompSt",@1,4,$1,$2,$3,$4); }
+	: LC DefList StmtList RC	{ $$ = entree(12,"CompSt",@1,4,$1,$2,$3,$4); }
 	//| error DefList StmtList RC { }
 	;
 StmtList
-	: Stmt StmtList	{ $$ = entree("StmtList",@1,2,$1,$2); }
+	: Stmt StmtList	{ $$ = entree(13,"StmtList",@1,2,$1,$2); }
 	|	{ $$ = NULL; }
 	;
 Stmt
-	: Exp SEMI	{ $$ = entree("Stmt",@1,2,$1,$2); }
-	| CompSt	{ $$ = entree("Stmt",@1,1,$1); }
-	| RETURN Exp SEMI	{ $$ = entree("Stmt",@1,3,$1,$2,$3); }
-	| IF LP Exp RP Stmt	%prec LOWER_THAN_ELSE { $$ = entree("Stmt",@1,5,$1,$2,$3,$4,$5); }
-	| IF LP Exp RP Stmt ELSE Stmt	{ $$ = entree("Stmt",@1,7,$1,$2,$3,$4,$5,$6,$7); }
-	| WHILE LP Exp RP Stmt	{ $$ = entree("Stmt",@1,5,$1,$2,$3,$4,$5); }
+	: Exp SEMI	{ $$ = entree(14,"Stmt",@1,2,$1,$2); }
+	| CompSt	{ $$ = entree(14,"Stmt",@1,1,$1); }
+	| RETURN Exp SEMI	{ $$ = entree(14,"Stmt",@1,3,$1,$2,$3); }
+	| IF LP Exp RP Stmt	%prec LOWER_THAN_ELSE { $$ = entree(14,"Stmt",@1,5,$1,$2,$3,$4,$5); }
+	| IF LP Exp RP Stmt ELSE Stmt	{ $$ = entree(14,"Stmt",@1,7,$1,$2,$3,$4,$5,$6,$7); }
+	| WHILE LP Exp RP Stmt	{ $$ = entree(14,"Stmt",@1,5,$1,$2,$3,$4,$5); }
 	| error SEMI { }
 	;
 
 /* Local Definitions */
 DefList
-	: Def DefList	{ $$ = entree("DefList",@1,2,$1,$2); }
+	: Def DefList	{ $$ = entree(15,"DefList",@1,2,$1,$2); }
 	|	{ $$ = NULL; }
 	;
 Def
-	: Specifier DecList SEMI { $$ = entree("Def",@1,3,$1,$2,$3); }
+	: Specifier DecList SEMI { $$ = entree(16,"Def",@1,3,$1,$2,$3); }
 	;
 DecList
-	: Dec	{ $$ = entree("DecList",@1,1,$1); }
-	| Dec COMMA DecList	{ $$ = entree("DecList",@1,3,$1,$2,$3); }
+	: Dec	{ $$ = entree(17,"DecList",@1,1,$1); }
+	| Dec COMMA DecList	{ $$ = entree(17,"DecList",@1,3,$1,$2,$3); }
 	;
 Dec
-	: VarDec	{ $$ = entree("Dec",@1,1,$1); }
-	| VarDec ASSIGNOP Exp	{ $$ = entree("Dec",@1,3,$1,$2,$3); }
+	: VarDec	{ $$ = entree(18,"Dec",@1,1,$1); }
+	| VarDec ASSIGNOP Exp	{ $$ = entree(18,"Dec",@1,3,$1,$2,$3); }
 
 	;
 
 /* Expressions */
 Exp
-	: Exp ASSIGNOP Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| Exp AND Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| Exp OR Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| Exp RELOP Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| Exp PLUS Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| Exp MINUS Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| Exp STAR Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| Exp DIV Exp	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| LP Exp RP	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| MINUS Exp	{ $$ = entree("Exp",@1,2,$1,$2); }
-	| NOT Exp	{ $$ = entree("Exp",@1,2,$1,$2); }
-	| ID LP Args RP	{ $$ = entree("Exp",@1,4,$1,$2,$3,$4); }
-	| ID LP RP	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| Exp LB Exp RB	{ $$ = entree("Exp",@1,4,$1,$2,$3,$4); }
-	| Exp DOT ID	{ $$ = entree("Exp",@1,3,$1,$2,$3); }
-	| ID	{ $$ = entree("Exp",@1,1,$1); }
-	| INT	{ $$ = entree("Exp",@1,1,$1); }
-	| FLOAT	{ $$ = entree("Exp",@1,1,$1); }
+	: Exp ASSIGNOP Exp	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| Exp AND Exp	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| Exp OR Exp	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| Exp RELOP Exp	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| Exp PLUS Exp	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| Exp MINUS Exp	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| Exp STAR Exp	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| Exp DIV Exp	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| LP Exp RP	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| MINUS Exp	{ $$ = entree(19,"Exp",@1,2,$1,$2); }
+	| NOT Exp	{ $$ = entree(19,"Exp",@1,2,$1,$2); }
+	| ID LP Args RP	{ $$ = entree(19,"Exp",@1,4,$1,$2,$3,$4); }
+	| ID LP RP	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| Exp LB Exp RB	{ $$ = entree(19,"Exp",@1,4,$1,$2,$3,$4); }
+	| Exp DOT ID	{ $$ = entree(19,"Exp",@1,3,$1,$2,$3); }
+	| ID	{ $$ = entree(19,"Exp",@1,1,$1); }
+	| INT	{ $$ = entree(19,"Exp",@1,1,$1); }
+	| FLOAT	{ $$ = entree(19,"Exp",@1,1,$1); }
 	| error RP { }
 	;
 Args
-	: Exp COMMA Args	{ $$ = entree("Args",@1,3,$1,$2,$3); }
-	| Exp	{ $$ = entree("Args",@1,1,$1); }
+	: Exp COMMA Args	{ $$ = entree(20,"Args",@1,3,$1,$2,$3); }
+	| Exp	{ $$ = entree(20,"Args",@1,1,$1); }
 	;
 %%
 void yyerror(char const*msg) {

@@ -100,6 +100,57 @@ int ensymbol(char *name, TOKEN *t_token) {
 }
 
 /**
+ * 名称：cre_type_b
+ * 作者：ao
+ * 功能：够造一个基本类型type
+ */
+Type cre_type_b(STTree *t_sttree) {
+    Type t_temp = (Type)malloc(sizeof(Type_));
+    t_temp->kind = t_temp->BASIC;
+    if(strcmp(t_sttree->value.c_value,"int")) t_temp->u.basic = 0;
+    else t_temp->u.basic = 1;
+    return t_temp;
+}
+
+/**
+ * 名称：cre_type_a
+ * 作者：ao
+ * 功能：构造一个数组类型type
+ */
+Type cre_type_a(Type elem,int size) {
+    Type t_temp = (Type)malloc(sizeof(Type_));
+    t_temp->kind = t_temp->ARRAY;
+    t_temp->u.array.elem = elem;
+    t_temp->u.array.size = size;
+    return t_temp;
+}
+
+/**
+ * 名称：cre_type_s
+ * 作者：ao
+ * 功能：构造一个结构类型type
+ */
+Type cre_type_s(FieldList structure) {
+    Type t_temp = (Type)malloc(sizeof(Type_));
+    t_temp->kind = t_temp->STRUCTURE;
+    t_temp->u.structure = structure;
+    return t_temp;
+}
+
+/**
+ * 名称：cre_type_f
+ * 作者：ao
+ * 功能：构造一个FieldList
+ */
+FieldList cre_type_f(char *name,Type type,FieldList tail) {
+    FieldList f_temp = (FieldList)malloc(sizeof(FieldList_));
+    strcpy(f_temp->name,name);
+    f_temp->type = type;
+    f_temp->tail = tail;
+    return f_temp;
+}
+
+/**
  * 名称：pro_iden
  * 作者：ao
  * 功能：为一个新的identity符号进行初始化的操作
@@ -121,12 +172,14 @@ int pro_iden(char *name, Type type) {
  * 作者：ao
  * 功能：为一个新的function符号进行初始化的操作
  */
-int pro_func(char *name,Type retype, int paranum) {
+int pro_func(char *name,Type retype, int paranum, Type *paratype) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
     if (looksymbol(name)) {
         t_token->kind = t_token->FUNCTION;
         strcpy(t_token->symbol.function.name,name);
         t_token->symbol.function.retype = retype;
+        t_token->symbol.function.paranum = paranum;
+        t_token->symbol.function.paratype = paratype;
         ensymbol(name,t_token);
     }
     else printf("error, symbol repeat!");

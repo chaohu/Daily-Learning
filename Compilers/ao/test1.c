@@ -1,7 +1,7 @@
 struct dddd {
 	int x;
 	int y;
-}
+};
 
 int inc() {
 	int i, j;

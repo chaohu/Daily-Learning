@@ -1,3 +1,8 @@
+#ifndef SBTREE_H
+#define SBTREE_H 1
+
+#include "ao.h"
+
 typedef struct Type_ *Type;
 typedef struct FieldList_* FieldList;
 
@@ -14,7 +19,7 @@ struct Type_ {
     } u;
 };
  
-struct FieldList {
+struct FieldList_ {
     char* name; //域的名字
     Type type;  //域的类型
     FieldList tail; //下一个域
@@ -29,6 +34,7 @@ struct Function {
     char *name;
     Type retype;
     int paranum;
+    Type *paratype;
 };
 
  
@@ -79,7 +85,15 @@ int addscope();
 int delscope();
 int looksymbol(char* name);
 int ensymbol(char *name, TOKEN *t_token);
+Type cre_type_b(STTree *sttree);
+Type cre_type_a(Type elem,int size);
+Type cre_type_s(FieldList structure);
+FieldList cre_type_f(char *name,Type type,FieldList tail);
 int pro_iden(char *name, Type type);
 int pro_func(char *name, Type type);
 int pro_vari(char *name, Type type);
 int pro_stru(char *name, Type type);
+int s_tree_c(STTree *t_sttree);
+int s_tree_b(STTree *t_sttree);
+
+#endif

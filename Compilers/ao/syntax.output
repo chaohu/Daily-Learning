@@ -122,51 +122,51 @@ RC (285) 12 24
 Nonterminals, with rules where they appear
 
 $accept (31)
-    左： 0
+    on left: 0
 Program (32)
-    左： 1, 右： 0
+    on left: 1, on right: 0
 ExtDefList (33)
-    左： 2 3, 右： 1 2
+    on left: 2 3, on right: 1 2
 ExtDef (34)
-    左： 4 5 6 7, 右： 2
+    on left: 4 5 6 7, on right: 2
 ExtDecList (35)
-    左： 8 9, 右： 4 9
+    on left: 8 9, on right: 4 9
 Specifier (36)
-    左： 10 11, 右： 4 5 6 23 36
+    on left: 10 11, on right: 4 5 6 23 36
 StructSpecifier (37)
-    左： 12 13, 右： 11
+    on left: 12 13, on right: 11
 OptTag (38)
-    左： 14 15, 右： 12
+    on left: 14 15, on right: 12
 Tag (39)
-    左： 16, 右： 13
+    on left: 16, on right: 13
 VarDec (40)
-    左： 17 18, 右： 8 9 18 23 39 40
+    on left: 17 18, on right: 8 9 18 23 39 40
 FunDec (41)
-    左： 19 20, 右： 6 7
+    on left: 19 20, on right: 6 7
 VarList (42)
-    左： 21 22, 右： 19 21
+    on left: 21 22, on right: 19 21
 ParamDec (43)
-    左： 23, 右： 21 22
+    on left: 23, on right: 21 22
 CompSt (44)
-    左： 24, 右： 6 7 28
+    on left: 24, on right: 6 7 28
 StmtList (45)
-    左： 25 26, 右： 24 25
+    on left: 25 26, on right: 24 25
 Stmt (46)
-    左： 27 28 29 30 31 32 33, 右： 25 30 31 32
+    on left: 27 28 29 30 31 32 33, on right: 25 30 31 32
 DefList (47)
-    左： 34 35, 右： 12 24 34
+    on left: 34 35, on right: 12 24 34
 Def (48)
-    左： 36, 右： 34
+    on left: 36, on right: 34
 DecList (49)
-    左： 37 38, 右： 36 38
+    on left: 37 38, on right: 36 38
 Dec (50)
-    左： 39 40, 右： 37 38
+    on left: 39 40, on right: 37 38
 Exp (51)
-    左： 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59,
-    右： 27 29 30 31 32 40 41 42 43 44 45 46 47 48 49 50 51 54 55
-    60 61
+    on left: 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58
+    59, on right: 27 29 30 31 32 40 41 42 43 44 45 46 47 48 49 50 51
+    54 55 60 61
 Args (52)
-    左： 60 61, 右： 52 60
+    on left: 60 61, on right: 52 60
 
 
 State 0

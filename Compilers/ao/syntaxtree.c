@@ -63,8 +63,9 @@ int o_tree_b(STTree *sttree) {
 	return 1;
 }
 
-STTree * cretree_i(char *content,yyltype loc_info,int t_value,int i_value) {
+STTree * cretree_i(int num,char *content,yyltype loc_info,int t_value,int i_value) {
 	STTree * temp = (STTree *)malloc(sizeof(STTree));
+    temp->num = num;
 	strcpy(temp->content,content);
 	temp->loc_info = loc_info;
 	temp->value.i_value = i_value;
@@ -74,9 +75,10 @@ STTree * cretree_i(char *content,yyltype loc_info,int t_value,int i_value) {
 	return temp;
 }
 
-STTree * cretree_f(char *content,yyltype loc_info,int t_value,float f_value) {
+STTree * cretree_f(int num,char *content,yyltype loc_info,int t_value,float f_value) {
 	STTree * temp = (STTree *)malloc(sizeof(STTree));
-	strcpy(temp->content,content);
+	temp->num = num;
+    strcpy(temp->content,content);
 	temp->loc_info = loc_info;
 	temp->value.f_value = f_value;
 	temp->t_value = t_value;
@@ -85,9 +87,10 @@ STTree * cretree_f(char *content,yyltype loc_info,int t_value,float f_value) {
 	return temp;
 }
 
-STTree * cretree_c(char *content,yyltype loc_info,int t_value,char *c_value) {
+STTree * cretree_c(int num,char *content,yyltype loc_info,int t_value,char *c_value) {
 	STTree * temp = (STTree *)malloc(sizeof(STTree));
-	strcpy(temp->content,content);
+	temp->num = num;
+    strcpy(temp->content,content);
 	temp->loc_info = loc_info;
 	strcpy(temp->value.c_value,c_value);
 	temp->t_value = t_value;
@@ -96,11 +99,12 @@ STTree * cretree_c(char *content,yyltype loc_info,int t_value,char *c_value) {
 	return temp;
 }
 
-STTree * entree(char *content,yyltype loc_info,int n, ...){
+STTree * entree(int num,char *content,yyltype loc_info,int n, ...){
 	int i = 0;
 	STTree *temp[n];
 	STTree *root = (STTree *)malloc(sizeof(STTree));
-	strcpy(root->content,content);
+	root->num = num;
+    strcpy(root->content,content);
 	root->loc_info = loc_info;
 	root->t_value = 0;
 	root->C_next = NULL;

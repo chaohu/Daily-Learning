@@ -1,5 +1,5 @@
 #ifndef AO_H
-#define AO_H
+#define AO_H 1
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,6 +31,7 @@ union T_value{
 };
 
 typedef struct STTree{
+    int num;
 	char content[17];
 	yyltype loc_info;
 	union T_value value;
@@ -39,9 +40,12 @@ typedef struct STTree{
 	struct STTree *B_next;
 }STTree;
 
+STTree *_sttree;
+
 int syntaxtree(STTree *);
 int o_tree_c(STTree *);
 int o_tree_b(STTree *);
+int semantic(STTree *t_sttree);
 STTree *cretree_i(char *content,yyltype loc_info,int t_value,int i_value);
 STTree *cretree_f(char *content,yyltype loc_info,int t_value,float f_value);
 STTree *cretree_c(char *content,yyltype loc_info,int t_value,char *c_value);

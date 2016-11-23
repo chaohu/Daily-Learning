@@ -12,4 +12,4 @@ right:
 	./parser test2.c
 
 debug:
-	./parser test1.c -debug
+	./parser test3.c -debug
