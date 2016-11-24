@@ -76,9 +76,10 @@ struct SCOPE {
     SCOPE* next;
 };
 
-TOKEN token[128];
-TOKEN *n_token;
-SCOPE* scope = NULL;
+TOKEN token[128];   //符号表空间
+TOKEN *n_token;     //指向当前作用域的最后一个符号
+SCOPE* scope = NULL;    //作用域栈头指针
+char hide_name[3] = "$$";   //隐藏符号的名字
  
 unsigned hash_pjw(char* name);
 int addscope();
@@ -87,7 +88,7 @@ int looksymbol(char* name);
 int ensymbol(char *name, TOKEN *t_token);
 Type cre_type_b(STTree *sttree);
 Type cre_type_a(Type elem,int size);
-Type cre_type_s(FieldList structure);
+Type cre_type_s(STTree *t_sttree);
 FieldList cre_type_f(char *name,Type type,FieldList tail);
 int pro_iden(char *name, Type type);
 int pro_func(char *name, Type type);

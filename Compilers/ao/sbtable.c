@@ -22,19 +22,19 @@ unsigned hash_pjw(char* name)
  * 作者：ao
  * 功能：新增一个符号作用域
  */
-int addscope(TOKEN *_token) {
+int addscope() {
+    n_token = NULL;
     SCOPE *temp = (SCOPE *)malloc(sizeof(SCOPE));
     if (scope == NULL) {
-        temp->token = _token;
+        temp->token = n_token;
         temp->next = NULL;
         scope = temp;
     }
     else {
         temp->next = scope;
-        temp->token = _token;
+        temp->token = n_token;
         scope = temp;
     }
-    n_token = _token;
     return 1;
 }
 
@@ -48,13 +48,20 @@ int delscope() {
     TOKEN *token = s_temp->token;
     TOKEN *t_temp;
     scope = scope->next;
-    if (scope) n_token = scope->token;
+    if (scope->token) {
+        n_token = scope->token;
+        while(n_token->below) {
+            n_token = n_token->below;
+        }
+    }
     else n_token = NULL;
     free(s_temp);
     while(token != NULL) {
         token->prev->next = token->next;
+        token->next->prev = token->prev;
         t_temp = token;
         token = token->below;
+        free(t_temp);
     }
     return 1;
 }
@@ -130,7 +137,7 @@ Type cre_type_a(Type elem,int size) {
  * 作者：ao
  * 功能：构造一个结构类型type
  */
-Type cre_type_s(FieldList structure) {
+Type cre_type_s(STTree *t_sttree) {
     Type t_temp = (Type)malloc(sizeof(Type_));
     t_temp->kind = t_temp->STRUCTURE;
     t_temp->u.structure = structure;

@@ -5,3 +5,5 @@
 scanner
 parser
 
+#忽略vim产生的临时交换文件
+*.swp
