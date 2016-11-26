@@ -11,7 +11,7 @@ struct Type_ {
     union
     {
         //基本类型
-        int basic;
+        int basic;      //0：int，1：float
         //数组类型信息包括元素类型与数组大小构成
         struct { Type elem; int size; } array;
         //结构体类型信息是一个链表
@@ -53,10 +53,10 @@ struct Structure {
     Type type;
 };
 
-struct Structfield {
+/*struct Structfield {
     char* name;
     Type type;
-};
+};*/
 
 struct TOKEN {
     enum { IDENTITY, FUNCTION, VARIABLE, STRUCTURE } kind;
@@ -96,5 +96,14 @@ int pro_vari(char *name, Type type);
 int pro_stru(char *name, Type type);
 int s_tree_c(STTree *t_sttree);
 int s_tree_b(STTree *t_sttree);
+Type deal_specifier(STTree *t_sttree);
+Type deal_structspecifier(STTree *t_sttree);
+FieldList s_deal_deflist(STTree *t_sttree);
+int c_deal_deflist(STTree *t_sttree);
+FieldList deal_def(STTree *t_sttree);
+FieldList deal_declist(Type type,STTree *t_sttree);
+char *deal_dec(STTree *t_sttree);
+Type t_exit(char *c_value);
+
 
 #endif

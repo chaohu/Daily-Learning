@@ -96,10 +96,16 @@ int looksymbol(char *name) {
  */
 int ensymbol(char *name, TOKEN *t_token) {
     unsigned i = hash_pjw(name);
-    t_token->next = token[i].next;
-    token[i].next->prev = t_token;
-    t_token->prev = &token[i];
-    token[i].next = t_token;
+    if(token[i].next == NULL) {
+        token[i].next = t_token;
+        t_token->prev = &token[i];
+    }
+    else {
+        t_token->next = token[i].next;
+        token[i].next->prev = t_token;
+        t_token->prev = &token[i];
+        token[i].next = t_token;
+    }
     t_token->below = NULL;
     n_token->below = t_token;
     n_token = t_token;

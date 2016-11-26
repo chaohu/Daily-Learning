@@ -56,7 +56,7 @@ int main(void) {
         exit(0);
     }
     else {
-        if((child2pid = fork()) == -1) { //在创建子进程2
+        if((child2pid = fork()) == -1) { //再创建子进程2
             perror("fork");
             exit(1);
         }
