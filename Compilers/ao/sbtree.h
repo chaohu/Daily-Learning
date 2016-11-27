@@ -43,10 +43,10 @@ struct Variable {
     Type type;
 };
 
-struct Array {
+/*struct Array {
     int size;
     Type type;
-};
+};*/
 
 struct Structure {
     char* name;
@@ -96,14 +96,21 @@ int pro_vari(char *name, Type type);
 int pro_stru(char *name, Type type);
 int s_tree_c(STTree *t_sttree);
 int s_tree_b(STTree *t_sttree);
+int deal_extdeflist(STTree *t_sttree);
+int deal_extdef(STTree *t_sttree);  //处理extdef
 Type deal_specifier(STTree *t_sttree);
 Type deal_structspecifier(STTree *t_sttree);
-FieldList s_deal_deflist(STTree *t_sttree);
+FieldList deal_s_deflist(STTree *t_sttree); //处理结构体中的deflist
 int c_deal_deflist(STTree *t_sttree);
 FieldList deal_def(STTree *t_sttree);
 FieldList deal_declist(Type type,STTree *t_sttree);
-char *deal_dec(STTree *t_sttree);
-Type t_exit(char *c_value);
+FieldList deal_dec(Type type,STTree *t_sttree);
+FieldList deal_s_vardec(Type type,STTree *t_sttree);    //处理结构体中的vardec
+int deal_extdeclist(Type type,STTree *t_sttree);//处理extdeclist
+int deal_vardec(int kind,Type type,STTree *t_sttree);//处理vardec
+int deal_fundec(STTree *t_sttree);
+int deal_compst(STTree *t_sttree);
+Type t_exit(int kind,char *c_value);
 
 
 #endif
