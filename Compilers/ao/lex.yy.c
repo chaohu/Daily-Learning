@@ -868,7 +868,7 @@ case 1:
 YY_RULE_SETUP
 #line 17 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("TYPE",yylloc,2,"int");
+	yylval.type_sttree = cretree_c(36,"TYPE",yylloc,2,"int");
 	return TYPE;
 	}
 	YY_BREAK
@@ -876,7 +876,7 @@ case 2:
 YY_RULE_SETUP
 #line 21 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("TYPE",yylloc,2,"float");
+	yylval.type_sttree = cretree_c(36,"TYPE",yylloc,2,"float");
 	return TYPE;
 	}
 	YY_BREAK
@@ -884,7 +884,7 @@ case 3:
 YY_RULE_SETUP
 #line 25 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("STRUCT",yylloc,1,"struct");
+	yylval.type_sttree = cretree_c(43,"STRUCT",yylloc,1,"struct");
 	return STRUCT;
 	}
 	YY_BREAK
@@ -892,7 +892,7 @@ case 4:
 YY_RULE_SETUP
 #line 29 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("RETURN",yylloc,1,"return");
+	yylval.type_sttree = cretree_c(44,"RETURN",yylloc,1,"return");
 	return RETURN;
 	}
 	YY_BREAK
@@ -900,7 +900,7 @@ case 5:
 YY_RULE_SETUP
 #line 33 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("IF",yylloc,1,"if");
+	yylval.type_sttree = cretree_c(45,"IF",yylloc,1,"if");
 	return IF;
 	}
 	YY_BREAK
@@ -908,7 +908,7 @@ case 6:
 YY_RULE_SETUP
 #line 37 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("ELSE",yylloc,1,"else");
+	yylval.type_sttree = cretree_c(46,"ELSE",yylloc,1,"else");
 	return ELSE;
 	}
 	YY_BREAK
@@ -916,7 +916,7 @@ case 7:
 YY_RULE_SETUP
 #line 41 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("WHILE",yylloc,1,"while");
+	yylval.type_sttree = cretree_c(47,"WHILE",yylloc,1,"while");
 	return WHILE;
 	}
 	YY_BREAK
@@ -924,7 +924,7 @@ case 8:
 YY_RULE_SETUP
 #line 45 "lexical.l"
 {
-	yylval.type_sttree = cretree_i("INT",yylloc,3,atoi(yytext));
+	yylval.type_sttree = cretree_i(21,"INT",yylloc,3,atoi(yytext));
 	return INT;
 	 }
 	YY_BREAK
@@ -932,7 +932,7 @@ case 9:
 YY_RULE_SETUP
 #line 49 "lexical.l"
 {
-	yylval.type_sttree = cretree_i("INT",yylloc,3,(int)strtol(yytext,NULL,8));
+	yylval.type_sttree = cretree_i(21,"INT",yylloc,3,(int)strtol(yytext,NULL,8));
 	return INT;
  	}
 	YY_BREAK
@@ -940,7 +940,7 @@ case 10:
 YY_RULE_SETUP
 #line 53 "lexical.l"
 {
-	yylval.type_sttree = cretree_i("INT",yylloc,3,(int)strtol(yytext,NULL,16));
+	yylval.type_sttree = cretree_i(21,"INT",yylloc,3,(int)strtol(yytext,NULL,16));
 	return INT;
 	}
 	YY_BREAK
@@ -948,7 +948,7 @@ case 11:
 YY_RULE_SETUP
 #line 57 "lexical.l"
 {
-	yylval.type_sttree = cretree_f("FLOAT",yylloc,4,atof(yytext));
+	yylval.type_sttree = cretree_f(22,"FLOAT",yylloc,4,atof(yytext));
 	return FLOAT;
 	}
 	YY_BREAK
@@ -956,14 +956,14 @@ case 12:
 YY_RULE_SETUP
 #line 61 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("ID",yylloc,2,yytext);
+	yylval.type_sttree = cretree_c(23,"ID",yylloc,2,yytext);
 	return ID; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 64 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("SEMI",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(24,"SEMI",yylloc,1,yytext);
 	return SEMI;
 	}
 	YY_BREAK
@@ -971,7 +971,7 @@ case 14:
 YY_RULE_SETUP
 #line 68 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("COMMA",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(25,"COMMA",yylloc,1,yytext);
 	return COMMA;
 	}
 	YY_BREAK
@@ -979,7 +979,7 @@ case 15:
 YY_RULE_SETUP
 #line 72 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("ASSIGNOP",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(26,"ASSIGNOP",yylloc,1,yytext);
 	return ASSIGNOP;
 	}
 	YY_BREAK
@@ -987,7 +987,7 @@ case 16:
 YY_RULE_SETUP
 #line 76 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("RELOP",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(27,"RELOP",yylloc,1,yytext);
 	return RELOP;
 	}
 	YY_BREAK
@@ -995,7 +995,7 @@ case 17:
 YY_RULE_SETUP
 #line 80 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("PLUS",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(28,"PLUS",yylloc,1,yytext);
 	return PLUS;
 	}
 	YY_BREAK
@@ -1003,7 +1003,7 @@ case 18:
 YY_RULE_SETUP
 #line 84 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("MINUS",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(29,"MINUS",yylloc,1,yytext);
 	return MINUS;
 	}
 	YY_BREAK
@@ -1011,7 +1011,7 @@ case 19:
 YY_RULE_SETUP
 #line 88 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("STAR",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(30,"STAR",yylloc,1,yytext);
 	return STAR;
 	}
 	YY_BREAK
@@ -1019,7 +1019,7 @@ case 20:
 YY_RULE_SETUP
 #line 92 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("DIV",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(31,"DIV",yylloc,1,yytext);
 	return DIV;
 	}
 	YY_BREAK
@@ -1027,7 +1027,7 @@ case 21:
 YY_RULE_SETUP
 #line 96 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("AND",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(32,"AND",yylloc,1,yytext);
 	return AND;
 	}
 	YY_BREAK
@@ -1035,7 +1035,7 @@ case 22:
 YY_RULE_SETUP
 #line 100 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("OR",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(33,"OR",yylloc,1,yytext);
 	return OR;
 	}
 	YY_BREAK
@@ -1043,7 +1043,7 @@ case 23:
 YY_RULE_SETUP
 #line 104 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("DOT",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(34,"DOT",yylloc,1,yytext);
 	return DOT;
 	}
 	YY_BREAK
@@ -1051,7 +1051,7 @@ case 24:
 YY_RULE_SETUP
 #line 108 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("NOT",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(35,"NOT",yylloc,1,yytext);
 	return NOT;
 	}
 	YY_BREAK
@@ -1059,7 +1059,7 @@ case 25:
 YY_RULE_SETUP
 #line 112 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("LP",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(37,"LP",yylloc,1,yytext);
 	return LP;
 	}
 	YY_BREAK
@@ -1067,7 +1067,7 @@ case 26:
 YY_RULE_SETUP
 #line 116 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("RP",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(38,"RP",yylloc,1,yytext);
 	return RP;
 	}
 	YY_BREAK
@@ -1075,7 +1075,7 @@ case 27:
 YY_RULE_SETUP
 #line 120 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("LB",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(39,"LB",yylloc,1,yytext);
 	return LB;
 	}
 	YY_BREAK
@@ -1083,7 +1083,7 @@ case 28:
 YY_RULE_SETUP
 #line 124 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("RB",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(40,"RB",yylloc,1,yytext);
 	return RB;
 	}
 	YY_BREAK
@@ -1091,7 +1091,7 @@ case 29:
 YY_RULE_SETUP
 #line 128 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("LC",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(41,"LC",yylloc,1,yytext);
 	return LC;
 	}
 	YY_BREAK
@@ -1099,7 +1099,7 @@ case 30:
 YY_RULE_SETUP
 #line 132 "lexical.l"
 {
-	yylval.type_sttree = cretree_c("RC",yylloc,1,yytext);
+	yylval.type_sttree = cretree_c(42,"RC",yylloc,1,yytext);
 	return RC;
 	}
 	YY_BREAK

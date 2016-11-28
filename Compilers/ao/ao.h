@@ -46,9 +46,9 @@ int syntaxtree(STTree *);
 int o_tree_c(STTree *);
 int o_tree_b(STTree *);
 int semantic(STTree *t_sttree);
-STTree *cretree_i(char *content,yyltype loc_info,int t_value,int i_value);
-STTree *cretree_f(char *content,yyltype loc_info,int t_value,float f_value);
-STTree *cretree_c(char *content,yyltype loc_info,int t_value,char *c_value);
-STTree *entree(char *content,yyltype loc_info,int n,...);
+STTree *cretree_i(int num,char *content,yyltype loc_info,int t_value,int i_value);
+STTree *cretree_f(int num,char *content,yyltype loc_info,int t_value,float f_value);
+STTree *cretree_c(int num,char *content,yyltype loc_info,int t_value,char *c_value);
+STTree *entree(int num,char *content,yyltype loc_info,int n,...);
 
 #endif

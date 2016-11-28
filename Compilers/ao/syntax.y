@@ -53,6 +53,7 @@ Program
 		$$ = entree(0,"Program",@1,1,$1);
         _sttree = $$;
 		syntaxtree($$);
+        semantic($$);
 		}
 	;
 ExtDefList 
