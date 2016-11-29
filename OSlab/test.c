@@ -1,43 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <signal.h>
 #include <unistd.h>
-#include <sys/wait.h>
+#include <pthread.h>
 
-void waiting(),stop();
-int wait_mark;
+#define MAX 5
 
-void waiting()
-{
-      while(wait_mark!=0);
+void pthread_child1(void) {
+    int i;
+    for(i=0;i<MAX;i++) {
+        printf("Thread_Child1:%d\n",i);
+        sleep(1);
+    }
 }
 
-void stop()
-{
-     wait_mark=0;
+void pthread_child2(void) {
+    int i;
+    for(i=0;i<MAX;i++) {
+        printf("Thread_Child2:%d\n",i);
+        sleep(1);
+    }
 }
 
-int main()
-{
-    int p1;
-    while((p1= fork()) == -1);
-    if (p1>0)
-    {
-        wait_mark=1;
-        signal(SIGINT,stop); 
-        waiting(); 
-        kill(p1,SIGUSR1);
-        wait(0);
-        printf("parent process is killed!\n");
-        exit(0);
+int main() {
+    pthread_t child1,child2;
+    int i;
+    int ret1,ret2;
+
+    ret1 = pthread_create(&child1,NULL,(void*)pthread_child1,NULL);
+    ret2 = pthread_create(&child2,NULL,(void*)pthread_child2,NULL);
+
+    if(ret1!=0||ret2!=0) {
+        printf("faulure!\n");
+        exit(1);
     }
-    else
-    {
-        wait_mark=1;
-        signal(SIGUSR1,stop);
-        signal(SIGINT,SIG_IGN);
-        waiting();
-        printf("child process1 is killed by parent!\n");
-        exit(0);
-    }
+    
+    pthread_join(child1,NULL);
+    pthread_join(child2,NULL);
+
+    return 0;
 }
