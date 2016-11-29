@@ -129,8 +129,11 @@ int deal_c_dec(Type type,STTree *t_sttree);//处理函数体中的dec
 int deal_c_vardec(int kind,Type type,STTree *t_sttree);//处理函数体中的vardec
 int deal_stmtlist(STTree *t_sttree);//处理stmtlist
 int deal_stmt(STTree *t_sttree);//处理stmt
-int deal_exp(STTree *t_sttree);//处理exp
-Type t_exit(int kind,char *c_value);
+Type deal_exp(STTree *t_sttree);//处理exp
+int deal_args(ParaList paralist,STTree *t_sttree);//处理args
+int match(Type type1,Type type2);//判断两个ID类型是否匹配
+Type t_exit(int kind,char *c_value);//查找符号是否在符号表中
+ParaType para_fun(char *c_value);//返回函数的参数ParaType
 
 
 #endif

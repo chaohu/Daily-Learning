@@ -385,53 +385,135 @@ int deal_stmt(STTree *t_sttree) {
  * 作者：ao
  * 功能：处理exp
  */
-int deal_exp(STTree *t_sttree) {
+Type deal_exp(STTree *t_sttree) {
+    Type type1,type2;
     if(t_sttree->C_next->num == 19) {
         if(t_sttree->C_next->B_next->num == 26) {
+            type1 = deal_exp(t_sttree->C_next);
+            type2 = deal_exp(t_sttree->C_next->B_next->B_next);
+            if(match(type1,type2)) return type1;
+            else {
+                printf("类型不匹配@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
+            }
         }
-        else if(t_sttree->C_next->B_next->num == 32) {
-
-        }
-        else if(t_sttree->C_next->B_next->num == 33) {
-
+        else if(t_sttree->C_next->B_next->num == 32 || t_sttree->C_next->B_next->num == 33) {
+            type1 = deal_exp(t_sttree->C_next);
+            type2 = deal_exp(t_sttree->C_next->B_next->B_next);
+            if(type1->kind == 0 && type2->kind == 0 && type1->u.basic == 0 && type2->u.basic == 0) {
+                return type1;
+            }
+            else {
+                printf("两者类型必需均为int型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
+            }
         }
         else if(t_sttree->C_next->B_next->num == 27) {
-
+            type1 = deal_exp(t_sttree->C_next);
+            type2 = deal_exp(t_sttree->C_next->B_next->B_next);
+            if(type1->kind == 0 && type2->kind == 0) {
+                if(type1->u.basic) return type1;
+                else return type2;
+            }
+            else {
+                printf("两者类型必须均为int或float@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
+            }
         }
-        else if(t_sttree->C_next->B_next->num == 28) {
-
-        }
-        else if(t_sttree->C_next->B_next->num == 29) {
-
-        }
-        else if(t_sttree->C_next->B_next->num == 30) {
-
-        }
-        else if(t_sttree->C_next->B_next->num == 31) {
-
+        else if(t_sttree->C_next->B_next->num == 28 || t_sttree->C_next->B_next->num == 29 || t_sttree->C_next->B_next->num == 30 || t_sttree->C_next->B_next->num == 31) {
+            type1 = deal_exp(t_sttree->C_next);
+            type2 = deal_exp(t_sttree->C_next->B_next->B_next);
+            if(type1->kind == 0 && type2->kind == 0) {
+                if(type1->u.basic) return type1;
+                else return type2;
+            }
+            else {
+                printf("两者类型必须均为int或float@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
+            }
         }
         else if(t_sttree->C_next->B_next->num == 39) {
-
+            type1 = deal_exp(t_sttree->C_next);
+            type2 = deal_exp(t_sttree->C_next->B_next->B_next);
+            if(type1->kind == 1) {
+                if(type2->kind == 0 && type2->u.basic == 0) {
+                    while(type1->kind != 0) {
+                        type1 = type1->u.array.elem;
+                    }
+                    return type1;
+                }
+                else {
+                    printf("需为int@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
+                    exit(1);
+                }
+            }
+            else {
+                printf("变量不是数组类型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
+            }
         }
         else if(t_sttree->C_next->B_next->num == 34) {
-
+            type1 = deal_exp(t_sttree->C_next);
+            if(type1->kind == 2){
+                while(type1->u.structure != NULL) {
+                    if(strcmp(type1->u.structure->name,t_sttree->C_next->B_next->B_next->value.c_value)) {
+                        return type1->u.structure->type;
+                    }
+                    else type1->u.structure = type1->u.structure->tail;
+                }
+                printf("该结构体没有此成员@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
+                exit(1);
+            }
+            else {
+                printf("变量需为结构体类型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
+            }
         }
     }
     else if(t_sttree->C_next->num == 37) {
-
+        return deal_exp(t_sttree->C_next->B_next);
     }
     else if(t_sttree->C_next->num == 29) {
-
+        type1 = deal_exp(t_sttree->C_next->B_next);
+        if(type1->kind == 0) {
+            return type1;
+        }
+        else {
+            printf("变量需为int或float型@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
+            exit(1);
+        }
     }
     else if(t_sttree->C_next->num == 35) {
-
+        type1 = deal_exp(t_sttree->C_next->B_next);
+        if(type1->kind == 0 && type1->u.basic == 0) return type1;
+        else {
+            printf("变量需为int型@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
+            exit(1);
+        }
     }
     else if(t_sttree->C_next->num == 23) {
         if(t_sttree->C_next->B_next) {
+            ParaType paratype;
             if(t_sttree->C_next->B_next->B_next->num == 20) {
+                type1 = t_exit(1,t_sttree->C_next->value.c_value);
+                if(type1) {
+                    paratype = para_fun(t_sttree->C_next->value.c_value);
+                    if(deal_args(paratype.paralist,t_sttree->C_next->B_next->B_next)) return type1;
+                    else {
+                        printf("函数参数不匹配@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                        exit(1);
+                    }
+                }
+                else {
+                    printf("此函数未声明@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                    exit(1);
+                }
 
             }
             else {
+                type1 = t_exit(1,t_sttree->C_next->value.c_value);
+                if(type1) {
+                    paratype = 
 
             }
         }
@@ -445,7 +527,24 @@ int deal_exp(STTree *t_sttree) {
     else if(t_sttree->C_next->num == 22) {
 
     }
-    return 1;
+}
+
+/**
+ * 名称：deal_args
+ * 作者：ao
+ * 功能：处理args
+ */
+int deal_args(ParaList paralist,STTree *t_sttree) {
+
+}
+
+/**
+ * 名称：match
+ * 作者：ao
+ * 功能：判断两个ID的类型是否匹配
+ */
+int match(Type type1,Type type2) {
+
 }
 
 /**
@@ -459,13 +558,37 @@ Type t_exit(int kind,char *c_value) {
     unsigned num = hash_pjw(c_value);
     TOKEN *t_token = token[num].next;
     while(t_token) {
-        switch(kind) {
-            case 0: if(strcmp(c_value,t_token->symbol.identity.name)) type = t_token->symbol.identity.type;break;
-            case 1: if(strcmp(c_value,t_token->symbol.function.name)) type = t_token->symbol.function.retype;break;
-            case 2: if(strcmp(c_value,t_token->symbol.variable.name)) type = t_token->symbol.variable.type;break;
-            case 3: if(strcmp(c_value,t_token->symbol.structure.name)) type = t_token->symbol.structure.type;break;
+        if(t_token->kind == kind) {
+            switch(kind) {
+                case 0: if(strcmp(c_value,t_token->symbol.identity.name)) type = t_token->symbol.identity.type;break;
+                case 1: if(strcmp(c_value,t_token->symbol.function.name)) type = t_token->symbol.function.retype;break;
+                case 2: if(strcmp(c_value,t_token->symbol.variable.name)) type = t_token->symbol.variable.type;break;
+                case 3: if(strcmp(c_value,t_token->symbol.structure.name)) type = t_token->symbol.structure.type;break;
+            }
         }
         t_token = t_token->next;
     }
     return type;
+}
+
+/**
+ * 名称：para_fun
+ * 作者：ao
+ * 功能：返回函数的参数ParaType
+ */
+ParaType para_fun(char *c_value) {
+    ParaType paratype;
+    paratype.paranum = 0;
+    paratype.paralist = NULL;
+    unsigned num = hash_pjw(c_value);
+    TOKEN *t_token = token[num].next;
+    while(t_token) {
+        if(t_token->kind == 1) {
+            if(strcmp(c_value,t_token->symbol.function.name)) {
+                paratype = t_token->symbol.function.paratype;break; 
+            }
+        t_token = t_token->next;
+        }
+    }
+    return paratype;
 }

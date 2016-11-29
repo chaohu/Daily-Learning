@@ -80,10 +80,10 @@ int delscope() {
 int looksymbol(char *name) {
     TOKEN *t_token = scope->token;
     char *t_name;
-    int type;
+    int kind;
     while(t_token) {
-        type = t_token->kind;
-        switch(type) {
+        kind = t_token->kind;
+        switch(kind) {
             case 0: t_name = t_token->symbol.identity.name;
             case 1: t_name = t_token->symbol.function.name;
             case 2: t_name = t_token->symbol.variable.name;
