@@ -64,7 +64,6 @@ ExtDef
 	: Specifier ExtDecList SEMI	{ $$ = entree(2,"ExtDef",@1,3,$1,$2,$3); }
 	| Specifier SEMI	{ $$ = entree(2,"ExtDef",@1,2,$1,$2); }
 	| Specifier FunDec CompSt	{ $$ = entree(2,"ExtDef",@1,3,$1,$2,$3); }
-	| error FunDec CompSt { }
 	;
 ExtDecList 
 	: VarDec	{ $$ = entree(3,"ExtDecList",@1,1,$1); }
@@ -108,7 +107,6 @@ ParamDec
 /* Statements */
 CompSt
 	: LC DefList StmtList RC	{ $$ = entree(12,"CompSt",@1,4,$1,$2,$3,$4); }
-	//| error DefList StmtList RC { }
 	;
 StmtList
 	: Stmt StmtList	{ $$ = entree(13,"StmtList",@1,2,$1,$2); }
@@ -121,7 +119,6 @@ Stmt
 	| IF LP Exp RP Stmt	%prec LOWER_THAN_ELSE { $$ = entree(14,"Stmt",@1,5,$1,$2,$3,$4,$5); }
 	| IF LP Exp RP Stmt ELSE Stmt	{ $$ = entree(14,"Stmt",@1,7,$1,$2,$3,$4,$5,$6,$7); }
 	| WHILE LP Exp RP Stmt	{ $$ = entree(14,"Stmt",@1,5,$1,$2,$3,$4,$5); }
-	| error SEMI { }
 	;
 
 /* Local Definitions */
@@ -139,7 +136,6 @@ DecList
 Dec
 	: VarDec	{ $$ = entree(18,"Dec",@1,1,$1); }
 	| VarDec ASSIGNOP Exp	{ $$ = entree(18,"Dec",@1,3,$1,$2,$3); }
-
 	;
 
 /* Expressions */
@@ -162,7 +158,6 @@ Exp
 	| ID	{ $$ = entree(19,"Exp",@1,1,$1); }
 	| INT	{ $$ = entree(19,"Exp",@1,1,$1); }
 	| FLOAT	{ $$ = entree(19,"Exp",@1,1,$1); }
-	| error RP { }
 	;
 Args
 	: Exp COMMA Args	{ $$ = entree(20,"Args",@1,3,$1,$2,$3); }

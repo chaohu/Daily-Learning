@@ -89,7 +89,7 @@ int looksymbol(char *name) {
             case 2: t_name = t_token->symbol.variable.name;
             case 3: t_name = t_token->symbol.structure.name;
         }
-        if (strcmp(name,t_name)) return 0;
+        if (!strcmp(name,t_name)) return 0;
         else t_token = t_token->below;
     }
     return 1;
