@@ -28,7 +28,7 @@ int addscope() {
     printf("\n新一层作用域\nname\ttype\tline\tcolumn\n");
     SCOPE *temp = (SCOPE *)malloc(sizeof(SCOPE));
     if (scope == NULL) {
-        temp->token = n_token;
+        temp->token = NULL;
         temp->next = NULL;
         scope = temp;
     }
@@ -68,7 +68,7 @@ int delscope() {
         token = token->below;
         free(t_temp);
     }
-
+    printf("一层作用域结束\n");
     return 1;
 }
 
@@ -114,7 +114,7 @@ int ensymbol(char *name, TOKEN *t_token) {
         token[i].next = t_token;
     }
     t_token->below = NULL;
-    if(scope->next) {
+    if(scope->token) {
         n_token->below = t_token;
         n_token = t_token;
     }
@@ -192,7 +192,10 @@ int pro_iden(char *name, Type type, yyltype loc_info) {
         t_token->loc_info = loc_info;
         ensymbol(name,t_token);
     }
-    else printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+    else {
+        printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+        exit(1);
+    }
     return 1;
 }
 
@@ -213,7 +216,10 @@ int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_in
         t_token->loc_info = loc_info;
         ensymbol(name,t_token);
     }
-    else printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+    else {
+        printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+        exit(1);
+    }
     return 1;
 }
 
@@ -232,7 +238,10 @@ int pro_vari(char *name,Type type,yyltype loc_info) {
         t_token->loc_info = loc_info;
         ensymbol(name,t_token);
     }
-    else printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+    else {
+        printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+        exit(1);
+    }
     return 1;
 }
 
@@ -251,6 +260,9 @@ int pro_stru(char *name, Type type,yyltype loc_info) {
         t_token->loc_info = loc_info;
         ensymbol(name,t_token);
     }
-    else printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+    else {
+        printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+        exit(1);
+    }
     return 1;
 }

@@ -7,6 +7,11 @@ typedef struct Type_ *Type;
 typedef struct FieldList_ *FieldList;
 typedef struct ParaList_ *ParaList;
 
+struct StructField {
+    char* name;
+    FieldList structure;
+};
+
 typedef struct Type_ {
     enum { BASIC, ARRAY, STRUCTURE } kind;
     union
@@ -14,9 +19,9 @@ typedef struct Type_ {
         //基本类型
         int basic;      //0：int，1：float
         //数组类型信息包括元素类型与数组大小构成
-        struct { Type elem; int size; } array;
+        struct {Type elem; int size; char *name; } array;
         //结构体类型信息是一个链表
-        FieldList structure;
+        struct StructField structfield;
     } u;
 }Type_;
  
@@ -55,20 +60,10 @@ typedef struct Variable {
     Type type;
 }Variable;
 
-/*struct Array {
-    int size;
-    Type type;
-};*/
-
 typedef struct Structure {
     char* name;
     Type type;
 }Structure;
-
-/*struct Structfield {
-    char* name;
-    Type type;
-};*/
 
 typedef struct TOKEN {
     enum { IDENTITY, FUNCTION, VARIABLE, _STRUCTURE } kind;
@@ -91,17 +86,13 @@ typedef struct SCOPE {
 
 TOKEN token[128];   //符号表空间
 TOKEN *n_token;     //指向当前作用域的最后一个符号
-char hide_name[3];  //隐藏符号的名字
+char hide_name[6];  //隐藏符号的名字
  
 unsigned hash_pjw(char* name);
 int addscope();
 int delscope();
 int looksymbol(char* name);
 int ensymbol(char *name, TOKEN *t_token);
-//Type cre_type_b(STTree *sttree);
-//Type cre_type_a(Type elem,int size);
-//Type cre_type_s(STTree *t_sttree);
-//FieldList cre_type_f(char *name,Type type,FieldList tail);
 int pro_iden(char *name,Type type,yyltype loc_info);//初始化一个新的indentity符号
 int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_info);//初始化一个新的function符号
 int pro_vari(char *name,Type type,yyltype loc_info);//初始化一个新的variable符号
@@ -115,9 +106,9 @@ FieldList deal_s_deflist(STTree *t_sttree); //处理结构体中的deflist
 FieldList deal_s_def(STTree *t_sttree);//处理结构体中的def
 FieldList deal_s_declist(Type type,STTree *t_sttree);//处理结构体中的declist
 FieldList deal_s_dec(Type type,STTree *t_sttree);//处理结构体中的dec
-FieldList deal_s_vardec(Type type,STTree *t_sttree);//处理结构体中的vardec
+FieldList deal_s_vardec(int kind,Type type,STTree *t_sttree);//处理结构体中的vardec
 int deal_extdeclist(Type type,STTree *t_sttree);//处理extdeclist
-ParaList deal_vardec(int kind,Type type,STTree *t_sttree);//处理vardec
+ParaList deal_c_vardec(int kind,Type type,STTree *t_sttree);//处理函数体中的vardec
 int deal_fundec(Type retype,STTree *t_sttree);  //处理fundec
 ParaList deal_varlist(int *paranum,STTree *t_sttree);//处理varlist
 ParaList deal_paramdec(STTree *t_sttree);//处理paramdec
@@ -126,13 +117,12 @@ int deal_c_deflist(STTree *t_sttree);//处理函数体中的deflist
 int deal_c_def(STTree *t_sttree);//处理函数体中的def
 int deal_c_declist(Type type,STTree *t_sttree);//处理函数体中的declist
 int deal_c_dec(Type type,STTree *t_sttree);//处理函数体中的dec
-int deal_c_vardec(int kind,Type type,STTree *t_sttree);//处理函数体中的vardec
+//int deal_c_vardec(int kind,Type type,STTree *t_sttree);//处理函数体中的vardec
 int deal_stmtlist(STTree *t_sttree);//处理stmtlist
 int deal_stmt(STTree *t_sttree);//处理stmt
 Type deal_exp(STTree *t_sttree);//处理exp
 int deal_args(ParaList paralist,STTree *t_sttree);//处理args
-int match(Type type1,Type type2);//判断两个ID类型是否匹配
-Type t_exit(int kind,char *c_value);//查找符号是否在符号表中
+Type t_exit(char *c_value);//查找符号是否在符号表中
 ParaType para_fun(char *c_value);//返回函数的参数ParaType
 
 
