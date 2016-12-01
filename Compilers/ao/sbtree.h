@@ -61,6 +61,7 @@ typedef struct Variable {
 }Variable;
 
 typedef struct Structure {
+    int specifier;   //specifier(0:类型 1:变量)
     char* name;
     Type type;
 }Structure;
@@ -89,14 +90,14 @@ TOKEN *n_token;     //指向当前作用域的最后一个符号
 char hide_name[6];  //隐藏符号的名字
  
 unsigned hash_pjw(char* name);
-int addscope();
-int delscope();
-int looksymbol(char* name);
-int ensymbol(char *name, TOKEN *t_token);
+int addscope();//新建一层作用域
+int delscope();//删除一层作用域
+Type looksymbol(int function,int specifier,char *c_value);//查找符号是否在符号表中
+int ensymbol(char *name, TOKEN *t_token);//将符号加入符号表
 int pro_iden(char *name,Type type,yyltype loc_info);//初始化一个新的indentity符号
 int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_info);//初始化一个新的function符号
 int pro_vari(char *name,Type type,yyltype loc_info);//初始化一个新的variable符号
-int pro_stru(char *name,Type type,yyltype loc_info);//初始化一个新的structure符号
+int pro_stru(int specifier,char *name,Type type,yyltype loc_info);//初始化一个新的structure符号
 int semantic(STTree *t_sttree);//分析函数入口
 int deal_extdeflist(STTree *t_sttree);
 int deal_extdef(STTree *t_sttree);  //处理extdef
@@ -112,18 +113,18 @@ ParaList deal_c_vardec(int kind,Type type,STTree *t_sttree);//处理函数体中
 int deal_fundec(Type retype,STTree *t_sttree);  //处理fundec
 ParaList deal_varlist(int *paranum,STTree *t_sttree);//处理varlist
 ParaList deal_paramdec(STTree *t_sttree);//处理paramdec
-Type deal_compst(STTree *t_sttree);  //处理compst
+int deal_compst(Type retype,STTree *t_sttree);  //处理compst
 int deal_c_deflist(STTree *t_sttree);//处理函数体中的deflist
 int deal_c_def(STTree *t_sttree);//处理函数体中的def
 int deal_c_declist(Type type,STTree *t_sttree);//处理函数体中的declist
 int deal_c_dec(Type type,STTree *t_sttree);//处理函数体中的dec
 //int deal_c_vardec(int kind,Type type,STTree *t_sttree);//处理函数体中的vardec
-Type deal_stmtlist(STTree *t_sttree);//处理stmtlist
-Type deal_stmt(STTree *t_sttree);//处理stmt
+int deal_stmtlist(Type retype,STTree *t_sttree);//处理stmtlist
+int deal_stmt(Type retype,STTree *t_sttree);//处理stmt
 Type deal_exp(STTree *t_sttree);//处理exp
 int deal_args(ParaList paralist,STTree *t_sttree);//处理args
+int type_match(Type type1,Type type2);//判断两个类型是否匹配
 int j_left(STTree *t_sttree);//判断是否为左值表达式
-Type t_exit(char *c_value);//查找符号是否在符号表中
 ParaType para_fun(char *c_value);//返回函数的参数ParaType
 
 

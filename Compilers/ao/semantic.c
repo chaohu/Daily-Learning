@@ -40,15 +40,10 @@ int deal_extdef(STTree *t_sttree) {
         deal_specifier(t_sttree->C_next);
     }
     else if(t_sttree->C_next->B_next->num == 9) {//FunDec
-        Type type2;
         addscope();
         type1 = deal_specifier(t_sttree->C_next);
         deal_fundec(type1,t_sttree->C_next->B_next);
-        type2 = deal_compst(t_sttree->C_next->B_next->B_next);
-        if(type1->kind != type2->kind) {
-            printf("返回类型不对@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-            exit(1);
-        }
+        deal_compst(type1,t_sttree->C_next->B_next->B_next);
         delscope();
     }
     return  1;
@@ -82,9 +77,9 @@ Type deal_specifier(STTree *t_sttree) {
 Type deal_structspecifier(STTree *t_sttree) {
     Type type = NULL;
     if(t_sttree->C_next->B_next->num == 7) {
-        type = t_exit(t_sttree->C_next->B_next->C_next->value.c_value);
+        type = looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value);
         if(type == NULL) {
-            printf("error, no such symbol!@line:%d,column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
+            printf("Error, 此结构类型未定义!@line:%d,column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
             exit(0);
         }
     }
@@ -93,18 +88,25 @@ Type deal_structspecifier(STTree *t_sttree) {
         type = (Type)malloc(sizeof(Type_));
         type->kind = STRUCTURE;
         if(t_sttree->C_next->B_next->C_next) {
-            type->u.structfield.name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->B_next->C_next->value.c_value) + 1));
-            strcpy(type->u.structfield.name,t_sttree->C_next->B_next->C_next->value.c_value);
-            type->u.structfield.structure = deal_s_deflist(t_sttree->C_next->B_next->B_next->B_next);
-            delscope();
-            pro_stru(t_sttree->C_next->B_next->C_next->value.c_value,type,t_sttree->C_next->B_next->loc_info);
+            if(looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value) == NULL) {
+                type->u.structfield.name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->B_next->C_next->value.c_value) + 1));
+                strcpy(type->u.structfield.name,t_sttree->C_next->B_next->C_next->value.c_value);
+                type->u.structfield.structure = deal_s_deflist(t_sttree->C_next->B_next->B_next->B_next);
+                delscope();
+                pro_stru(0,t_sttree->C_next->B_next->C_next->value.c_value,type,t_sttree->C_next->B_next->loc_info);
+            }
+            else {
+                printf("此结构类型已存在@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
+                exit(1);
+            }
         }
         else {
             sprintf(hide_name,"%d",hide_num);
+            hide_num++;
             strcpy(type->u.structfield.name,hide_name);
             type->u.structfield.structure = deal_s_deflist(t_sttree->C_next->B_next->B_next);
             delscope();
-            pro_stru(hide_name,type,t_sttree->C_next->loc_info);
+            pro_stru(0,hide_name,type,t_sttree->C_next->loc_info);
         }
     }
     return type;
@@ -285,14 +287,13 @@ ParaList deal_paramdec(STTree *t_sttree) {
  * 作者：ao
  * 功能：处理compst
  */
-Type deal_compst(STTree *t_sttree) {
-    Type type1 = NULL;
+int deal_compst(Type retype,STTree *t_sttree) {
     if(t_sttree->C_next->B_next->num == 15) {
         deal_c_deflist(t_sttree->C_next->B_next);
-        if(t_sttree->C_next->B_next->B_next->num == 13) type1 = deal_stmtlist(t_sttree->C_next->B_next->B_next);
+        if(t_sttree->C_next->B_next->B_next->num == 13) deal_stmtlist(retype,t_sttree->C_next->B_next->B_next);
     }
-    else if(t_sttree->C_next->B_next->num== 13) type1 = deal_stmtlist(t_sttree->C_next->B_next);
-    return type1;
+    else if(t_sttree->C_next->B_next->num== 13) deal_stmtlist(retype,t_sttree->C_next->B_next);
+    return 1;
 }
 
 /**
@@ -338,7 +339,7 @@ int deal_c_dec(Type type,STTree *t_sttree) {
         //TODO：类型检查
         ParaList paralist = deal_c_vardec(0,type,t_sttree->C_next);
         Type type1 = paralist->type;
-        Type type2 = deal_exp(t_sttree->C_next->B_next->B_next);
+        Type type2= deal_exp(t_sttree->C_next->B_next->B_next);
         if(type1->kind == 0) {
             if(type1->u.basic == 0) {
                 if(type2->kind == 0 && type2->u.basic == 0) return 1;
@@ -357,36 +358,14 @@ int deal_c_dec(Type type,STTree *t_sttree) {
 }
 
 /**
- * 名称：deal_c_vardec
- * 作者：ao
- * 功能：处理函数体中的vardec
- * 说明：kind(0:ID,1:ARRAY)
- */
-/*int deal_c_vardec(int kind,Type type,STTree *t_sttree) {
-    if(t_sttree->C_next->num == 23) {
-        if(kind) pro_vari(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
-        else pro_iden(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
-    }
-    else {
-        Type type1 = (Type)malloc(sizeof(Type_));
-        type1->kind = ARRAY;
-        type1->u.array.size = t_sttree->C_next->B_next->B_next->value.i_value;
-        type1->u.array.elem = type;
-        deal_c_vardec(1,type1,t_sttree->C_next);
-    }
-    return 1;
-}*/
-
-/**
  * 名称：deal_stmtlist
  * 作者：ao
  * 功能：处理stmtlist
  */
-Type deal_stmtlist(STTree *t_sttree) {
-    Type type1 = NULL;
-    type1 = deal_stmt(t_sttree->C_next);
-    if(t_sttree->C_next->B_next) type1 = deal_stmtlist(t_sttree->C_next->B_next);
-    return type1;
+int deal_stmtlist(Type retype,STTree *t_sttree) {
+    deal_stmt(retype,t_sttree->C_next);
+    if(t_sttree->C_next->B_next) deal_stmtlist(retype,t_sttree->C_next->B_next);
+    return 1;
 }
 
 /**
@@ -394,29 +373,34 @@ Type deal_stmtlist(STTree *t_sttree) {
  * 作者：ao
  * 功能：处理stmt
  */
-Type deal_stmt(STTree *t_sttree) {
-    Type type1 = NULL;
-    if(t_sttree->C_next->num == 19) type1 = deal_exp(t_sttree->C_next);
-    else if(t_sttree->C_next->num == 12) type1 = deal_compst(t_sttree->C_next);
-    else if(t_sttree->C_next->num == 44) type1 = deal_exp(t_sttree->C_next->B_next);
+int deal_stmt(Type retype,STTree *t_sttree) {
+    if(t_sttree->C_next->num == 19) deal_exp(t_sttree->C_next);
+    else if(t_sttree->C_next->num == 12) deal_compst(retype,t_sttree->C_next);
+    else if(t_sttree->C_next->num == 44) {
+        Type type1 = deal_exp(t_sttree->C_next->B_next);
+        if(!type_match(retype,type1)) {
+            printf("返回值类型不正确@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
+            exit(1);
+        }
+    }
     else if(t_sttree->C_next->num == 45) {
-        type1 = deal_exp(t_sttree->C_next->B_next->B_next);
+        deal_exp(t_sttree->C_next->B_next->B_next);
         addscope();
-        type1 = deal_stmt(t_sttree->C_next->B_next->B_next->B_next->B_next);
+        deal_stmt(retype,t_sttree->C_next->B_next->B_next->B_next->B_next);
         delscope();
         if(t_sttree->C_next->B_next->B_next->B_next->B_next->B_next) {
             addscope();
-            type1 = deal_stmt(t_sttree->C_next->B_next->B_next->B_next->B_next->B_next->B_next);
+            deal_stmt(retype,t_sttree->C_next->B_next->B_next->B_next->B_next->B_next->B_next);
             delscope();
         }
     }
     else if(t_sttree->C_next->num == 47) {
-        type1 = deal_exp(t_sttree->C_next->B_next->B_next);
+        deal_exp(t_sttree->C_next->B_next->B_next);
         addscope();
-        type1 = deal_stmt(t_sttree->C_next->B_next->B_next->B_next->B_next);
+        deal_stmt(retype,t_sttree->C_next->B_next->B_next->B_next->B_next);
         delscope();
     }
-    return type1;
+    return 1;
 }
 
 /**
@@ -546,10 +530,10 @@ Type deal_exp(STTree *t_sttree) {
     else if(t_sttree->C_next->num == 23) {
         if(t_sttree->C_next->B_next) {
             ParaType paratype;
-            if(t_sttree->C_next->B_next->B_next->num == 20) {
-                type1 = t_exit(t_sttree->C_next->value.c_value);
-                if(type1) {
-                    paratype = para_fun(t_sttree->C_next->value.c_value);
+            type1 = looksymbol(1,1,t_sttree->C_next->value.c_value);
+            if(type1) {
+                paratype = para_fun(t_sttree->C_next->value.c_value);
+                if(t_sttree->C_next->B_next->B_next->num == 20) {
                     if(paratype.paranum > 0) {
                         if(deal_args(paratype.paralist,t_sttree->C_next->B_next->B_next)) return type1;
                         else {
@@ -563,29 +547,20 @@ Type deal_exp(STTree *t_sttree) {
                     }
                 }
                 else {
-                    printf("此函数未声明@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                    exit(1);
-                }
-
-            }
-            else {
-                type1 = t_exit(t_sttree->C_next->value.c_value);
-                if(type1) {
-                    paratype = para_fun(t_sttree->C_next->value.c_value);
                     if(paratype.paranum == 0) return type1;
                     else {
-                        printf("此函数无参数@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                        printf("此函数有参数@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
                         exit(1);
                     }
                 }
-                else {
-                    printf("此函数未声明@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                    exit(1);
-                }
+            }
+            else {
+                printf("此函数未声明@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
             }
         }
         else {
-            type1 = t_exit(t_sttree->C_next->value.c_value);
+            type1 = looksymbol(1,1,t_sttree->C_next->value.c_value);
             if(type1) return type1;
             else {
                 printf("此变量未声明@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
@@ -646,6 +621,27 @@ int deal_args(ParaList paralist,STTree *t_sttree) {
 }
 
 /**
+ * 名称：type_match
+ * 作者：ao
+ * 功能：判断两个类型是否匹配
+ */
+int type_match(Type type1,Type type2) {
+    int judge = 0;
+    if(type1->kind == type2->kind) {
+        if(type1->kind == 0) {
+            if(type1->u.basic == type2->u.basic) judge = 1;
+        }
+        else if(type1->kind == 1) {
+            if(!strcmp(type1->u.array.name,type2->u.array.name)) judge = 1;
+        }
+        else if(type1->kind == 2) {
+            if(!strcmp(type1->u.structfield.name,type2->u.structfield.name)) judge = 1;
+        }
+    }
+    return judge;
+}
+
+/**
  * 名称：j_left
  * 作者：ao
  * 功能：判断表达式是否为左值
@@ -663,28 +659,6 @@ int j_left(STTree *t_sttree) {
         }
     }
     return 0;
-}
-
-/**
- * 名称：t_exit
- * 作者：ao
- * 功能：检查symbol是否存在，若存在返回symbol类型
- * 说明：kind(0:ID,1:FU,2:VA,3:ST)
- */
-Type t_exit(char *c_value) {
-    Type type = NULL;
-    unsigned num = hash_pjw(c_value);
-    TOKEN *t_token = token[num].next;
-    while(t_token) {
-        switch(t_token->kind) {
-            case 0: if(!strcmp(c_value,t_token->symbol.identity.name)) type = t_token->symbol.identity.type;break;
-            case 1: if(!strcmp(c_value,t_token->symbol.function.name)) type = t_token->symbol.function.retype;break;
-            case 2: if(!strcmp(c_value,t_token->symbol.variable.name)) type = t_token->symbol.variable.type;break;
-            case 3: if(!strcmp(c_value,t_token->symbol.structure.name)) type = t_token->symbol.structure.type;break;
-        }
-        t_token = t_token->next;
-    }
-    return type;
 }
 
 /**

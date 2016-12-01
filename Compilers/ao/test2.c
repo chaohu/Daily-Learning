@@ -8,7 +8,9 @@ struct dddd {
     struct xxxx z;
 };
 
-int inc()
+struct dddd dddd;
+
+struct dddd inc(int c)
 {
 	float x = 0.1;
 	int y = 01;
@@ -20,6 +22,7 @@ int inc()
         dddd.z.z = i;
         //i = x;
         i = 2;
+        return dddd;
         //h = 0;
     }
     while(1) {
@@ -27,5 +30,5 @@ int inc()
         int a[10];
         a[0] = 1;
     }
-	return 0;
+	return dddd;
 }

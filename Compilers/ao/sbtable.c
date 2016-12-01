@@ -2,6 +2,7 @@
 #include "sbtree.h"
 
 SCOPE *scope = NULL;    //作用域栈头指针
+int scope_num = 0;      //作用域层数
 /**
  * 名称：哈希函数
  * 作者：P.J.Weinberger 
@@ -14,7 +15,7 @@ unsigned hash_pjw(char* name)
     for (; *name; ++name)
     {
         val = (val << 2) + *name;
-        if ((i = val) & ~0x80) val = (val ^ (i >> 12)) & 0x80;
+        if ((i = val & ~0x7f)) val = (val ^ (i >> 12)) & 0x7f;
     }
     return val;
 }
@@ -25,7 +26,9 @@ unsigned hash_pjw(char* name)
  * 功能：新增一个符号作用域
  */
 int addscope() {
-    printf("\n新一层作用域\nname\ttype\tline\tcolumn\n");
+    scope_num++;
+    printf("\n****************第%d层作用域****************",scope_num);
+    printf("\nname\ttoken\ttype\tline\tcolumn\thash\n");
     SCOPE *temp = (SCOPE *)malloc(sizeof(SCOPE));
     if (scope == NULL) {
         temp->token = NULL;
@@ -51,13 +54,12 @@ int delscope() {
     TOKEN *t_temp;
     scope = scope->next;
     if(scope) {
-        if (scope->token) {
-            n_token = scope->token;
+        n_token = scope->token;
+        if(n_token) {
             while(n_token->below) {
                 n_token = n_token->below;
             }
         }
-        else n_token = NULL;
     }
     else n_token = NULL;
     free(s_temp);
@@ -68,31 +70,64 @@ int delscope() {
         token = token->below;
         free(t_temp);
     }
-    printf("一层作用域结束\n");
+    printf("**************第%d层作用域结束**************\n",scope_num);
+    scope_num--;
     return 1;
 }
 
 /**
  * 名称：looksymbol
  * 作者：ao
- * 功能：对搜索到的符号进行相关的检查
+ * 功能：检查symbol是否存在，若存在返回symbol类型
+ * 说明：kind(0:ID,1:FU,2:VA,3:ST)  specifier(0:类型 1：变量)
+ *       function(0:查redefine 1:查exit)
  */
-int looksymbol(char *name) {
-    TOKEN *t_token = scope->token;
-    char *t_name;
-    int kind;
+Type looksymbol(int function,int specifier,char *c_value) {
+    Type type = NULL;
+    TOKEN *t_token = NULL;
+    if(function) {
+        unsigned num = hash_pjw(c_value);
+        t_token = token[num].next;
+    }
+    else t_token = scope->token;
     while(t_token) {
-        kind = t_token->kind;
-        switch(kind) {
-            case 0: t_name = t_token->symbol.identity.name;
-            case 1: t_name = t_token->symbol.function.name;
-            case 2: t_name = t_token->symbol.variable.name;
-            case 3: t_name = t_token->symbol.structure.name;
+        switch(t_token->kind) {
+            case 0: {
+                if(specifier) {
+                    if(!strcmp(c_value,t_token->symbol.identity.name)) return t_token->symbol.identity.type;
+                }
+                break;
+            }
+            case 1: {
+                if(specifier) {
+                    if(!strcmp(c_value,t_token->symbol.function.name)) return t_token->symbol.function.retype;
+                }
+                break;
+            }
+            case 2: {
+                if(specifier) {
+                    if(!strcmp(c_value,t_token->symbol.variable.name)) return t_token->symbol.variable.type;
+                }
+                break;
+            }
+            case 3: {
+                if(specifier) {
+                    if(t_token->symbol.structure.specifier) {
+                        if(!strcmp(c_value,t_token->symbol.structure.name)) return t_token->symbol.structure.type;
+                    }
+                }
+                else {
+                    if(t_token->symbol.structure.specifier == 0) {
+                        if(!strcmp(c_value,t_token->symbol.structure.name)) return t_token->symbol.structure.type;
+                    }
+                }
+                break;
+            }
         }
-        if (!strcmp(name,t_name)) return 0;
+        if(function) t_token = t_token->next;
         else t_token = t_token->below;
     }
-    return 1;
+    return type;
 }
 
 /**
@@ -101,8 +136,15 @@ int looksymbol(char *name) {
  * 功能：往符号表中插入符号
  */
 int ensymbol(char *name, TOKEN *t_token) {
-    printf("%s\t%d\t%d\t%d\n",name,t_token->kind,t_token->loc_info.first_line,t_token->loc_info.first_column);
+    int t_num = -1;
     unsigned i = hash_pjw(name);
+    switch(t_token->kind) {
+        case 0: t_num = t_token->symbol.identity.type->kind;break;
+        case 1: t_num = t_token->symbol.function.retype->kind;break;
+        case 2: t_num = t_token->symbol.variable.type->kind;break;
+        case 3: t_num = t_token->symbol.structure.type->kind;break;
+    }
+    printf("%s\t%d\t%d\t%d\t%d\t%d\n",name,t_token->kind,t_num,t_token->loc_info.first_line,t_token->loc_info.first_column,i);
     if(token[i].next == NULL) {
         token[i].next = t_token;
         t_token->prev = &token[i];
@@ -114,68 +156,16 @@ int ensymbol(char *name, TOKEN *t_token) {
         token[i].next = t_token;
     }
     t_token->below = NULL;
-    if(scope->token) {
+    if(n_token) {
         n_token->below = t_token;
         n_token = t_token;
     }
     else {
         scope->token = t_token;
-        n_token = token;
+        n_token = t_token;
     }
     return 1;
 }
-
-/**
- * 名称：cre_type_b
- * 作者：ao
- * 功能：够造一个基本类型type
- */
-/*Type cre_type_b(STTree *t_sttree) {
-    Type t_temp = (Type)malloc(sizeof(Type_));
-    t_temp->kind = t_temp->BASIC;
-    if(strcmp(t_sttree->value.c_value,"int")) t_temp->u.basic = 0;
-    else t_temp->u.basic = 1;
-    return t_temp;
-}*/
-
-/**
- * 名称：cre_type_a
- * 作者：ao
- * 功能：构造一个数组类型type
- */
-/*Type cre_type_a(Type elem,int size) {
-    Type t_temp = (Type)malloc(sizeof(Type_));
-    t_temp->kind = t_temp->ARRAY;
-    t_temp->u.array.elem = elem;
-    t_temp->u.array.size = size;
-    return t_temp;
-}*/
-
-/**
- * 名称：cre_type_s
- * 作者：ao
- * 功能：构造一个结构类型type
- */
-/*Type cre_type_s(STTree *t_sttree) {
-    Type t_temp = (Type)malloc(sizeof(Type_));
-    t_temp->kind = t_temp->STRUCTURE;
-    t_temp->u.structure = structure;
-    return t_temp;
-}*/
-
-/**
- * 名称：cre_type_f
- * 作者：ao
- * 功能：构造一个FieldList
- */
-/*FieldList cre_type_f(char *name,Type type,FieldList tail) {
-    FieldList f_temp = (FieldList)malloc(sizeof(FieldList_));
-    f_temp->name = (char*)malloc(sizeof(char)*(strlen(name)+1));
-    strcpy(f_temp->name,name);
-    f_temp->type = type;
-    f_temp->tail = tail;
-    return f_temp;
-}*/
 
 /**
  * 名称：pro_iden
@@ -184,16 +174,19 @@ int ensymbol(char *name, TOKEN *t_token) {
  */
 int pro_iden(char *name, Type type, yyltype loc_info) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
-    if (looksymbol(name)) {
+    if (looksymbol(0,1,name) == NULL) {
         t_token->kind = IDENTITY;
         t_token->symbol.identity.name = (char*)malloc(sizeof(char)*(strlen(name)+1));
         strcpy(t_token->symbol.identity.name,name);
         t_token->symbol.identity.type = type;
         t_token->loc_info = loc_info;
+        t_token->next = NULL;
+        t_token->prev = NULL;
+        t_token->below = NULL;
         ensymbol(name,t_token);
     }
     else {
-        printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+        printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
         exit(1);
     }
     return 1;
@@ -206,7 +199,7 @@ int pro_iden(char *name, Type type, yyltype loc_info) {
  */
 int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_info) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
-    if (looksymbol(name)) {
+    if (looksymbol(0,1,name) == NULL) {
         t_token->kind = FUNCTION;
         t_token->symbol.function.name = (char*)malloc(sizeof(char)*(strlen(name)+1));
         strcpy(t_token->symbol.function.name,name);
@@ -214,10 +207,13 @@ int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_in
         t_token->symbol.function.paratype.paranum= paranum;
         t_token->symbol.function.paratype.paralist= paralist;
         t_token->loc_info = loc_info;
+        t_token->next = NULL;
+        t_token->prev = NULL;
+        t_token->below = NULL;       
         ensymbol(name,t_token);
     }
     else {
-        printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+        printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
         exit(1);
     }
     return 1;
@@ -230,16 +226,19 @@ int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_in
  */
 int pro_vari(char *name,Type type,yyltype loc_info) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
-    if(looksymbol(name)) {
+    if(looksymbol(0,1,name) == NULL) {
         t_token->kind = VARIABLE;
         t_token->symbol.variable.name = (char*)malloc(sizeof(char)*(strlen(name)+1));
         strcpy(t_token->symbol.variable.name,name);
         t_token->symbol.variable.type = type;
         t_token->loc_info = loc_info;
+        t_token->next = NULL;
+        t_token->prev = NULL;
+        t_token->below = NULL;
         ensymbol(name,t_token);
     }
     else {
-        printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+        printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
         exit(1);
     }
     return 1;
@@ -249,19 +248,24 @@ int pro_vari(char *name,Type type,yyltype loc_info) {
  * 名称：pro_stru
  * 作者：ao
  * 功能：为一个新的structure符号进行初始化的操作
+ * 说明：specifier(0:类型 1：变量)
  */
-int pro_stru(char *name, Type type,yyltype loc_info) {
+int pro_stru(int specifier,char *name, Type type,yyltype loc_info) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
-    if (looksymbol(name)) {
+    if (looksymbol(0,specifier,name) == NULL) {
         t_token->kind = _STRUCTURE;
+        t_token->symbol.structure.specifier= specifier;
         t_token->symbol.structure.name = (char*)malloc(sizeof(char)*(strlen(name)+1));
         strcpy(t_token->symbol.structure.name,name);
         t_token->symbol.structure.type = type;
         t_token->loc_info = loc_info;
+        t_token->next = NULL;
+        t_token->prev = NULL;
+        t_token->below = NULL;
         ensymbol(name,t_token);
     }
     else {
-        printf("error, symbol repeat! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
+        printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
         exit(1);
     }
     return 1;
