@@ -44,7 +44,7 @@ int main() {
     pthread_join(child1,NULL);
     pthread_join(child2,NULL);
 
-    if(-1 == semctl(semid,1,IPC_RMID,arg)) {
+    if(-1 == semctl(semid,2,IPC_RMID,arg)) {
         printf("信号量集删除失败！i\n");
         exit(1);
     }
