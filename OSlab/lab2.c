@@ -45,7 +45,7 @@ int main() {
     pthread_join(child2,NULL);
 
     if(-1 == semctl(semid,2,IPC_RMID,arg)) {
-        printf("信号量集删除失败！i\n");
+        printf("信号量集删除失败！\n");
         exit(1);
     }
 
@@ -62,6 +62,7 @@ void *subp1() {
         a = num;
         V(semid,1);
     }
+    return NULL;
 }
 
 /*负责打印（输出累加的中间结果）*/
@@ -72,6 +73,7 @@ void *subp2() {
         printf("当前和为：%d\n",a);
         V(semid,0);
     }
+    return NULL;
 }
 
 /*P操作 */
