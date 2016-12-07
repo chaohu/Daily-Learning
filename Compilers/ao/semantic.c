@@ -86,7 +86,7 @@ Type deal_structspecifier(STTree *t_sttree) {
     else  {
         addscope();
         type = (Type)malloc(sizeof(Type_));
-        type->kind = STRUCTURE;
+        type->kind= STRUCTURE;
         if(t_sttree->C_next->B_next->C_next) {
             if(looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value) == NULL) {
                 type->u.structfield.name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->B_next->C_next->value.c_value) + 1));
@@ -178,7 +178,7 @@ FieldList deal_s_vardec(int kind,Type type,STTree *t_sttree) {
             strcpy(type->u.array.name,t_sttree->C_next->value.c_value);
             pro_vari(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
         }
-        pro_iden(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
+        else pro_iden(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
         fieldlist = (FieldList)malloc(sizeof(FieldList_));
         fieldlist->type = type;
         fieldlist->name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->value.c_value)+1));
@@ -214,7 +214,7 @@ int deal_extdeclist(Type type,STTree *t_sttree) {
  * 说明：kind(0:ID,1:ARRAY)
  */
 ParaList deal_c_vardec(int kind,Type type,STTree *t_sttree) {
-    ParaList paralist;
+    ParaList paralist = NULL;
     if(t_sttree->C_next->num == 23) {
         paralist = (ParaList)malloc(sizeof(ParaList_));
         if(kind) {
@@ -339,7 +339,7 @@ int deal_c_dec(Type type,STTree *t_sttree) {
         //TODO：类型检查
         ParaList paralist = deal_c_vardec(0,type,t_sttree->C_next);
         Type type1 = paralist->type;
-        Type type2= deal_exp(t_sttree->C_next->B_next->B_next);
+        Type type2 = deal_exp(t_sttree->C_next->B_next->B_next);
         if(type1->kind == 0) {
             if(type1->u.basic == 0) {
                 if(type2->kind == 0 && type2->u.basic == 0) return 1;
@@ -409,12 +409,17 @@ int deal_stmt(Type retype,STTree *t_sttree) {
  * 功能：处理exp
  */
 Type deal_exp(STTree *t_sttree) {
-    Type type1,type2;
+    Type type1 = NULL,type2 = NULL;
     if(t_sttree->C_next->num == 19) {
         if(t_sttree->C_next->B_next->num == 26) {
             if(j_left(t_sttree->C_next)) {
                 type1 = deal_exp(t_sttree->C_next);
                 type2 = deal_exp(t_sttree->C_next->B_next->B_next);
+                if(type1->kind == 1) {
+                    while(type1->kind != 0) {
+                        type1 = type1->u.array.elem;
+                    }
+                }
                 if(type1->kind == 0) {
                     if(type1->u.basic == 0) {
                         if(type2->kind == 0 && type2->u.basic == 0) return type1;
@@ -473,8 +478,9 @@ Type deal_exp(STTree *t_sttree) {
             type2 = deal_exp(t_sttree->C_next->B_next->B_next);
             if(type1->kind == 1) {
                 if(type2->kind == 0 && type2->u.basic == 0) {
-                    while(type1->kind != 0) {
-                        type1 = type1->u.array.elem;
+                    Type type3 = type1;
+                    while(type3->kind != 0) {
+                        type3 = type3->u.array.elem;
                     }
                     return type1;
                 }
@@ -491,11 +497,12 @@ Type deal_exp(STTree *t_sttree) {
         else if(t_sttree->C_next->B_next->num == 34) {
             type1 = deal_exp(t_sttree->C_next);
             if(type1->kind == 2){
-                while(type1->u.structfield.structure != NULL) {
-                    if(!strcmp(type1->u.structfield.structure->name,t_sttree->C_next->B_next->B_next->value.c_value)) {
-                        return type1->u.structfield.structure->type;
+                FieldList t_fieldlist = type1->u.structfield.structure;
+                while(t_fieldlist != NULL) {
+                    if(!strcmp(t_fieldlist->name,t_sttree->C_next->B_next->B_next->value.c_value)) {
+                        return t_fieldlist->type;
                     }
-                    else type1->u.structfield.structure = type1->u.structfield.structure->tail;
+                    else t_fieldlist = t_fieldlist->tail;
                 }
                 printf("该结构体没有此成员@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
                 exit(1);
@@ -580,6 +587,7 @@ Type deal_exp(STTree *t_sttree) {
         type1->u.basic = 1;
         return type1;
     }
+    return type1;
 }
 
 /**
