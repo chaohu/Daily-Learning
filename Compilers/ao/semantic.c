@@ -415,11 +415,6 @@ Type deal_exp(STTree *t_sttree) {
             if(j_left(t_sttree->C_next)) {
                 type1 = deal_exp(t_sttree->C_next);
                 type2 = deal_exp(t_sttree->C_next->B_next->B_next);
-                if(type1->kind == 1) {
-                    while(type1->kind != 0) {
-                        type1 = type1->u.array.elem;
-                    }
-                }
                 if(type1->kind == 0) {
                     if(type1->u.basic == 0) {
                         if(type2->kind == 0 && type2->u.basic == 0) return type1;
@@ -429,6 +424,25 @@ Type deal_exp(STTree *t_sttree) {
                         }
                     }
                     else if(type2->kind == 0) return type1;
+                }
+                else if(type1->kind == 1) {
+                    if(type2->kind == 1) {
+                        while(type1 != NULL) {
+                            if(type2 != NULL) {
+                                if(type1->u.array.size == type2->u.array.size) {
+                                    type1 = type1->u.array.elem;
+                                    type2 = type2->u.array.elem;
+                                }
+                            }
+                            else break;
+                        }
+                        if(type1 == NULL && type2 == NULL) return type1;
+                    }
+                }
+                else if(type1->kind == 2) {
+                    if(type2->kind ==2) {
+                        if(!strcmp(type1->u.structfield.name,type2->u.structfield.name)) return type1;
+                    }
                 }
                 printf("类型不匹配@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
                 exit(1);
@@ -478,11 +492,11 @@ Type deal_exp(STTree *t_sttree) {
             type2 = deal_exp(t_sttree->C_next->B_next->B_next);
             if(type1->kind == 1) {
                 if(type2->kind == 0 && type2->u.basic == 0) {
-                    Type type3 = type1;
+                    if(type1->u.array.size > t_sttree->C_next->B_next->B_next->value.i_value) return type1->u.array.elem;
+                    /*Type type3 = type1;
                     while(type3->kind != 0) {
                         type3 = type3->u.array.elem;
-                    }
-                    return type1;
+                    }*/
                 }
                 else {
                     printf("需为int@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);

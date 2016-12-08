@@ -8,7 +8,8 @@ struct dddd dddd;
 struct dddd inc(int c)
 {
     int a[2][3];
-    a[1][2] = 1;
+    int b[3];
+    a[1] = b;
     if(1) {
         dddd.x = 1;
     }
