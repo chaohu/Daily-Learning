@@ -27,8 +27,9 @@ unsigned hash_pjw(char* name)
  */
 int addscope() {
     scope_num++;
-    printf("\n****************第%d层作用域****************",scope_num);
-    printf("\nname\ttoken\ttype\tline\tcolumn\thash\n");
+    fprintf(sb_file,"%s%d%s","\n****************第",scope_num,"层作用域****************\nname\ttoken\ttype\tline\tcolumn\thash\n");
+    //printf("\n****************第%d层作用域****************",scope_num);
+    //printf("\nname\ttoken\ttype\tline\tcolumn\thash\n");
     SCOPE *temp = (SCOPE *)malloc(sizeof(SCOPE));
     if (scope == NULL) {
         temp->token = NULL;
@@ -70,7 +71,8 @@ int delscope() {
         token = token->below;
         free(t_temp);
     }
-    printf("**************第%d层作用域结束**************\n",scope_num);
+    fprintf(sb_file,"%s%d%s","**************第",scope_num,"层作用域结束**************\n");
+    //printf("**************第%d层作用域结束**************\n",scope_num);
     scope_num--;
     return 1;
 }
@@ -144,7 +146,8 @@ int ensymbol(char *name, TOKEN *t_token) {
         case 2: t_num = t_token->symbol.variable.type->kind;break;
         case 3: t_num = t_token->symbol.structure.type->kind;break;
     }
-    printf("%s\t%d\t%d\t%d\t%d\t%d\n",name,t_token->kind,t_num,t_token->loc_info.first_line,t_token->loc_info.first_column,i);
+    fprintf(sb_file,"%s%s%d%s%d%s%d%s%d%s%d\n",name,"\t\t",t_token->kind,"\t\t",t_num,"\t\t",t_token->loc_info.first_line,"\t\t",t_token->loc_info.first_column,"\t\t",i);
+    //printf("%s\t%d\t%d\t%d\t%d\t%d\n",name,t_token->kind,t_num,t_token->loc_info.first_line,t_token->loc_info.first_column,i);
     if(token[i].next == NULL) {
         token[i].next = t_token;
         t_token->prev = &token[i];
@@ -187,7 +190,7 @@ int pro_iden(char *name, Type type, yyltype loc_info) {
     }
     else {
         printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
-        exit(1);
+        //exit(1);
     }
     return 1;
 }
@@ -214,7 +217,7 @@ int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_in
     }
     else {
         printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
-        exit(1);
+        //exit(1);
     }
     return 1;
 }
@@ -239,7 +242,7 @@ int pro_vari(char *name,Type type,yyltype loc_info) {
     }
     else {
         printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
-        exit(1);
+        //exit(1);
     }
     return 1;
 }
@@ -266,7 +269,7 @@ int pro_stru(int specifier,char *name, Type type,yyltype loc_info) {
     }
     else {
         printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
-        exit(1);
+        //exit(1);
     }
     return 1;
 }

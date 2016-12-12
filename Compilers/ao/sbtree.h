@@ -3,6 +3,7 @@
 #ifndef SBTREE_H
 #define SBTREE_H 1
 
+FILE *sb_file;
 typedef struct Type_ *Type;
 typedef struct FieldList_ *FieldList;
 typedef struct ParaList_ *ParaList;
@@ -123,7 +124,7 @@ int deal_stmtlist(Type retype,STTree *t_sttree);//处理stmtlist
 int deal_stmt(Type retype,STTree *t_sttree);//处理stmt
 Type deal_exp(STTree *t_sttree);//处理exp
 int deal_args(ParaList paralist,STTree *t_sttree);//处理args
-int type_match(Type type1,Type type2);//判断两个类型是否匹配
+int type_match(int x_para,Type type1,Type type2,STTree *t_sttree1,STTree *t_sttree2);//判断两个类型是否匹配
 int j_left(STTree *t_sttree);//判断是否为左值表达式
 ParaType para_fun(char *c_value);//返回函数的参数ParaType
 

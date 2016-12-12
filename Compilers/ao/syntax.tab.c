@@ -1439,7 +1439,7 @@ yyreduce:
     {
 		(yyval.type_sttree) = entree(0,"Program",(yylsp[0]),1,(yyvsp[0].type_sttree));
         _sttree = (yyval.type_sttree);
-		syntaxtree((yyval.type_sttree));
+		//syntaxtree($$);
         semantic((yyval.type_sttree));
 		}
 #line 1446 "syntax.tab.c" /* yacc.c:1646  */

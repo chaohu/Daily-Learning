@@ -86,15 +86,15 @@ Type deal_structspecifier(STTree *t_sttree) {
         type = looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value);
         if(type == NULL) {
             printf("Error, 此结构类型未定义!@line:%d,column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-            //exit(0);
+            exit(0);
         }
     }
     else  {
+        addscope();
         type = (Type)malloc(sizeof(Type_));
         type->kind= STRUCTURE;
         if(t_sttree->C_next->B_next->C_next) {
             if(looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value) == NULL) {
-                addscope();
                 type->u.structfield.name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->B_next->C_next->value.c_value) + 1));
                 strcpy(type->u.structfield.name,t_sttree->C_next->B_next->C_next->value.c_value);
                 type->u.structfield.structure = deal_s_deflist(t_sttree->C_next->B_next->B_next->B_next);
@@ -103,11 +103,10 @@ Type deal_structspecifier(STTree *t_sttree) {
             }
             else {
                 printf("此结构类型已存在@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-                //exit(1);
+                exit(1);
             }
         }
         else {
-            addscope();
             sprintf(hide_name,"%d",hide_num);
             hide_num++;
             strcpy(type->u.structfield.name,hide_name);
@@ -162,10 +161,13 @@ FieldList deal_s_declist(Type type,STTree *t_sttree) {
  * 功能：处理结构体中的dec
  */
 FieldList deal_s_dec(Type type,STTree *t_sttree) {
-    if(t_sttree->C_next->B_next) {
-        printf("错误：不能结构体中初始化@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+    if(t_sttree->C_next->B_next == NULL) {
+        return deal_s_vardec(0,type,t_sttree->C_next);
     }
-    return deal_s_vardec(0,type,t_sttree->C_next);
+    else {
+        printf("错误：不能结构体中初始化@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+        exit(1);
+    }
 }
 
 /**
@@ -344,9 +346,18 @@ int deal_c_dec(Type type,STTree *t_sttree) {
         ParaList paralist = deal_c_vardec(0,type,t_sttree->C_next);
         Type type1 = paralist->type;
         Type type2 = deal_exp(t_sttree->C_next->B_next->B_next);
-        if(type1 && type2) type_match(1,type1,type2,t_sttree->C_next,t_sttree->C_next->B_next->B_next);
-        else return 0;
-        //exit(1);
+        if(type1->kind == 0) {
+            if(type1->u.basic == 0) {
+                if(type2->kind == 0 && type2->u.basic == 0) return 1;
+                else {
+                    printf("变量需为int型@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
+                    exit(1);
+                }
+            }
+            else if(type2->kind == 0) return 1;
+        }
+        printf("类型不匹配@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+        exit(1);
     }
     else deal_c_vardec(0,type,t_sttree->C_next);
     return 1;
@@ -373,9 +384,9 @@ int deal_stmt(Type retype,STTree *t_sttree) {
     else if(t_sttree->C_next->num == 12) deal_compst(retype,t_sttree->C_next);
     else if(t_sttree->C_next->num == 44) {
         Type type1 = deal_exp(t_sttree->C_next->B_next);
-        if(!type_match(0,retype,type1,t_sttree->C_next->B_next,t_sttree->C_next->B_next)) {
+        if(!type_match(retype,type1)) {
             printf("返回值类型不正确@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-            //exit(1);
+            exit(1);
         }
     }
     else if(t_sttree->C_next->num == 45) {
@@ -410,11 +421,41 @@ Type deal_exp(STTree *t_sttree) {
             if(j_left(t_sttree->C_next)) {
                 type1 = deal_exp(t_sttree->C_next);
                 type2 = deal_exp(t_sttree->C_next->B_next->B_next);
-                if(type1 && type2) type_match(1,type1,type2,t_sttree->C_next,t_sttree->C_next->B_next->B_next);
-                return type1;
+                if(type1->kind == 0) {
+                    if(type1->u.basic == 0) {
+                        if(type2->kind == 0 && type2->u.basic == 0) return type1;
+                        else {
+                            printf("变量需为int型@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
+                            exit(1);
+                        }
+                    }
+                    else if(type2->kind == 0) return type1;
+                }
+                else if(type1->kind == 1) {
+                    if(type2->kind == 1) {
+                        while(type1 != NULL) {
+                            if(type2 != NULL) {
+                                if(type1->u.array.size == type2->u.array.size) {
+                                    type1 = type1->u.array.elem;
+                                    type2 = type2->u.array.elem;
+                                }
+                            }
+                            else break;
+                        }
+                        if(type1 == NULL && type2 == NULL) return type1;
+                    }
+                }
+                else if(type1->kind == 2) {
+                    if(type2->kind ==2) {
+                        if(!strcmp(type1->u.structfield.name,type2->u.structfield.name)) return type1;
+                    }
+                }
+                printf("类型不匹配@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
             }
             else {
                 printf("表达式需要为左值表达式@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
             }
         }
         else if(t_sttree->C_next->B_next->num == 32 || t_sttree->C_next->B_next->num == 33) {
@@ -425,7 +466,7 @@ Type deal_exp(STTree *t_sttree) {
             }
             else {
                 printf("两者类型必需均为int型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                exit(1);
             }
         }
         else if(t_sttree->C_next->B_next->num == 27) {
@@ -437,7 +478,7 @@ Type deal_exp(STTree *t_sttree) {
             }
             else {
                 printf("两者类型必须均为int或float@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                exit(1);
             }
         }
         else if(t_sttree->C_next->B_next->num == 28 || t_sttree->C_next->B_next->num == 29 || t_sttree->C_next->B_next->num == 30 || t_sttree->C_next->B_next->num == 31) {
@@ -449,7 +490,7 @@ Type deal_exp(STTree *t_sttree) {
             }
             else {
                 printf("两者类型必须均为int或float@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                exit(1);
             }
         }
         else if(t_sttree->C_next->B_next->num == 39) {
@@ -465,12 +506,12 @@ Type deal_exp(STTree *t_sttree) {
                 }
                 else {
                     printf("需为int@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
-                    //exit(1);
+                    exit(1);
                 }
             }
             else {
                 printf("变量不是数组类型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                exit(1);
             }
         }
         else if(t_sttree->C_next->B_next->num == 34) {
@@ -484,11 +525,11 @@ Type deal_exp(STTree *t_sttree) {
                     else t_fieldlist = t_fieldlist->tail;
                 }
                 printf("该结构体没有此成员@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
-                //exit(1);
+                exit(1);
             }
             else {
                 printf("变量需为结构体类型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                exit(1);
             }
         }
     }
@@ -502,7 +543,7 @@ Type deal_exp(STTree *t_sttree) {
         }
         else {
             printf("变量需为int或float型@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-            //exit(1);
+            exit(1);
         }
     }
     else if(t_sttree->C_next->num == 35) {
@@ -510,7 +551,7 @@ Type deal_exp(STTree *t_sttree) {
         if(type1->kind == 0 && type1->u.basic == 0) return type1;
         else {
             printf("变量需为int型@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-            //exit(1);
+            exit(1);
         }
     }
     else if(t_sttree->C_next->num == 23) {
@@ -524,34 +565,34 @@ Type deal_exp(STTree *t_sttree) {
                         if(deal_args(paratype.paralist,t_sttree->C_next->B_next->B_next)) return type1;
                         else {
                             printf("函数参数不匹配@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                            //exit(1);
+                            exit(1);
                         }
                     }
                     else {
                         printf("函数无参数@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                        //exit(1);
+                        exit(1);
                     }
                 }
                 else {
                     if(paratype.paranum == 0) return type1;
                     else {
                         printf("此函数有参数@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                        //exit(1);
+                        exit(1);
                     }
                 }
             }
             else {
                 printf("此函数未声明@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                exit(1);
             }
         }
         else {
             type1 = looksymbol(1,1,t_sttree->C_next->value.c_value);
-            if(type1 == NULL) {
-                printf("此变量未声明 \"%s\" @line:%d column:%d\n",t_sttree->C_next->value.c_value,t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+            if(type1) return type1;
+            else {
+                printf("此变量未声明@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                exit(1);
             }
-            return type1;
         }
     }
     else if(t_sttree->C_next->num == 21) {
@@ -611,45 +652,18 @@ int deal_args(ParaList paralist,STTree *t_sttree) {
  * 名称：type_match
  * 作者：ao
  * 功能：判断两个类型是否匹配
- * 说明：x_para(0:参数 1:普通)
  */
-int type_match(int x_para,Type type1,Type type2,STTree *t_sttree1,STTree *t_sttree2) {
+int type_match(Type type1,Type type2) {
     int judge = 0;
     if(type1->kind == type2->kind) {
         if(type1->kind == 0) {
-            if(x_para) {
-                if(type1->u.basic == 0) {
-                    if(type2->kind == 0 && type2->u.basic == 0) judge = 1;
-                    else {
-                        printf("变量需为int型@line:%d column:%d\n",t_sttree1->loc_info.first_line,t_sttree2->loc_info.first_column);
-                    }
-                }
-                else if(type2->kind == 0) judge = 1;
-            }
-            else {
-                if(type1->u.basic == type2->u.basic) judge = 1;
-            }
+            if(type1->u.basic == type2->u.basic) judge = 1;
         }
         else if(type1->kind == 1) {
-            if(type2->kind == 1) {
-                while(type1 != NULL) {
-                    if(type2 != NULL) {
-                        if(type1->u.array.size == type2->u.array.size) {
-                            type1 = type1->u.array.elem;
-                            type2 = type2->u.array.elem;
-                        }
-                    }
-                    else break;
-                }
-                if(type1 == NULL && type2 == NULL) judge = 1;
-            }
-            if(x_para) printf("类型不匹配@line:%d column:%d\n",t_sttree1->loc_info.first_line,t_sttree2->loc_info.first_column);
+            if(!strcmp(type1->u.array.name,type2->u.array.name)) judge = 1;
         }
         else if(type1->kind == 2) {
-            if(type2->kind ==2) {
-                if(!strcmp(type1->u.structfield.name,type2->u.structfield.name)) judge = 1;
-            }
-            if(x_para) printf("类型不匹配@line:%d column:%d\n",t_sttree1->loc_info.first_line,t_sttree2->loc_info.first_column);
+            if(!strcmp(type1->u.structfield.name,type2->u.structfield.name)) judge = 1;
         }
     }
     return judge;
