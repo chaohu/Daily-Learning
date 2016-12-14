@@ -3,6 +3,7 @@
 
 SCOPE *scope = NULL;    //作用域栈头指针
 int scope_num = 0;      //作用域层数
+int s_num = 0;          //符号编号
 /**
  * 名称：哈希函数
  * 作者：P.J.Weinberger 
@@ -84,8 +85,11 @@ int delscope() {
  * 说明：kind(0:ID,1:FU,2:VA,3:ST)  specifier(0:类型 1：变量)
  *       function(0:查redefine 1:查exit)
  */
-Type looksymbol(int function,int specifier,char *c_value) {
-    Type type = NULL;
+Tp_Op looksymbol(int function,int specifier,char *c_value) {
+    Tp_Op tp_op;
+    tp_op.type = NULL;
+    tp_op.op = (Operand)malloc(sizeof(Operand_));
+    tp_op.op->kind = N_VARIABLE;
     TOKEN *t_token = NULL;
     if(function) {
         unsigned num = hash_pjw(c_value);
@@ -96,31 +100,51 @@ Type looksymbol(int function,int specifier,char *c_value) {
         switch(t_token->kind) {
             case 0: {
                 if(specifier) {
-                    if(!strcmp(c_value,t_token->symbol.identity.name)) return t_token->symbol.identity.type;
+                    if(!strcmp(c_value,t_token->symbol.identity.name)) {
+                        tp_op.type = t_token->symbol.identity.type;
+                        tp_op.op->u.var_no = t_token->s_num;
+                        return tp_op;
+                    }
                 }
                 break;
             }
             case 1: {
                 if(specifier) {
-                    if(!strcmp(c_value,t_token->symbol.function.name)) return t_token->symbol.function.retype;
+                    if(!strcmp(c_value,t_token->symbol.function.name)) {
+                        tp_op.type = t_token->symbol.function.retype;
+                        tp_op.op->u.var_no = t_token->s_num;
+                        return tp_op;
+                    }
                 }
                 break;
             }
             case 2: {
                 if(specifier) {
-                    if(!strcmp(c_value,t_token->symbol.variable.name)) return t_token->symbol.variable.type;
+                    if(!strcmp(c_value,t_token->symbol.variable.name)) {
+                        tp_op.type = t_token->symbol.variable.type;
+                        tp_op.op->u.var_no = t_token->s_num;
+                        return tp_op;
+                    }
                 }
                 break;
             }
             case 3: {
                 if(specifier) {
                     if(t_token->symbol.structure.specifier) {
-                        if(!strcmp(c_value,t_token->symbol.structure.name)) return t_token->symbol.structure.type;
+                        if(!strcmp(c_value,t_token->symbol.structure.name)) {
+                            tp_op.type = t_token->symbol.structure.type;
+                            tp_op.op->u.var_no = t_token->s_num;
+                            return tp_op;
+                        }
                     }
                 }
                 else {
                     if(t_token->symbol.structure.specifier == 0) {
-                        if(!strcmp(c_value,t_token->symbol.structure.name)) return t_token->symbol.structure.type;
+                        if(!strcmp(c_value,t_token->symbol.structure.name)) {
+                            tp_op.type = t_token->symbol.structure.type;
+                            tp_op.op->u.var_no = t_token->s_num;
+                            return tp_op;
+                        }
                     }
                 }
                 break;
@@ -129,7 +153,7 @@ Type looksymbol(int function,int specifier,char *c_value) {
         if(function) t_token = t_token->next;
         else t_token = t_token->below;
     }
-    return type;
+    return tp_op;
 }
 
 /**
@@ -138,6 +162,7 @@ Type looksymbol(int function,int specifier,char *c_value) {
  * 功能：往符号表中插入符号
  */
 int ensymbol(char *name, TOKEN *t_token) {
+    t_token->s_num = s_num++;
     int t_num = -1;
     unsigned i = hash_pjw(name);
     switch(t_token->kind) {
@@ -177,7 +202,7 @@ int ensymbol(char *name, TOKEN *t_token) {
  */
 int pro_iden(char *name, Type type, yyltype loc_info) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
-    if (looksymbol(0,1,name) == NULL) {
+    if (looksymbol(0,1,name).type == NULL) {
         t_token->kind = IDENTITY;
         t_token->symbol.identity.name = (char*)malloc(sizeof(char)*(strlen(name)+1));
         strcpy(t_token->symbol.identity.name,name);
@@ -202,7 +227,7 @@ int pro_iden(char *name, Type type, yyltype loc_info) {
  */
 int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_info) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
-    if (looksymbol(0,1,name) == NULL) {
+    if (looksymbol(0,1,name).type == NULL) {
         t_token->kind = FUNCTION;
         t_token->symbol.function.name = (char*)malloc(sizeof(char)*(strlen(name)+1));
         strcpy(t_token->symbol.function.name,name);
@@ -229,7 +254,7 @@ int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_in
  */
 int pro_vari(char *name,Type type,yyltype loc_info) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
-    if(looksymbol(0,1,name) == NULL) {
+    if(looksymbol(0,1,name).type == NULL) {
         t_token->kind = VARIABLE;
         t_token->symbol.variable.name = (char*)malloc(sizeof(char)*(strlen(name)+1));
         strcpy(t_token->symbol.variable.name,name);
@@ -255,7 +280,7 @@ int pro_vari(char *name,Type type,yyltype loc_info) {
  */
 int pro_stru(int specifier,char *name, Type type,yyltype loc_info) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
-    if (looksymbol(0,specifier,name) == NULL) {
+    if (looksymbol(0,specifier,name).type == NULL) {
         t_token->kind = _STRUCTURE;
         t_token->symbol.structure.specifier= specifier;
         t_token->symbol.structure.name = (char*)malloc(sizeof(char)*(strlen(name)+1));

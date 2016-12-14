@@ -1,13 +1,15 @@
+#include <stdio.h>
 struct dddd {
 	int x;
 	int y;
 };
 
-int inc() {
-	int i, j;
+int main() {
 	int i = 1;
 	int j = i;
-	if(i == 1) { i = 0; }
+    j = !1;
+	if(i == 1) { i = 3; }
+    if(i > 1.1) printf("1");
 //	if (i == 1) 
 	//	printf("heheheheh",i);
 /*	}

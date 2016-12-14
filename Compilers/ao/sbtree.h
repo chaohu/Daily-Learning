@@ -1,4 +1,5 @@
 #include "ao.h"
+#include "ir.h"
 
 #ifndef SBTREE_H
 #define SBTREE_H 1
@@ -76,6 +77,7 @@ typedef struct TOKEN {
         Structure structure;
     } symbol;
     yyltype loc_info;
+    int s_num;
     struct TOKEN *next;
     struct TOKEN *prev;
     struct TOKEN *below;
@@ -86,6 +88,11 @@ typedef struct SCOPE {
     struct SCOPE* next;
 }SCOPE;
 
+typedef struct Tp_Op {
+    Type type;
+    Operand op; 
+}Tp_Op;
+
 TOKEN token[128];   //符号表空间
 TOKEN *n_token;     //指向当前作用域的最后一个符号
 char hide_name[6];  //隐藏符号的名字
@@ -93,7 +100,7 @@ char hide_name[6];  //隐藏符号的名字
 unsigned hash_pjw(char* name);
 int addscope();//新建一层作用域
 int delscope();//删除一层作用域
-Type looksymbol(int function,int specifier,char *c_value);//查找符号是否在符号表中
+Tp_Op looksymbol(int function,int specifier,char *c_value);//查找符号是否在符号表中
 int ensymbol(char *name, TOKEN *t_token);//将符号加入符号表
 int pro_iden(char *name,Type type,yyltype loc_info);//初始化一个新的indentity符号
 int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_info);//初始化一个新的function符号
@@ -122,7 +129,7 @@ int deal_c_dec(Type type,STTree *t_sttree);//处理函数体中的dec
 //int deal_c_vardec(int kind,Type type,STTree *t_sttree);//处理函数体中的vardec
 int deal_stmtlist(Type retype,STTree *t_sttree);//处理stmtlist
 int deal_stmt(Type retype,STTree *t_sttree);//处理stmt
-Type deal_exp(STTree *t_sttree);//处理exp
+Tp_Op deal_exp(STTree *t_sttree);//处理exp
 int deal_args(ParaList paralist,STTree *t_sttree);//处理args
 int type_match(int x_para,Type type1,Type type2,STTree *t_sttree1,STTree *t_sttree2);//判断两个类型是否匹配
 int j_left(STTree *t_sttree);//判断是否为左值表达式

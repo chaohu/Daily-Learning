@@ -1,5 +1,6 @@
 #include "ao.h"
 #include "sbtree.h"
+#include "ir.h"
 
 int hide_num = 0;   //隐藏变量名
 
@@ -85,8 +86,7 @@ Type deal_structspecifier(STTree *t_sttree) {
     if(t_sttree->C_next->B_next->num == 7) {
         type = looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value);
         if(type == NULL) {
-            printf("Error, 此结构类型未定义!@line:%d,column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-            //exit(0);
+            printf("错误：结构体类型\"%s\"未定义!@line:%d,column:%d\n",t_sttree->C_next->B_next->C_next->value.c_value,t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
         }
     }
     else  {
@@ -102,8 +102,7 @@ Type deal_structspecifier(STTree *t_sttree) {
                 pro_stru(0,t_sttree->C_next->B_next->C_next->value.c_value,type,t_sttree->C_next->B_next->loc_info);
             }
             else {
-                printf("此结构类型已存在@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-                //exit(1);
+                printf("错误：结构体类型\"%s\"已存在@line:%d column:%d\n",t_sttree->C_next->B_next->C_next->value.c_value,t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
             }
         }
         else {
@@ -374,7 +373,7 @@ int deal_stmt(Type retype,STTree *t_sttree) {
     else if(t_sttree->C_next->num == 44) {
         Type type1 = deal_exp(t_sttree->C_next->B_next);
         if(!type_match(0,retype,type1,t_sttree->C_next->B_next,t_sttree->C_next->B_next)) {
-            printf("返回值类型不正确@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
+            printf("错误：返回值类型不正确@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
             //exit(1);
         }
     }
@@ -403,92 +402,124 @@ int deal_stmt(Type retype,STTree *t_sttree) {
  * 作者：ao
  * 功能：处理exp
  */
-Type deal_exp(STTree *t_sttree) {
-    Type type1 = NULL,type2 = NULL;
+Tp_Op deal_exp(STTree *t_sttree) {
+    Tp_Op tp_op1,tp_op2;
+    tp_op1.type = NULL;
+    tp_op1.op = NULL;
+    tp_op2.type = NULL;
+    tp_op2.op= NULL;
     if(t_sttree->C_next->num == 19) {
         if(t_sttree->C_next->B_next->num == 26) {
             if(j_left(t_sttree->C_next)) {
-                type1 = deal_exp(t_sttree->C_next);
-                type2 = deal_exp(t_sttree->C_next->B_next->B_next);
-                if(type1 && type2) type_match(1,type1,type2,t_sttree->C_next,t_sttree->C_next->B_next->B_next);
-                return type1;
+                tp_op1 = deal_exp(t_sttree->C_next);
+                tp_op2 = deal_exp(t_sttree->C_next->B_next->B_next);
+                if(tp_op1.type && tp_op2.type) {
+                    type_match(1,tp_op1.type,tp_op2.type,t_sttree->C_next,t_sttree->C_next->B_next->B_next);
+
+                    InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+                    IC->kind = ASSIGN;
+                    IC->u.assign.left = tp_op1.op;
+                    IC->u.assign.right = tp_op2.op;
+                    emit(IC);
+                }
+                return tp_op1;
             }
             else {
-                printf("表达式需要为左值表达式@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
+                printf("错误：表达式需要为左值表达式@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
             }
         }
         else if(t_sttree->C_next->B_next->num == 32 || t_sttree->C_next->B_next->num == 33) {
-            type1 = deal_exp(t_sttree->C_next);
-            type2 = deal_exp(t_sttree->C_next->B_next->B_next);
-            if(type1->kind == 0 && type2->kind == 0 && type1->u.basic == 0 && type2->u.basic == 0) {
-                return type1;
+            tp_op1 = deal_exp(t_sttree->C_next);
+            tp_op2 = deal_exp(t_sttree->C_next->B_next->B_next);
+            if(tp_op1.type->kind == 0 && tp_op2.type->kind == 0 && tp_op1.type->u.basic == 0 && tp_op2.type->u.basic == 0) {
+                Operand op = newtemp();
+                InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+                IC->kind = RELOP;
+                IC->u.relop.result = op; 
+                IC->u.relop.left = tp_op1.op;
+                IC->u.relop.right = tp_op2.op;
+                strcpy(IC->u.relop.r_kind,t_sttree->C_next->B_next->value.c_value);
+                emit(IC);
+                tp_op1.op = op;
+                return tp_op1;
             }
             else {
-                printf("两者类型必需均为int型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                printf("错误：两者类型必需均为int型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
             }
         }
         else if(t_sttree->C_next->B_next->num == 27) {
-            type1 = deal_exp(t_sttree->C_next);
-            type2 = deal_exp(t_sttree->C_next->B_next->B_next);
-            if(type1->kind == 0 && type2->kind == 0) {
-                if(type1->u.basic) return type1;
-                else return type2;
+            tp_op1 = deal_exp(t_sttree->C_next);
+            tp_op2 = deal_exp(t_sttree->C_next->B_next->B_next);
+            if(tp_op1.type->kind == 0 && tp_op2.type->kind == 0) {
+                tp_op1.type->u.basic = 1;
+                Operand op = newtemp();
+                InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+                IC->kind = RELOP;
+                IC->u.relop.result = op;
+                IC->u.relop.left = tp_op1.op;
+                IC->u.relop.right = tp_op1.op;
+                strcpy(IC->u.relop.r_kind,t_sttree->C_next->B_next->value.c_value);
+                emit(IC);
+                tp_op1.op = op;
+                return tp_op1;
             }
             else {
-                printf("两者类型必须均为int或float@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                printf("错误：两者类型必须均为int或float@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
             }
         }
         else if(t_sttree->C_next->B_next->num == 28 || t_sttree->C_next->B_next->num == 29 || t_sttree->C_next->B_next->num == 30 || t_sttree->C_next->B_next->num == 31) {
-            type1 = deal_exp(t_sttree->C_next);
-            type2 = deal_exp(t_sttree->C_next->B_next->B_next);
-            if(type1->kind == 0 && type2->kind == 0) {
-                if(type1->u.basic) return type1;
-                else return type2;
+            tp_op1 = deal_exp(t_sttree->C_next);
+            tp_op2 = deal_exp(t_sttree->C_next->B_next->B_next);
+            if(tp_op1.type->kind == 0 && tp_op2.type->kind == 0) {
+                if(tp_op1.type->u.basic || tp_op2.type->u.basic) tp_op1.type->u.basic = 1;
+                Operand op = newtemp();
+                InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+                IC->kind = BINOP;
+                IC->u.binop.result = op;
+                IC->u.binop.op1 = tp_op1.op;
+                IC->u.binop.op2 = tp_op2.op;
+                strcpy(IC->u.binop.o_kind,t_sttree->C_next->B_next->value.c_value);
+                emit(IC);
+                tp_op1.op = op;
+                return tp_op1;
             }
             else {
-                printf("两者类型必须均为int或float@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                printf("错误：两者类型必须均为int或float@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
             }
         }
         else if(t_sttree->C_next->B_next->num == 39) {
-            type1 = deal_exp(t_sttree->C_next);
-            type2 = deal_exp(t_sttree->C_next->B_next->B_next);
-            if(type1->kind == 1) {
-                if(type2->kind == 0 && type2->u.basic == 0) {
-                    if(type1->u.array.size > t_sttree->C_next->B_next->B_next->value.i_value) return type1->u.array.elem;
-                    /*Type type3 = type1;
-                    while(type3->kind != 0) {
-                        type3 = type3->u.array.elem;
-                    }*/
+            tp_op1 = deal_exp(t_sttree->C_next);
+            tp_op2 = deal_exp(t_sttree->C_next->B_next->B_next);
+            if(tp_op1.type->kind == 1) {
+                if(tp_op2.type->kind == 0 && tp_op2.type->u.basic == 0) {
+                    if(tp_op1.type->u.array.size > t_sttree->C_next->B_next->B_next->value.i_value) {
+                        tp_op1.type = tp_op1.type->u.array.elem;
+                        return tp_op1;
+                    }
                 }
                 else {
-                    printf("需为int@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
-                    //exit(1);
+                    printf("错误：需为int@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
                 }
             }
             else {
-                printf("变量不是数组类型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                printf("错误：变量不是数组类型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
             }
         }
         else if(t_sttree->C_next->B_next->num == 34) {
-            type1 = deal_exp(t_sttree->C_next);
-            if(type1->kind == 2){
-                FieldList t_fieldlist = type1->u.structfield.structure;
+            tp_op1 = deal_exp(t_sttree->C_next);
+            if(tp_op1.type->kind == 2){
+                FieldList t_fieldlist = tp_op1.type->u.structfield.structure;
                 while(t_fieldlist != NULL) {
                     if(!strcmp(t_fieldlist->name,t_sttree->C_next->B_next->B_next->value.c_value)) {
-                        return t_fieldlist->type;
+                        tp_op1.type = t_fieldlist->type;
+                        return tp_op1;
                     }
                     else t_fieldlist = t_fieldlist->tail;
                 }
-                printf("该结构体没有此成员@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
-                //exit(1);
+                printf("错误：该结构体没有此成员@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
             }
             else {
-                printf("变量需为结构体类型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                printf("错误：变量需为结构体类型@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
             }
         }
     }
@@ -496,77 +527,108 @@ Type deal_exp(STTree *t_sttree) {
         return deal_exp(t_sttree->C_next->B_next);
     }
     else if(t_sttree->C_next->num == 29) {
-        type1 = deal_exp(t_sttree->C_next->B_next);
-        if(type1->kind == 0) {
-            return type1;
+        tp_op1 = deal_exp(t_sttree->C_next->B_next);
+        if(tp_op1.type->kind == 0) {
+            Operand op1 = (Operand)malloc(sizeof(Operand_));
+            Operand op2 = newtemp();
+            op1->kind = CONSTANT;
+            op1->u.i_value = 0;
+            InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+            IC->kind = BINOP;
+            IC->u.binop.result = op2;
+            IC->u.binop.op1 = op1;
+            IC->u.binop.op2 = tp_op1.op;
+            strcpy(IC->u.binop.o_kind,"-");
+            emit(IC);
+            tp_op1.op = op2;
+            return tp_op1;
         }
         else {
-            printf("变量需为int或float型@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-            //exit(1);
+            printf("错误：变量需为int或float型@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
         }
     }
     else if(t_sttree->C_next->num == 35) {
-        type1 = deal_exp(t_sttree->C_next->B_next);
-        if(type1->kind == 0 && type1->u.basic == 0) return type1;
+        tp_op1 = deal_exp(t_sttree->C_next->B_next);
+        if(tp_op1.type->kind == 0 && tp_op1.type->u.basic == 0) {
+            Operand op1 = newtemp();
+            InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+            IC->kind = NOT;
+            IC->u.notop.result = op1;
+            IC->u.notop.op1 = tp_op1.op;
+            strcpy(IC->u.notop.o_kind,"!");
+            emit(IC);
+            tp_op1.op = op1;
+            return tp_op1;
+        }
         else {
-            printf("变量需为int型@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-            //exit(1);
+            printf("错误：变量需为int型@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
         }
     }
     else if(t_sttree->C_next->num == 23) {
         if(t_sttree->C_next->B_next) {
             ParaType paratype;
-            type1 = looksymbol(1,1,t_sttree->C_next->value.c_value);
-            if(type1) {
+            tp_op1 = looksymbol(1,1,t_sttree->C_next->value.c_value);
+            if(tp_op1.type) {
+                InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+                IC->kind = FUNC_C;
+                IC->u.func_c.name = (char *)malloc(sizeof(char)*(strlen(t_sttree->C_next->value.c_value)+1));
+                strcpy(IC->u.func_c.name,t_sttree->C_next->value.c_value);
                 paratype = para_fun(t_sttree->C_next->value.c_value);
                 if(t_sttree->C_next->B_next->B_next->num == 20) {
                     if(paratype.paranum > 0) {
-                        if(deal_args(paratype.paralist,t_sttree->C_next->B_next->B_next)) return type1;
+                        if(deal_args(paratype.paralist,t_sttree->C_next->B_next->B_next)) {
+                            emit(IC);
+                            return tp_op1;
+                        }
                         else {
-                            printf("函数参数不匹配@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                            //exit(1);
+                            printf("错误：函数参数不匹配@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
                         }
                     }
                     else {
-                        printf("函数无参数@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                        //exit(1);
+                        printf("错误：函数无参数@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
                     }
                 }
                 else {
-                    if(paratype.paranum == 0) return type1;
+                    if(paratype.paranum == 0) {
+                        emit(IC);
+                        return tp_op1;
+                    }
                     else {
-                        printf("此函数有参数@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                        //exit(1);
+                        printf("错误：此函数有参数@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
                     }
                 }
             }
             else {
-                printf("此函数未声明@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+                printf("错误：此函数未声明@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
             }
         }
         else {
-            type1 = looksymbol(1,1,t_sttree->C_next->value.c_value);
-            if(type1 == NULL) {
-                printf("此变量未声明 \"%s\" @line:%d column:%d\n",t_sttree->C_next->value.c_value,t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
-                //exit(1);
+            tp_op1 = looksymbol(1,1,t_sttree->C_next->value.c_value);
+            if(tp_op1.type == NULL) {
+                printf("错误：变量\"%s\"未声明@line:%d column:%d\n",t_sttree->C_next->value.c_value,t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
             }
-            return type1;
+            return tp_op1;
         }
     }
     else if(t_sttree->C_next->num == 21) {
-        type1 = (Type)malloc(sizeof(Type_));
-        type1->kind = BASIC;
-        type1->u.basic = 0;
-        return type1;
+        tp_op1.op = (Operand)malloc(sizeof(Operand_));
+        tp_op1.op->kind = CONSTANT;
+        tp_op1.op->u.i_value = t_sttree->C_next->value.i_value;
+        tp_op1.type = (Type)malloc(sizeof(Type_));
+        tp_op1.type->kind = BASIC;
+        tp_op1.type->u.basic = 0;
+        return tp_op1;
     }
     else if(t_sttree->C_next->num == 22) {
-        type1 = (Type)malloc(sizeof(Type_));
-        type1->kind = BASIC;
-        type1->u.basic = 1;
-        return type1;
+        tp_op1.op = (Operand)malloc(sizeof(Operand_));
+        tp_op1.op->kind = CONSTANT;
+        tp_op1.op->u.f_value = t_sttree->value.f_value;
+        tp_op1.type = (Type)malloc(sizeof(Type_));
+        tp_op1.type->kind = BASIC;
+        tp_op1.type->u.basic = 1;
+        return tp_op1;
     }
-    return type1;
+    return tp_op1;
 }
 
 /**
@@ -575,23 +637,41 @@ Type deal_exp(STTree *t_sttree) {
  * 功能：处理args
  */
 int deal_args(ParaList paralist,STTree *t_sttree) {
-    Type type1 = deal_exp(t_sttree->C_next);
+    Tp_Op tp_op;
+    InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+    tp_op.op = NULL;
+    tp_op.type = NULL;
+    tp_op = deal_exp(t_sttree->C_next);
+    IC->kind = ARG;
+    IC->u.arg.arg = tp_op.op;
     if(paralist->type->kind == 0) {
         if(paralist->type->u.basic == 0) {
-            if(type1->kind == 0 && type1->u.basic == 0) return 1;
+            if(tp_op.type->kind == 0 && tp_op.type->u.basic == 0) {
+                emit(IC);
+                return 1;
+            }
         }
-        else if(type1->kind == 0) return 1;
+        else if(tp_op.type->kind == 0) {
+            emit(IC);
+            return 1;
+        }
         else return 0;
     }
     else if(paralist->type->kind == 1) {
-        if(type1->kind == 1) {
-            if(!strcmp(paralist->type->u.array.name,type1->u.array.name)) return 1;
+        if(tp_op.type->kind == 1) {
+            if(!strcmp(paralist->type->u.array.name,tp_op.type->u.array.name)) {
+                emit(IC);
+                return 1;
+            }
         }
         return 0;
     }
     else if(paralist->type->kind == 2) {
-        if(type1->kind == 2) {
-            if(!strcmp(paralist->type->u.structfield.name,type1->u.structfield.name)) return 1;
+        if(tp_op.type->kind == 2) {
+            if(!strcmp(paralist->type->u.structfield.name,tp_op.type->u.structfield.name)) {
+                emit(IC);
+                return 1;
+            }
         }
         return 0;
     }
@@ -621,7 +701,7 @@ int type_match(int x_para,Type type1,Type type2,STTree *t_sttree1,STTree *t_sttr
                 if(type1->u.basic == 0) {
                     if(type2->kind == 0 && type2->u.basic == 0) judge = 1;
                     else {
-                        printf("变量需为int型@line:%d column:%d\n",t_sttree1->loc_info.first_line,t_sttree2->loc_info.first_column);
+                        printf("错误：变量需为int型@line:%d column:%d\n",t_sttree1->loc_info.first_line,t_sttree2->loc_info.first_column);
                     }
                 }
                 else if(type2->kind == 0) judge = 1;
@@ -643,13 +723,13 @@ int type_match(int x_para,Type type1,Type type2,STTree *t_sttree1,STTree *t_sttr
                 }
                 if(type1 == NULL && type2 == NULL) judge = 1;
             }
-            if(x_para) printf("类型不匹配@line:%d column:%d\n",t_sttree1->loc_info.first_line,t_sttree2->loc_info.first_column);
+            if(x_para) printf("错误：类型不匹配@line:%d column:%d\n",t_sttree1->loc_info.first_line,t_sttree2->loc_info.first_column);
         }
         else if(type1->kind == 2) {
             if(type2->kind ==2) {
                 if(!strcmp(type1->u.structfield.name,type2->u.structfield.name)) judge = 1;
             }
-            if(x_para) printf("类型不匹配@line:%d column:%d\n",t_sttree1->loc_info.first_line,t_sttree2->loc_info.first_column);
+            if(x_para) printf("错误：类型不匹配@line:%d column:%d\n",t_sttree1->loc_info.first_line,t_sttree2->loc_info.first_column);
         }
     }
     return judge;
