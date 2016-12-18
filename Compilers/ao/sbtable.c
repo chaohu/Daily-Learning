@@ -1,5 +1,4 @@
 #include "ao.h"
-#include "sbtree.h"
 
 SCOPE *scope = NULL;    //作用域栈头指针
 int scope_num = 0;      //作用域层数
@@ -212,12 +211,12 @@ int pro_iden(char *name, Type type, yyltype loc_info) {
         t_token->prev = NULL;
         t_token->below = NULL;
         ensymbol(name,t_token);
+        return 1;
     }
     else {
         printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
-        //exit(1);
+        return 0;
     }
-    return 1;
 }
 
 /**
@@ -239,12 +238,12 @@ int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_in
         t_token->prev = NULL;
         t_token->below = NULL;       
         ensymbol(name,t_token);
+        return 1;
     }
     else {
         printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
-        //exit(1);
+        return 0;
     }
-    return 1;
 }
 
 /**
@@ -264,12 +263,12 @@ int pro_vari(char *name,Type type,yyltype loc_info) {
         t_token->prev = NULL;
         t_token->below = NULL;
         ensymbol(name,t_token);
+        return 1;
     }
     else {
         printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
-        //exit(1);
+        return 0;
     }
-    return 1;
 }
 
 /**
@@ -291,10 +290,10 @@ int pro_stru(int specifier,char *name, Type type,yyltype loc_info) {
         t_token->prev = NULL;
         t_token->below = NULL;
         ensymbol(name,t_token);
+        return 1;
     }
     else {
         printf("Error, symbol redefine! @line:%d column:%d\n",loc_info.first_line,loc_info.first_column);
-        //exit(1);
+        return 0;
     }
-    return 1;
 }

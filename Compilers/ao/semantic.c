@@ -1,6 +1,4 @@
 #include "ao.h"
-#include "sbtree.h"
-#include "ir.h"
 
 int hide_num = 0;   //隐藏变量名
 
@@ -82,24 +80,26 @@ Type deal_specifier(STTree *t_sttree) {
  * 功能：处理structspecifier
  */
 Type deal_structspecifier(STTree *t_sttree) {
-    Type type = NULL;
+    Tp_Op tp_op;
+    tp_op.type = NULL;
+    tp_op.op = NULL;
     if(t_sttree->C_next->B_next->num == 7) {
-        type = looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value);
-        if(type == NULL) {
+        tp_op = looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value);
+        if(tp_op.type == NULL) {
             printf("错误：结构体类型\"%s\"未定义!@line:%d,column:%d\n",t_sttree->C_next->B_next->C_next->value.c_value,t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
         }
     }
     else  {
-        type = (Type)malloc(sizeof(Type_));
-        type->kind= STRUCTURE;
+        tp_op.type = (Type)malloc(sizeof(Type_));
+        tp_op.type->kind= STRUCTURE;
         if(t_sttree->C_next->B_next->C_next) {
-            if(looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value) == NULL) {
+            if(looksymbol(1,0,t_sttree->C_next->B_next->C_next->value.c_value).type == NULL) {
                 addscope();
-                type->u.structfield.name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->B_next->C_next->value.c_value) + 1));
-                strcpy(type->u.structfield.name,t_sttree->C_next->B_next->C_next->value.c_value);
-                type->u.structfield.structure = deal_s_deflist(t_sttree->C_next->B_next->B_next->B_next);
+                tp_op.type->u.structfield.name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->B_next->C_next->value.c_value) + 1));
+                strcpy(tp_op.type->u.structfield.name,t_sttree->C_next->B_next->C_next->value.c_value);
+                tp_op.type->u.structfield.structure = deal_s_deflist(t_sttree->C_next->B_next->B_next->B_next);
                 delscope();
-                pro_stru(0,t_sttree->C_next->B_next->C_next->value.c_value,type,t_sttree->C_next->B_next->loc_info);
+                pro_stru(0,t_sttree->C_next->B_next->C_next->value.c_value,tp_op.type,t_sttree->C_next->B_next->loc_info);
             }
             else {
                 printf("错误：结构体类型\"%s\"已存在@line:%d column:%d\n",t_sttree->C_next->B_next->C_next->value.c_value,t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
@@ -109,13 +109,13 @@ Type deal_structspecifier(STTree *t_sttree) {
             addscope();
             sprintf(hide_name,"%d",hide_num);
             hide_num++;
-            strcpy(type->u.structfield.name,hide_name);
-            type->u.structfield.structure = deal_s_deflist(t_sttree->C_next->B_next->B_next);
+            strcpy(tp_op.type->u.structfield.name,hide_name);
+            tp_op.type->u.structfield.structure = deal_s_deflist(t_sttree->C_next->B_next->B_next);
             delscope();
-            pro_stru(0,hide_name,type,t_sttree->C_next->loc_info);
+            pro_stru(0,hide_name,tp_op.type,t_sttree->C_next->loc_info);
         }
     }
-    return type;
+    return tp_op.type;
 }
 
 /**
@@ -225,7 +225,9 @@ ParaList deal_c_vardec(int kind,Type type,STTree *t_sttree) {
             strcpy(type->u.array.name,t_sttree->C_next->value.c_value);
             pro_vari(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
         }
-        else pro_iden(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
+        else {
+            pro_iden(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
+        }
         paralist->name = (char *)malloc(sizeof(char) * strlen(t_sttree->C_next->value.c_value));
         strcpy(paralist->name,t_sttree->C_next->value.c_value);
         paralist->type = type;
@@ -248,12 +250,26 @@ ParaList deal_c_vardec(int kind,Type type,STTree *t_sttree) {
  * 功能：处理fundec
  */
 int deal_fundec(Type retype,STTree *t_sttree) {
+    InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+    IC->kind = FUNC_D;
+    strcpy(IC->u.func_d.name,t_sttree->C_next->value.c_value);
     if(t_sttree->C_next->B_next->B_next->num == 10) {
         int paranum = 0;
         ParaList paralist = deal_varlist(&paranum,t_sttree->C_next->B_next->B_next);
-        pro_func(t_sttree->C_next->value.c_value,retype,paranum,paralist,t_sttree->C_next->loc_info);
+        if(pro_func(t_sttree->C_next->value.c_value,retype,paranum,paralist,t_sttree->C_next->loc_info)) {
+            emit(IC);
+            InterCode _IC[paranum];
+            while(paralist) {
+                paranum--;
+                _IC[paranum] = (InterCode)malloc(sizeof(InterCode_));
+                _IC[paranum]->kind = PARAM;
+                _IC[paranum]->u.param.param = looksymbol(1,1,paralist->name).op;
+                emit(_IC[paranum]);
+                paralist = paralist->next;
+            }
+        }
     }
-    else pro_func(t_sttree->C_next->value.c_value,retype,0,NULL,t_sttree->C_next->loc_info);
+    else if(pro_func(t_sttree->C_next->value.c_value,retype,0,NULL,t_sttree->C_next->loc_info)) emit(IC);
     return 1;
 }
 
@@ -339,13 +355,33 @@ int deal_c_declist(Type type,STTree *t_sttree) {
  */
 int deal_c_dec(Type type,STTree *t_sttree) {
     if(t_sttree->C_next->B_next) {
-        //TODO：类型检查
         ParaList paralist = deal_c_vardec(0,type,t_sttree->C_next);
         Type type1 = paralist->type;
-        Type type2 = deal_exp(t_sttree->C_next->B_next->B_next);
-        if(type1 && type2) type_match(1,type1,type2,t_sttree->C_next,t_sttree->C_next->B_next->B_next);
+        Tp_Op tp_op = deal_exp(t_sttree->C_next->B_next->B_next);
+        if(type1 && tp_op.type) {
+            if(type_match(1,type1,tp_op.type,t_sttree->C_next,t_sttree->C_next->B_next->B_next)) {
+                if(type->kind == 0) {
+                    if(t_sttree->C_next->C_next->num == 23) {
+                        InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+                        IC->kind = ASSIGN;
+                        IC->u.assign.left = looksymbol(1,1,t_sttree->C_next->C_next->value.c_value).op;
+                        IC->u.assign.right = tp_op.op;
+                        emit(IC);
+                        return 1;
+                    }
+                    else {
+                        printf("错误：暂时不支持对数组定义时初始化\n");
+                        return 0;
+                    }
+                }
+                else {
+                    printf("错误：暂时不支持结构数组的翻译\n");
+                    return 0;
+                }
+            }
+            else return 0;
+        }
         else return 0;
-        //exit(1);
     }
     else deal_c_vardec(0,type,t_sttree->C_next);
     return 1;
@@ -371,28 +407,84 @@ int deal_stmt(Type retype,STTree *t_sttree) {
     if(t_sttree->C_next->num == 19) deal_exp(t_sttree->C_next);
     else if(t_sttree->C_next->num == 12) deal_compst(retype,t_sttree->C_next);
     else if(t_sttree->C_next->num == 44) {
-        Type type1 = deal_exp(t_sttree->C_next->B_next);
-        if(!type_match(0,retype,type1,t_sttree->C_next->B_next,t_sttree->C_next->B_next)) {
+        Tp_Op tp_op = deal_exp(t_sttree->C_next->B_next);
+        if(!type_match(0,retype,tp_op.type,t_sttree->C_next->B_next,t_sttree->C_next->B_next)) {
             printf("错误：返回值类型不正确@line:%d column:%d\n",t_sttree->C_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->loc_info.first_column);
-            //exit(1);
+        }
+        else {
+            InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+            IC->kind = RETURN;
+            IC->u.retop.result = tp_op.op;
+            emit(IC);
         }
     }
     else if(t_sttree->C_next->num == 45) {
-        deal_exp(t_sttree->C_next->B_next->B_next);
+        Tp_Op tp_op = deal_exp(t_sttree->C_next->B_next->B_next);
+        InterCode ICI = (InterCode)malloc(sizeof(InterCode_));
+        InterCode ICL1 = (InterCode)malloc(sizeof(InterCode_));
+        InterCode ICL2 = (InterCode)malloc(sizeof(InterCode_));
+        InterCode ICG1 = (InterCode)malloc(sizeof(InterCode_));
+        ICI->kind = IF;
+        ICI->u.ifop.relop = tp_op.op;
+        ICL1->kind = LABEL;
+        ICL1->u.label.label = newlabel();
+        ICL2->kind = LABEL;
+        ICL2->u.label.label = newlabel();
+        ICI->u.ifop.label = ICL1->u.label.label;
+        ICG1->kind = GOTO;
+        ICG1->u.gtop.gtop = ICL2->u.label.label;
         addscope();
+        emit(ICI);
+        emit(ICG1);
+        emit(ICL1);
         deal_stmt(retype,t_sttree->C_next->B_next->B_next->B_next->B_next);
         delscope();
         if(t_sttree->C_next->B_next->B_next->B_next->B_next->B_next) {
+            InterCode ICL3 = (InterCode)malloc(sizeof(InterCode_));
+            InterCode ICG2 = (InterCode)malloc(sizeof(InterCode_));
+            ICL3->kind = LABEL;
+            ICL3->u.label.label = newlabel();
+            ICG2->kind = GOTO;
+            ICG2->u.gtop.gtop = ICL3->u.label.label;
+            emit(ICG2);
             addscope();
+            emit(ICL2);
             deal_stmt(retype,t_sttree->C_next->B_next->B_next->B_next->B_next->B_next->B_next);
             delscope();
+            emit(ICL3);
         }
+        else emit(ICL2);
     }
     else if(t_sttree->C_next->num == 47) {
-        deal_exp(t_sttree->C_next->B_next->B_next);
+        Tp_Op tp_op = deal_exp(t_sttree->C_next->B_next->B_next);
+        InterCode ICI = (InterCode)malloc(sizeof(InterCode_));
+        InterCode ICL1 = (InterCode)malloc(sizeof(InterCode_));
+        InterCode ICL2 = (InterCode)malloc(sizeof(InterCode_));
+        InterCode ICL3 = (InterCode)malloc(sizeof(InterCode_));
+        InterCode ICG1 = (InterCode)malloc(sizeof(InterCode_));
+        InterCode ICG2 = (InterCode)malloc(sizeof(InterCode_));
+        ICL1->kind = LABEL;
+        ICL1->u.label.label = newlabel();
+        ICL1->kind = LABEL;
+        ICL2->u.label.label = newlabel();
+        ICL3->kind = LABEL;
+        ICL3->u.label.label = newlabel();
+        ICI->kind = IF;
+        ICI->u.ifop.relop = tp_op.op;
+        ICI->u.ifop.label = ICL2->u.label.label;
+        ICG1->kind = GOTO;
+        ICG1->u.gtop.gtop = ICL3->u.label.label;
+        ICG2->kind = GOTO;
+        ICG2->u.gtop.gtop = ICL1->u.label.label;
+        emit(ICL1);
+        emit(ICI);
+        emit(ICG1);
         addscope();
+        emit(ICL2);
         deal_stmt(retype,t_sttree->C_next->B_next->B_next->B_next->B_next);
+        emit(ICG2);
         delscope();
+        emit(ICL3);
     }
     return 1;
 }
@@ -493,9 +585,22 @@ Tp_Op deal_exp(STTree *t_sttree) {
             if(tp_op1.type->kind == 1) {
                 if(tp_op2.type->kind == 0 && tp_op2.type->u.basic == 0) {
                     if(tp_op1.type->u.array.size > t_sttree->C_next->B_next->B_next->value.i_value) {
+                        InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+                        
+                        IC->kind = BINOP;
+                        IC->u.binop.result = newaddr(0);
+                        IC->u.binop.op1 = tp_op1.op;
+                        IC->u.binop.op2 = newiconst(_sizeof(tp_op1.type)*t_sttree->C_next->B_next->B_next->value.i_value);
+                        emit(IC);
                         tp_op1.type = tp_op1.type->u.array.elem;
+                        if(tp_op1.type->kind == 0) {
+                            tp_op1.op = newaddr(2);
+                            tp_op1.op->u.var_no = IC->u.binop.result->u.var_no;
+                        }
+                        else tp_op1.op = IC->u.binop.result;
                         return tp_op1;
                     }
+                    else printf("错误：数组访问越界@line:%d column:%d\n",t_sttree->C_next->loc_info.first_line,t_sttree->C_next->loc_info.first_column);
                 }
                 else {
                     printf("错误：需为int@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
@@ -511,10 +616,16 @@ Tp_Op deal_exp(STTree *t_sttree) {
                 FieldList t_fieldlist = tp_op1.type->u.structfield.structure;
                 while(t_fieldlist != NULL) {
                     if(!strcmp(t_fieldlist->name,t_sttree->C_next->B_next->B_next->value.c_value)) {
+                        Operand op = newaddr(2);
+                        op->u.var_no = tp_op1.op->u.var_no;
                         tp_op1.type = t_fieldlist->type;
+                        tp_op1.op = op;
                         return tp_op1;
                     }
-                    else t_fieldlist = t_fieldlist->tail;
+                    else {
+                        tp_op1.op = translate_struct(tp_op1.op,t_fieldlist->type);
+                        t_fieldlist = t_fieldlist->tail;
+                    }
                 }
                 printf("错误：该结构体没有此成员@line:%d column:%d\n",t_sttree->C_next->B_next->B_next->loc_info.first_line,t_sttree->C_next->B_next->B_next->loc_info.first_column);
             }
@@ -529,18 +640,15 @@ Tp_Op deal_exp(STTree *t_sttree) {
     else if(t_sttree->C_next->num == 29) {
         tp_op1 = deal_exp(t_sttree->C_next->B_next);
         if(tp_op1.type->kind == 0) {
-            Operand op1 = (Operand)malloc(sizeof(Operand_));
-            Operand op2 = newtemp();
-            op1->kind = CONSTANT;
-            op1->u.i_value = 0;
+            Operand op1 = newtemp();
             InterCode IC = (InterCode)malloc(sizeof(InterCode_));
             IC->kind = BINOP;
-            IC->u.binop.result = op2;
-            IC->u.binop.op1 = op1;
-            IC->u.binop.op2 = tp_op1.op;
+            IC->u.binop.result = op1;
+            IC->u.binop.op1 = newiconst(0);
+            IC->u.binop.op1 = tp_op1.op;
             strcpy(IC->u.binop.o_kind,"-");
             emit(IC);
-            tp_op1.op = op2;
+            tp_op1.op = op1;
             return tp_op1;
         }
         else {
@@ -554,7 +662,7 @@ Tp_Op deal_exp(STTree *t_sttree) {
             InterCode IC = (InterCode)malloc(sizeof(InterCode_));
             IC->kind = NOT;
             IC->u.notop.result = op1;
-            IC->u.notop.op1 = tp_op1.op;
+            IC->u.notop.op = tp_op1.op;
             strcpy(IC->u.notop.o_kind,"!");
             emit(IC);
             tp_op1.op = op1;
@@ -611,18 +719,14 @@ Tp_Op deal_exp(STTree *t_sttree) {
         }
     }
     else if(t_sttree->C_next->num == 21) {
-        tp_op1.op = (Operand)malloc(sizeof(Operand_));
-        tp_op1.op->kind = CONSTANT;
-        tp_op1.op->u.i_value = t_sttree->C_next->value.i_value;
+        tp_op1.op = newiconst(t_sttree->C_next->value.i_value);
         tp_op1.type = (Type)malloc(sizeof(Type_));
         tp_op1.type->kind = BASIC;
         tp_op1.type->u.basic = 0;
         return tp_op1;
     }
     else if(t_sttree->C_next->num == 22) {
-        tp_op1.op = (Operand)malloc(sizeof(Operand_));
-        tp_op1.op->kind = CONSTANT;
-        tp_op1.op->u.f_value = t_sttree->value.f_value;
+        tp_op1.op = newfconst(t_sttree->C_next->value.f_value);
         tp_op1.type = (Type)malloc(sizeof(Type_));
         tp_op1.type->kind = BASIC;
         tp_op1.type->u.basic = 1;
