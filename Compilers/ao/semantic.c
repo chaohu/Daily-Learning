@@ -109,6 +109,7 @@ Type deal_structspecifier(STTree *t_sttree) {
             addscope();
             sprintf(hide_name,"%d",hide_num);
             hide_num++;
+            tp_op.type->u.structfield.name = (char *)malloc(sizeof(char)*(strlen(hide_name) + 1));
             strcpy(tp_op.type->u.structfield.name,hide_name);
             tp_op.type->u.structfield.structure = deal_s_deflist(t_sttree->C_next->B_next->B_next);
             delscope();
@@ -184,7 +185,7 @@ FieldList deal_s_vardec(int kind,Type type,STTree *t_sttree) {
         else pro_iden(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
         fieldlist = (FieldList)malloc(sizeof(FieldList_));
         fieldlist->type = type;
-        fieldlist->name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->value.c_value)+1));
+        fieldlist->name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->value.c_value) + 1));
         strcpy(fieldlist->name,t_sttree->C_next->value.c_value);
         fieldlist->tail = NULL;
     }
@@ -220,15 +221,25 @@ ParaList deal_c_vardec(int kind,Type type,STTree *t_sttree) {
     ParaList paralist = NULL;
     if(t_sttree->C_next->num == 23) {
         paralist = (ParaList)malloc(sizeof(ParaList_));
+        InterCode IC = (InterCode)malloc(sizeof(InterCode_));
+        IC->kind = _DEC;
         if(kind) {
             type->u.array.name = (char*)malloc(sizeof(char)*(strlen(t_sttree->C_next->value.c_value) + 1));
             strcpy(type->u.array.name,t_sttree->C_next->value.c_value);
             pro_vari(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
+            IC->u.dec.var = looksymbol(1,1,t_sttree->C_next->value.c_value).op;
+            IC->u.dec.size = _sizeof(0,type);
+            emit(IC);
         }
         else {
             pro_iden(t_sttree->C_next->value.c_value,type,t_sttree->C_next->loc_info);
+            if(type->kind == 2) {
+                IC->u.dec.var = looksymbol(1,1,t_sttree->C_next->value.c_value).op;
+                IC->u.dec.size = _sizeof(0,type);
+                emit(IC);
+            }
         }
-        paralist->name = (char *)malloc(sizeof(char) * strlen(t_sttree->C_next->value.c_value));
+        paralist->name = (char *)malloc(sizeof(char) * (strlen(t_sttree->C_next->value.c_value) + 1));
         strcpy(paralist->name,t_sttree->C_next->value.c_value);
         paralist->type = type;
         paralist->next = NULL;
@@ -251,7 +262,8 @@ ParaList deal_c_vardec(int kind,Type type,STTree *t_sttree) {
  */
 int deal_fundec(Type retype,STTree *t_sttree) {
     InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-    IC->kind = FUNC_D;
+    IC->kind = _FUNC_D;
+    IC->u.func_d.name = (char *)malloc(sizeof(char)*(strlen(t_sttree->C_next->value.c_value) + 1));
     strcpy(IC->u.func_d.name,t_sttree->C_next->value.c_value);
     if(t_sttree->C_next->B_next->B_next->num == 10) {
         int paranum = 0;
@@ -262,7 +274,7 @@ int deal_fundec(Type retype,STTree *t_sttree) {
             while(paralist) {
                 paranum--;
                 _IC[paranum] = (InterCode)malloc(sizeof(InterCode_));
-                _IC[paranum]->kind = PARAM;
+                _IC[paranum]->kind = _PARAM;
                 _IC[paranum]->u.param.param = looksymbol(1,1,paralist->name).op;
                 emit(_IC[paranum]);
                 paralist = paralist->next;
@@ -354,16 +366,16 @@ int deal_c_declist(Type type,STTree *t_sttree) {
  * 功能：处理函数体中的dec
  */
 int deal_c_dec(Type type,STTree *t_sttree) {
+    ParaList paralist = deal_c_vardec(0,type,t_sttree->C_next);
+    Type type1 = paralist->type;
     if(t_sttree->C_next->B_next) {
-        ParaList paralist = deal_c_vardec(0,type,t_sttree->C_next);
-        Type type1 = paralist->type;
         Tp_Op tp_op = deal_exp(t_sttree->C_next->B_next->B_next);
         if(type1 && tp_op.type) {
             if(type_match(1,type1,tp_op.type,t_sttree->C_next,t_sttree->C_next->B_next->B_next)) {
                 if(type->kind == 0) {
                     if(t_sttree->C_next->C_next->num == 23) {
                         InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-                        IC->kind = ASSIGN;
+                        IC->kind = _ASSIGN;
                         IC->u.assign.left = looksymbol(1,1,t_sttree->C_next->C_next->value.c_value).op;
                         IC->u.assign.right = tp_op.op;
                         emit(IC);
@@ -383,7 +395,6 @@ int deal_c_dec(Type type,STTree *t_sttree) {
         }
         else return 0;
     }
-    else deal_c_vardec(0,type,t_sttree->C_next);
     return 1;
 }
 
@@ -413,7 +424,7 @@ int deal_stmt(Type retype,STTree *t_sttree) {
         }
         else {
             InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-            IC->kind = RETURN;
+            IC->kind = _RETURN;
             IC->u.retop.result = tp_op.op;
             emit(IC);
         }
@@ -424,14 +435,14 @@ int deal_stmt(Type retype,STTree *t_sttree) {
         InterCode ICL1 = (InterCode)malloc(sizeof(InterCode_));
         InterCode ICL2 = (InterCode)malloc(sizeof(InterCode_));
         InterCode ICG1 = (InterCode)malloc(sizeof(InterCode_));
-        ICI->kind = IF;
+        ICI->kind = _IF;
         ICI->u.ifop.relop = tp_op.op;
-        ICL1->kind = LABEL;
+        ICL1->kind = _LABEL;
         ICL1->u.label.label = newlabel();
-        ICL2->kind = LABEL;
+        ICL2->kind = _LABEL;
         ICL2->u.label.label = newlabel();
         ICI->u.ifop.label = ICL1->u.label.label;
-        ICG1->kind = GOTO;
+        ICG1->kind = _GOTO;
         ICG1->u.gtop.gtop = ICL2->u.label.label;
         addscope();
         emit(ICI);
@@ -442,9 +453,9 @@ int deal_stmt(Type retype,STTree *t_sttree) {
         if(t_sttree->C_next->B_next->B_next->B_next->B_next->B_next) {
             InterCode ICL3 = (InterCode)malloc(sizeof(InterCode_));
             InterCode ICG2 = (InterCode)malloc(sizeof(InterCode_));
-            ICL3->kind = LABEL;
+            ICL3->kind = _LABEL;
             ICL3->u.label.label = newlabel();
-            ICG2->kind = GOTO;
+            ICG2->kind = _GOTO;
             ICG2->u.gtop.gtop = ICL3->u.label.label;
             emit(ICG2);
             addscope();
@@ -463,18 +474,18 @@ int deal_stmt(Type retype,STTree *t_sttree) {
         InterCode ICL3 = (InterCode)malloc(sizeof(InterCode_));
         InterCode ICG1 = (InterCode)malloc(sizeof(InterCode_));
         InterCode ICG2 = (InterCode)malloc(sizeof(InterCode_));
-        ICL1->kind = LABEL;
+        ICL1->kind = _LABEL;
         ICL1->u.label.label = newlabel();
-        ICL1->kind = LABEL;
+        ICL1->kind = _LABEL;
         ICL2->u.label.label = newlabel();
-        ICL3->kind = LABEL;
+        ICL3->kind = _LABEL;
         ICL3->u.label.label = newlabel();
-        ICI->kind = IF;
+        ICI->kind = _IF;
         ICI->u.ifop.relop = tp_op.op;
         ICI->u.ifop.label = ICL2->u.label.label;
-        ICG1->kind = GOTO;
+        ICG1->kind = _GOTO;
         ICG1->u.gtop.gtop = ICL3->u.label.label;
-        ICG2->kind = GOTO;
+        ICG2->kind = _GOTO;
         ICG2->u.gtop.gtop = ICL1->u.label.label;
         emit(ICL1);
         emit(ICI);
@@ -509,7 +520,7 @@ Tp_Op deal_exp(STTree *t_sttree) {
                     type_match(1,tp_op1.type,tp_op2.type,t_sttree->C_next,t_sttree->C_next->B_next->B_next);
 
                     InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-                    IC->kind = ASSIGN;
+                    IC->kind = _ASSIGN;
                     IC->u.assign.left = tp_op1.op;
                     IC->u.assign.right = tp_op2.op;
                     emit(IC);
@@ -526,7 +537,7 @@ Tp_Op deal_exp(STTree *t_sttree) {
             if(tp_op1.type->kind == 0 && tp_op2.type->kind == 0 && tp_op1.type->u.basic == 0 && tp_op2.type->u.basic == 0) {
                 Operand op = newtemp();
                 InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-                IC->kind = RELOP;
+                IC->kind = _RELOP;
                 IC->u.relop.result = op; 
                 IC->u.relop.left = tp_op1.op;
                 IC->u.relop.right = tp_op2.op;
@@ -543,13 +554,16 @@ Tp_Op deal_exp(STTree *t_sttree) {
             tp_op1 = deal_exp(t_sttree->C_next);
             tp_op2 = deal_exp(t_sttree->C_next->B_next->B_next);
             if(tp_op1.type->kind == 0 && tp_op2.type->kind == 0) {
-                tp_op1.type->u.basic = 1;
+                Type type1 = (Type)malloc(sizeof(Type_));
+                type1->kind = BASIC;
+                type1->u.basic = 0;
+                tp_op1.type = type1;
                 Operand op = newtemp();
                 InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-                IC->kind = RELOP;
+                IC->kind = _RELOP;
                 IC->u.relop.result = op;
                 IC->u.relop.left = tp_op1.op;
-                IC->u.relop.right = tp_op1.op;
+                IC->u.relop.right = tp_op2.op;
                 strcpy(IC->u.relop.r_kind,t_sttree->C_next->B_next->value.c_value);
                 emit(IC);
                 tp_op1.op = op;
@@ -566,7 +580,7 @@ Tp_Op deal_exp(STTree *t_sttree) {
                 if(tp_op1.type->u.basic || tp_op2.type->u.basic) tp_op1.type->u.basic = 1;
                 Operand op = newtemp();
                 InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-                IC->kind = BINOP;
+                IC->kind = _BINOP;
                 IC->u.binop.result = op;
                 IC->u.binop.op1 = tp_op1.op;
                 IC->u.binop.op2 = tp_op2.op;
@@ -586,15 +600,15 @@ Tp_Op deal_exp(STTree *t_sttree) {
                 if(tp_op2.type->kind == 0 && tp_op2.type->u.basic == 0) {
                     if(tp_op1.type->u.array.size > t_sttree->C_next->B_next->B_next->value.i_value) {
                         InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-                        
-                        IC->kind = BINOP;
+                        IC->kind = _BINOP;
                         IC->u.binop.result = newaddr(0);
                         IC->u.binop.op1 = tp_op1.op;
-                        IC->u.binop.op2 = newiconst(_sizeof(tp_op1.type)*t_sttree->C_next->B_next->B_next->value.i_value);
+                        IC->u.binop.op2 = newiconst(_sizeof(1,tp_op1.type)*t_sttree->C_next->B_next->B_next->value.i_value);
                         emit(IC);
                         tp_op1.type = tp_op1.type->u.array.elem;
                         if(tp_op1.type->kind == 0) {
-                            tp_op1.op = newaddr(2);
+                            if(tp_op1.op->kind == 0) tp_op1.op = newaddr(2);
+                            else tp_op1.op = newaddr(3);
                             tp_op1.op->u.var_no = IC->u.binop.result->u.var_no;
                         }
                         else tp_op1.op = IC->u.binop.result;
@@ -616,7 +630,9 @@ Tp_Op deal_exp(STTree *t_sttree) {
                 FieldList t_fieldlist = tp_op1.type->u.structfield.structure;
                 while(t_fieldlist != NULL) {
                     if(!strcmp(t_fieldlist->name,t_sttree->C_next->B_next->B_next->value.c_value)) {
-                        Operand op = newaddr(2);
+                        Operand op;
+                        if(tp_op1.op->kind == 0 || tp_op1.op->kind == 6) op = newaddr(2);
+                        else op = newaddr(3);
                         op->u.var_no = tp_op1.op->u.var_no;
                         tp_op1.type = t_fieldlist->type;
                         tp_op1.op = op;
@@ -642,7 +658,7 @@ Tp_Op deal_exp(STTree *t_sttree) {
         if(tp_op1.type->kind == 0) {
             Operand op1 = newtemp();
             InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-            IC->kind = BINOP;
+            IC->kind = _BINOP;
             IC->u.binop.result = op1;
             IC->u.binop.op1 = newiconst(0);
             IC->u.binop.op1 = tp_op1.op;
@@ -660,10 +676,9 @@ Tp_Op deal_exp(STTree *t_sttree) {
         if(tp_op1.type->kind == 0 && tp_op1.type->u.basic == 0) {
             Operand op1 = newtemp();
             InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-            IC->kind = NOT;
+            IC->kind = _NOT;
             IC->u.notop.result = op1;
             IC->u.notop.op = tp_op1.op;
-            strcpy(IC->u.notop.o_kind,"!");
             emit(IC);
             tp_op1.op = op1;
             return tp_op1;
@@ -678,8 +693,8 @@ Tp_Op deal_exp(STTree *t_sttree) {
             tp_op1 = looksymbol(1,1,t_sttree->C_next->value.c_value);
             if(tp_op1.type) {
                 InterCode IC = (InterCode)malloc(sizeof(InterCode_));
-                IC->kind = FUNC_C;
-                IC->u.func_c.name = (char *)malloc(sizeof(char)*(strlen(t_sttree->C_next->value.c_value)+1));
+                IC->kind = _FUNC_C;
+                IC->u.func_c.name = (char *)malloc(sizeof(char)*(strlen(t_sttree->C_next->value.c_value) + 1));
                 strcpy(IC->u.func_c.name,t_sttree->C_next->value.c_value);
                 paratype = para_fun(t_sttree->C_next->value.c_value);
                 if(t_sttree->C_next->B_next->B_next->num == 20) {
@@ -746,7 +761,7 @@ int deal_args(ParaList paralist,STTree *t_sttree) {
     tp_op.op = NULL;
     tp_op.type = NULL;
     tp_op = deal_exp(t_sttree->C_next);
-    IC->kind = ARG;
+    IC->kind = _ARG;
     IC->u.arg.arg = tp_op.op;
     if(paralist->type->kind == 0) {
         if(paralist->type->u.basic == 0) {
@@ -816,11 +831,13 @@ int type_match(int x_para,Type type1,Type type2,STTree *t_sttree1,STTree *t_sttr
         }
         else if(type1->kind == 1) {
             if(type2->kind == 1) {
-                while(type1 != NULL) {
-                    if(type2 != NULL) {
-                        if(type1->u.array.size == type2->u.array.size) {
-                            type1 = type1->u.array.elem;
-                            type2 = type2->u.array.elem;
+                Type _type1 = type1;
+                Type _type2 = type2;
+                while(_type1 != NULL) {
+                    if(_type2 != NULL) {
+                        if(_type1->u.array.size == _type2->u.array.size) {
+                            _type1 = _type1->u.array.elem;
+                            _type2 = _type2->u.array.elem;
                         }
                     }
                     else break;

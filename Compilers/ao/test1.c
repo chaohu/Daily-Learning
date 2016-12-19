@@ -1,4 +1,3 @@
-#include <stdio.h>
 struct dddd {
 	int x;
 	int y;
@@ -9,7 +8,6 @@ int main() {
 	int j = i;
     j = !1;
 	if(i == 1) { i = 3; }
-    if(i > 1.1) printf("1");
 //	if (i == 1) 
 	//	printf("heheheheh",i);
 /*	}

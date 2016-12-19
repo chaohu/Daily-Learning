@@ -190,7 +190,7 @@ ParaType para_fun(char *c_value);//返回函数的参数ParaType
 
 //ir.h
 typedef struct Operand_ {
-    enum { N_VARIABLE, T_VARIABLE, I_CONSTANT, F_CONSTANT, N_ADDRESS, G_ADDRESS, P_ADDRESS, N_LABEL} kind;
+    enum { N_VARIABLE, T_VARIABLE, I_CONSTANT, F_CONSTANT, N_ADDRESS, G_ADDRESS, P_N_ADDRESS, P_T_ADDRESS, N_LABEL} kind;
     union {
         int var_no;     //变量编号
         int i_value;    //变量的整数值
@@ -199,21 +199,21 @@ typedef struct Operand_ {
 }Operand_;
 
 typedef struct InterCode_ {
-    enum { FUNC_D, PARAM, FUNC_C, ARG, ASSIGN, RELOP, BINOP, NOT, RETURN, IF, LABEL, GOTO, ADDR} kind;
+    enum { _FUNC_D, _PARAM, _FUNC_C, _DEC, _ARG, _ASSIGN, _RELOP, _BINOP, _NOT, _RETURN, _IF, _LABEL, _GOTO} kind;
     union {
         struct { char *name;} func_d;
         struct { Operand param;} param;
         struct { char *name;} func_c;
+        struct { Operand var; int size;} dec;
         struct { Operand arg;} arg;
         struct { Operand right, left;} assign;
         struct { Operand result, right, left; char r_kind[3];} relop;
         struct { Operand result, op1, op2; char o_kind[2];} binop;
-        struct { Operand result, op; char o_kind[2];} notop;
+        struct { Operand result, op;} notop;
         struct { Operand result;} retop;
         struct { Operand relop,label;} ifop;
         struct { Operand label;} label;
         struct { Operand gtop;} gtop;
-        struct { Operand result, op; char o_kind[2];} addr;
     } u;
 }InterCode_;
 
@@ -232,7 +232,10 @@ Operand newfconst(float f);    //新建一个浮点型常数
 Operand newaddr(int kind);     //新建一个普通地址变量
 Operand newlabel();     //新建一个标签
 int emit(InterCode IC); //输出一句中间代码
-int _sizeof(Type type);          //返回type大小
+int _sizeof(int chose,Type type);          //返回type的大小
+int _sizeofarrayb(Type type);    //返回数组的大小
 int _sizeofstruct(FieldList fieldlist); //返回结构的大小
+int out_ic();   //打印中间代码至文件ir.txt
+int out_op(Operand op); //打印操作符
 
 #endif
