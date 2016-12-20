@@ -1,0 +1,11 @@
+#忽略后缀名为.o和.a的文件
+*.[oa]
+
+#显示指定忽略名称为main的文件
+QuickSort_1.0
+QuickSort_1.1
+SELECT2_1.0
+SELECT2_1.1
+
+#忽略vim产生的临时交换文件
+*.swp
