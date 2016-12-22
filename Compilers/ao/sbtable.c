@@ -171,7 +171,6 @@ int ensymbol(char *name, TOKEN *t_token) {
         case 3: t_num = t_token->symbol.structure.type->kind;break;
     }
     fprintf(sb_file,"%s%s%d%s%d%s%d%s%d%s%d\n",name,"\t\t",t_token->kind,"\t\t",t_num,"\t\t",t_token->loc_info.first_line,"\t\t",t_token->loc_info.first_column,"\t\t",i);
-    //printf("%s\t%d\t%d\t%d\t%d\t%d\n",name,t_token->kind,t_num,t_token->loc_info.first_line,t_token->loc_info.first_column,i);
     if(token[i].next == NULL) {
         token[i].next = t_token;
         t_token->prev = &token[i];
@@ -223,10 +222,11 @@ int pro_iden(char *name, Type type, yyltype loc_info) {
  * 名称：pro_func
  * 作者：ao
  * 功能：为一个新的function符号进行初始化的操作
+ * 说明：函数不能重名
  */
 int pro_func(char *name,Type retype,int paranum,ParaList paralist,yyltype loc_info) {
     TOKEN *t_token = (TOKEN *)malloc(sizeof(TOKEN));
-    if (looksymbol(0,1,name).type == NULL) {
+    if (looksymbol(1,1,name).type == NULL) {
         t_token->kind = FUNCTION;
         t_token->symbol.function.name = (char*)malloc(sizeof(char)*(strlen(name)+1));
         strcpy(t_token->symbol.function.name,name);

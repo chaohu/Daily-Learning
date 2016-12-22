@@ -182,7 +182,10 @@ int out_ic() {
                 printf("\n");
                 break;
             }
-            case 2: printf("CALL %s\n",ics_now->code->u.func_c.name);
+            case 2: {
+                out_op(ics_now->code->u.func_c.reop);
+                printf(" := CALL %s\n",ics_now->code->u.func_c.name);
+            }
             case 3: {
                 printf("DEC ");
                 out_op(ics_now->code->u.dec.var);

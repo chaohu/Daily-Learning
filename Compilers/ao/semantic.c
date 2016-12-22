@@ -3,13 +3,31 @@
 int hide_num = 0;   //隐藏变量名
 
 int semantic(STTree *t_sttree) {
+
     char st_name[12] = "sb_file.txt";
     if(!(sb_file = fopen(st_name, "w"))) {
         perror(st_name);
         return 1;
     }
     if(t_sttree->C_next) {
-        addscope();
+        addscope(); 
+        yyltype loc_info1,loc_info2;
+        loc_info1.first_line = 0;
+        loc_info1.last_line = 0;
+        loc_info1.first_column = 0;
+        loc_info1.last_column = 0;
+        loc_info2 = loc_info1;
+        Type type1 = (Type)malloc(sizeof(Type_));
+        Type type2 = (Type)malloc(sizeof(Type_));
+        type1->kind = BASIC;
+        type1->u.basic = 0;
+        *type2 = *type1;
+        ParaList paralist = (ParaList)malloc(sizeof(ParaList_));
+        paralist->type = type2;
+        paralist->next= NULL;
+        paralist->name = NULL;
+        pro_func("read",type1,0,NULL,loc_info1);
+        pro_func("write",type1,1,paralist,loc_info1);
         deal_extdeflist(t_sttree->C_next);
         delscope();
     }
@@ -694,6 +712,7 @@ Tp_Op deal_exp(STTree *t_sttree) {
             if(tp_op1.type) {
                 InterCode IC = (InterCode)malloc(sizeof(InterCode_));
                 IC->kind = _FUNC_C;
+                IC->u.func_c.reop = tp_op1.op;
                 IC->u.func_c.name = (char *)malloc(sizeof(char)*(strlen(t_sttree->C_next->value.c_value) + 1));
                 strcpy(IC->u.func_c.name,t_sttree->C_next->value.c_value);
                 paratype = para_fun(t_sttree->C_next->value.c_value);

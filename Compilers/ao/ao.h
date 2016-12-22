@@ -203,7 +203,7 @@ typedef struct InterCode_ {
     union {
         struct { char *name;} func_d;
         struct { Operand param;} param;
-        struct { char *name;} func_c;
+        struct { Operand reop; char *name;} func_c;
         struct { Operand var; int size;} dec;
         struct { Operand arg;} arg;
         struct { Operand right, left;} assign;
