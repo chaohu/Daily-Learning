@@ -1,0 +1,23 @@
+add $t1,$t2,$t3
+addi $t1,$t2,immediate
+addu $rd,$rs,$rt
+and $rd,$rs,$rt
+addi $rt,$rs,immediate
+sll $rd,$rt,shamt
+sra $rd,$rt,shamt
+srl $rd,$rt,shamt
+sub $rd,$rs,$rt
+or $rd,$rs,$rt
+ori $rt,$rs,immediate
+nor $rd,$rs,$rt
+lw $rt,offset($rs)
+sw $rt,offset($rs)
+beq $rs,$rt,label
+bne $rs,$rt,label
+slt $rd,$rs,$rt
+slti $rt,$rs,immediate
+sltu $rd,$rs,$rt
+j label
+jal label
+jr $rs
+syscall
