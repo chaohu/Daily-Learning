@@ -9,7 +9,7 @@ int SEL(int *A,int m,int p,int k,int r);
 
 int main() {
     int i = 0,j = 0,x = 0;
-    int k[5] = {30,7,1,7,4};
+    int k[5] = {1,7,1,7,4};
     int m[5] = {1,23,30,8,17};
     int p[5] = {30,29,30,14,30};
     int r[2] = {5,9};
@@ -43,6 +43,7 @@ int SEL(int *A,int m,int p,int k,int r) {
         for(i = 1;i <= n/r;i++) {
             INSERTIONSORT(A,m + (i - 1) * r,m + i * r - 1); //将中间值收集到A的前部
             temp = A[m+i-1];
+            if(r%2) r++;
             A[m+i-1] = A[m+(i-1)*r+r/2-1];
             A[m+(i-1)*r+r/2-1] = temp;
         }
