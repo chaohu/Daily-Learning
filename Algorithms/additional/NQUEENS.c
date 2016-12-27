@@ -21,7 +21,7 @@ int NQUEENS(int n) {
         while((X[k] < n)&&(!PLACE(k,X))) X[k] = X[k] + 1;
         if(X[k] < n) {
             if(k == n - 1) {
-                for(i = 0;i < n;i++) printf("%d ",X[i]);
+                for(i = 0;i < n;i++) printf("%d ",X[i]+1);
                 printf("\n");
                 m++;
             }
