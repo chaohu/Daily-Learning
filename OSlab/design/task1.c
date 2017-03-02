@@ -8,9 +8,39 @@
 #include <glib.h>
 
 time_t times;
+FILE *fp;
+char buf_CPU[128];
+char CPU[5];
+long int _user,_nice,_sys,_idle;
+float rate_f;
+char rate_c[10];
+char buf_sum[6];
+int i = 1,sum = 0;
 gint show_time(gpointer label) {
     times = time(NULL);
     gtk_label_set_text(label,ctime(&times));
+    return 1;
+}
+gint CPU_UseRate(gpointer label) {
+    fp = fopen("/proc/stat","r");
+    if(fp == NULL) {
+        perror("fopen");
+        exit(1);
+    }
+    fgets(buf_CPU,sizeof(buf_CPU),fp);
+    sscanf(buf_CPU,"%s%ld%ld%ld%ld",CPU,&_user,&_nice,&_sys,&_idle);
+    rate_f = (100.0 * (_user + _nice + _sys)) / (_user + _nice + _sys + _idle);
+    sprintf(rate_c,"%.5f",rate_f);
+    gtk_label_set_text(label,rate_c);
+    return 1;
+}
+gint add(gpointer label) {
+    if(i < 100) {
+        sum = sum + i;
+        i++;
+    }
+    sprintf(buf_sum,"%d",sum);
+    gtk_label_set_text(label,buf_sum);
     return 1;
 }
 
@@ -52,12 +82,13 @@ int main(int argc,char *argv[]) {
             //显示实时CPU利用率窗口
             gtk_init(&argc,&argv);
             window_C = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-            label_C = gtk_label_new("wowowowo");
+            label_C = gtk_label_new(NULL);
             gtk_container_add(GTK_CONTAINER(window_C),label_C);
             gtk_window_set_title(GTK_WINDOW(window_C),"实时CPU利用率");
             gtk_window_set_default_size(GTK_WINDOW(window_C),300,200);
             gtk_window_set_position(GTK_WINDOW(window_C),GTK_WIN_POS_CENTER_ALWAYS);
             g_signal_connect(window_C, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+            g_timeout_add(2000,CPU_UseRate,label_C);
             gtk_widget_show_all(window_C);
             gtk_main();
         }
@@ -71,12 +102,13 @@ int main(int argc,char *argv[]) {
                 //显示1-100累加求和窗口
                 gtk_init(&argc,&argv);
                 window_S = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-                label_S = gtk_label_new("wowowowo");
+                label_S = gtk_label_new(NULL);
                 gtk_container_add(GTK_CONTAINER(window_S),label_S);
                 gtk_window_set_title(GTK_WINDOW(window_S),"累加求和");
                 gtk_window_set_default_size(GTK_WINDOW(window_S),300,200);
                 gtk_window_move(GTK_WINDOW(window_S),980,200);
                 g_signal_connect(window_S, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+                g_timeout_add(3000,add,label_S);
                 gtk_widget_show_all(window_S);
                 gtk_main();
             }

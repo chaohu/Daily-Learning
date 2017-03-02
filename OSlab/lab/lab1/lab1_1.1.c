@@ -26,7 +26,7 @@ int main(void) {
     char readbuffer[80];
     
     pipe(fd);
-    if((child1pid = fork()) == -1) {    //创建子进程1
+    if(((child1pid = fork()) == -1) || ((child2pid = fork()) == -1)) {    //创建子进程1
         perror("fork");
         exit(1);
     }
@@ -55,26 +55,20 @@ int main(void) {
         printf("Child Process 1 is Killed by Parent!\n");
         exit(0);
     }
-    else {
-        if((child2pid = fork()) == -1) { //再创建子进程2
-            perror("fork");
-            exit(1);
-        }
-
-        if(child2pid == 0) {    //子进程2运行代码
+    else if(child2pid == 0) {   //子进程2运行代码
             signal(SIGUSR2,stop);
             signal(SIGINT,SIG_IGN);
             wait_mark = 1;
             close(fd[1]);
             while(wait_mark) {
+            sleep(1);
             read(fd[0],readbuffer,sizeof(readbuffer));
             printf("Received string:%s",readbuffer);
-            sleep(1);
             }
             printf("Child Process 2 is Killed by Parent!\n");
             exit(0);
-        }
-        else {  //父进程代码
+    }
+    else {  //父进程代码
             signal(SIGINT,stop);
             wait_mark = 1;
             waiting();
@@ -86,7 +80,6 @@ int main(void) {
             close(fd[1]);
             printf("Parent Process is Killed!\n");
             exit(0);
-        }
     }
     return 0;
 }
