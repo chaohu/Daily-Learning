@@ -7,3 +7,13 @@ parser
 
 #忽略vim产生的临时交换文件
 *.swp
+
+
+
+#忽略操作系统试验的可执行程序
+task1
+task2
+task3
+task4
+test1
+test2
