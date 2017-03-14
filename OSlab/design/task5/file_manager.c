@@ -9,15 +9,17 @@
 #define TOUCH 4
 #define RMF 5
 #define RMD 6
-#define EXIT 7
+#define WRITE 7
+#define READ 8
+#define EXIT 9
 
 #define DISK "disk.dat"			//磁盘块号文件
 #define BUFF "buff.dat"			//读写文件的缓冲文件
 #define DNodeNum 128 			//目录节点数目
 #define FNodeNum 1024			//文件节点数目
 #define BlkNum (80 * 1024)		//磁盘块的数目
-#define BlkSize 1024			//磁盘块大小为1K  
-#define BlkPerFile 1024			//每个文件包含的最大的磁盘块数目 
+#define BlkSize 1024			//磁盘块大小为1K
+#define BlkPerFile 80			//每个文件包含的最大的磁盘块数目
 #define SuperBeg sizeof(int)	//超级块的起始地址
 #define DNodeBeg sizeof(SuperBlk)//目录节点的起始地址
 #define FNodeBeg DNodeBeg+DNodeNum*sizeof(Dir_Node)//文件节点的起始地址
@@ -42,7 +44,7 @@ typedef struct Dir_Node {		//目录节点
 typedef struct File_node {
 	int file_num;				//文件节点编号
 	char file_name[32];			//文件名
-	int block[1024];			//文件占用的磁盘块编号
+	int block[BlkPerFile];		//文件占用的磁盘块编号
 	int blk_count;				//文件占用磁盘块数
 	int parent;					//父目录索引
 }File_Node;
@@ -56,7 +58,7 @@ int dnode_num = 0;
 char path[40] = "root";
 char cmd[5][20];				//命令行输入
 //系统支持的命令
-char SYS_CMD[8][20] = {"help","ls","cd","mkdir","touch","rmf","rmd","exit"};
+char SYS_CMD[10][20] = {"help","ls","cd","mkdir","touch","rmf","rmd","write","read","exit"};
 
 int init_fs();
 int analyse(char *str);
@@ -65,6 +67,8 @@ int apply_d_node();
 int apply_f_node();
 int create_dir(char *name);
 int create_file(char *name);
+int del_subdir(int num);
+int del_subfile(int num);
 int del_dir(char *name);
 int del_file(char *name);
 int save_dir(int dnode_num);
@@ -72,6 +76,8 @@ int open_dir(int dnode_num);
 int change_dir(char *name);
 int show_dir_file();
 int help();
+int write_file(char *name);
+int read_file(char *name);
 
 
 //运行文件系统，处理用户命令
@@ -84,33 +90,29 @@ int main() {
 		return 0;
 	}
 	init_fs();
-    do
-    {
+    do {
 		printf("%s > ", curr_dir.dir_name);
         fgets(input, 128, stdin);
         switch(analyse(input))
         {
             case HELP:
-                help();
-                break;
+                help();break;
             case LS:
-                show_dir_file();
-                break;
+                show_dir_file();break;
             case CD:
-                change_dir(cmd[1]);
-                break;
+                change_dir(cmd[1]);break;
             case MKDIR:
-                create_dir(cmd[1]);
-                break;
+                create_dir(cmd[1]);break;
             case TOUCH:
-                create_file(cmd[1]);
-                break;
+                create_file(cmd[1]);break;
             case RMF:
-                del_file(cmd[1]);
-                break;
+                del_file(cmd[1]);break;
             case RMD:
-                del_dir(cmd[1]);
-                break;
+                del_dir(cmd[1]);break;
+			case WRITE:
+				write_file(cmd[1]);break;
+			case READ:
+				read_file(cmd[1]);break;
             case EXIT: {
 				fseek(Disk,SuperBeg,SEEK_SET);
 				fwrite(&super_blk,sizeof(SuperBlk),1,Disk);
@@ -122,8 +124,7 @@ int main() {
                 printf("不支持的命令\n");
                 break;
         }
-    }
-	while(1);
+    } while(1);
 }
 
 
@@ -163,12 +164,9 @@ int analyse(char* str)
     for(i = 0; i < 5; i++) cmd[i][0] = '\0';
     sscanf(str, "%s %s %s %s %s",cmd[0], cmd[1], cmd[2], cmd[3], cmd[4]);
 
-    for(i = 1; i < 17; i++)
+    for(i = 1; i < 10; i++)
     {
-        if(strcmp(cmd[0], SYS_CMD[i]) == 0)
-        {
-            return i;
-        }
+        if(strcmp(cmd[0], SYS_CMD[i]) == 0) return i;
     }
     return 0;
 }
@@ -279,8 +277,31 @@ int create_file(char *name) {				//在当前目录下创建文件
 }
 
 //删除目录
-int del_dir(char *name) {           //删除当前目录下的某一个目录
+//递归删除目录的子目录
+int del_subdir(int num) {
 	int i = 0;
+	Dir_Node temp_d;
+	super_blk.dnode_map[num] = 0;
+	fseek(Disk,DNodeBeg+sizeof(Dir_Node)*num,SEEK_SET);
+	fread(&temp_d,sizeof(Dir_Node),1,Disk);
+	for(i = 0;i < temp_d.dir_count;i++) del_subdir(temp_d.child_dir[i]);
+	for(i = 0;i < temp_d.file_count;i++) del_subfile(temp_d.child_file[i]);
+	return 1;
+}
+
+int del_subfile(int num) {
+	int i = 0;
+	File_Node temp_f;
+	super_blk.fnode_map[num] = 0;
+	fseek(Disk,FNodeBeg+sizeof(File_Node)*num,SEEK_SET);
+	fread(&temp_f,sizeof(File_Node),1,Disk);
+	for(i = 0;i < temp_f.blk_count;i++) super_blk.blk_map[temp_f.block[i]] = 0;
+	return 1;
+}
+
+//删除当前目录下的某一个目录
+int del_dir(char *name) {
+	int i = 0,j = 0;
 	if(name[0] == '\0') {
 		printf("目录名为空，删除失败!\n");
 		return 0;
@@ -288,6 +309,8 @@ int del_dir(char *name) {           //删除当前目录下的某一个目录
 	for(i = 0;i < curr_dir.dir_count;i++) {
 		if(strcmp(buff_dir_node[i].dir_name,name) == 0) {
 			super_blk.dnode_map[buff_dir_node[i].dir_num] = 0;
+			for(j = 0;j < buff_dir_node[i].dir_count;j++) del_subdir(buff_dir_node[i].child_dir[j]);
+			for(j = 0;j < buff_dir_node[i].file_count;j++) del_subfile(buff_dir_node[i].child_file[j]);
 			curr_dir.dir_count--;
 			for(;i < curr_dir.dir_count;i++) {
 				curr_dir.child_dir[i] = curr_dir.child_dir[i+1];
@@ -311,9 +334,7 @@ int del_file(char *name) {           //删除当前目录下的文件
 	for(i = 0;i < curr_dir.file_count;i++) {
 		if(strcmp(buff_file_node[i].file_name,name) == 0) {
 			super_blk.fnode_map[buff_file_node[i].file_num] = 0;
-			for(j = 0;i < buff_file_node[i].blk_count;j++) {
-				super_blk.blk_map[buff_file_node[i].block[j]] = 0;
-			}
+			for(j = 0;j < buff_file_node[i].blk_count;j++) super_blk.blk_map[buff_file_node[i].block[j]] = 0;
 			curr_dir.file_count--;
 			for(;i < curr_dir.file_count;i++) {
 				curr_dir.child_file[i] = curr_dir.child_file[i+1];
@@ -442,4 +463,84 @@ int help() {
     mv      ---  rename a file or directory \n\
     exit    ---  exit this system\n");
 	return 1;
+}
+
+//写文件
+int apply_blk() {
+	int i = 0;
+	for(i = 0;i < BlkNum;i++) {
+		if(!super_blk.blk_map[i]) {
+			return i;break;
+		}
+	}
+	return -1;
+}
+
+int write_file(char *name) {
+	int flag = 0;
+	int i = 0;
+	int blk_num = 0;
+    char temp[1024];
+	if(name[0] == '\0') {
+		printf("文件名为空，写入失败!\n");
+		return 0;
+	}
+	for(i = 0;i < curr_dir.file_count;i++) {
+		if(strcmp(buff_file_node[i].file_name,name) == 0) {
+			flag = 1;
+			break;
+		}
+	}
+	if(flag) {
+		fgets(temp,1024,stdin);
+		super_blk.blk_map[buff_file_node[i].block[0]] = 0;
+		blk_num = apply_blk();
+		if(blk_num == -1) {
+			printf("磁盘块已满！\n");
+			return 0;
+		}
+		else {
+			super_blk.blk_map[blk_num] = 1;
+			buff_file_node[i].block[buff_file_node[i].blk_count] = blk_num;
+			buff_file_node[i].blk_count = 1;
+			fseek(Disk,BlockBeg+sizeof(char)*blk_num,SEEK_SET);
+			fwrite(temp,sizeof(temp),1,Disk);
+		}
+		return 1;  
+	}
+	else {
+		printf("当前目录下无此文件，写入失败!\n");
+		return 0;
+	}
+}
+
+//读文件  
+int read_file(char* name) {
+	int flag = 0;
+	int i = 0,j = 0;
+	char temp[1024];
+
+	if(name[0] == '\0') {
+		printf("文件名为空，读出失败!\n");
+		return 0;
+	}
+	for(i = 0;i < curr_dir.file_count;i++) {
+		if(strcmp(buff_file_node[i].file_name,name) == 0) {
+			flag = 1;
+			break;
+		}
+	}
+
+	if(flag) {
+		for(j = 0;j < buff_file_node[i].blk_count;j++) {
+			fseek(Disk,BlockBeg+sizeof(char)*buff_file_node[i].block[j],SEEK_SET);  
+			fread(&temp,sizeof(temp),1,Disk);
+			printf("%s",temp);
+		}
+    	return 1;  
+	}
+	else {
+		printf("当前目录下无此文件，读出失败!\n");
+		return 0;
+	}
 }
