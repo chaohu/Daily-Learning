@@ -1,0 +1,319 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define HELP 0
+#define LS 1
+#define CD 2
+#define MKDIR 3
+#define TOUCH 4
+#define RMF 5
+#define RMD 6
+#define EXIT 7
+
+#define DISK "disk.txt"			//磁盘块号文件
+#define BUFF "buff.txt"			//读写文件的缓冲文件
+
+typedef struct SuperBlk{
+	int inode_map[InodeNum];	//i节点位图  
+    int blk_map[BlkNum];		//磁盘块位图  
+    int inode_used;				//已被使用的i节点数目  
+    int blk_used;				//已被使用的磁盘块数目
+}SuperBlk;
+
+typedef struct Dir_Node {		//目录节点   
+	char dir_name[32];  		//目录名
+	Dir_Node *child_dir[8];		//子目录索引
+	int dir_count;				//当前子目录数
+	File_Node *child_file[16];	//子文件索引
+	int file_count;				//当前子文件数
+	Dir_Node *parent;			//父目录索引
+}Dir_Node;
+
+typedef struct File_node {
+	char file_name[32];			//文件名
+	Dir_Node *parent;			//父目录索引
+}File_Node;
+
+SuperBlk *superblk;				//文件系统的超级块
+Dir_Node *curr_dir;				//当前目录节点指针
+Dir_Node dir[100];				//目录结构
+char path[40] = "root";
+char cmd[5][20];				//命令行输入
+//系统支持的命令
+char SYS_CMD[8][20] = {"help","ls","cd","mkdir","touch","rmf","rmd","exit"};
+
+void help();
+int analyse(char *str);
+int create_dir(char *name);
+int create_file(char *name);
+int del_dir(char *name);
+int del_file(char *name);
+int change_dir(char *name);
+int show_dir_file();
+
+
+//运行文件系统，处理用户命令
+int main() {
+	int i = 0;
+    char input[128];
+	curr_dir = (Dir_Node *)malloc(sizeof(Dir_Node));
+	strcpy(curr_dir->dir_name,"root");
+	for(i = 0;i < 8;i++) curr_dir->child_dir[i] = NULL;
+	curr_dir->dir_count = 0;
+	for(i = 0;i < 16;i++) curr_dir->child_file[i] = NULL;
+	curr_dir->file_count = 0;
+	curr_dir->parent = NULL;
+    do
+    {
+		printf("%s >",curr_dir->dir_name);
+        fgets(input, 128, stdin);
+        switch(analyse(input))
+        {
+            case HELP:
+                help();
+                break;
+            case LS:
+                show_dir_file();
+                break;
+            case CD:
+                change_dir(cmd[1]);
+                break;
+            case MKDIR:
+                create_dir(cmd[1]);
+                break;
+            case TOUCH:
+                create_file(cmd[1]);
+                break;
+            case RMF:
+                del_file(cmd[1]);
+                break;
+            case RMD:
+                del_dir(cmd[1]);
+                break;
+            case EXIT:
+                return 0;
+                break;
+            default:
+                printf("不支持的命令\n");
+                break;
+        }
+    }
+	while(1);
+}
+
+int init_fs(void)  
+{ 
+	FILE *Disk = fopen(DISK,"r+");			//打开模拟文件块文件
+    fseek(Disk,0,SEEK_SET);					//超级块在文件起始位置 
+    fread(superblk,sizeof(SuperBlk),1,Disk);//读取超级块  
+  
+    inode_num=0;							//当前根目录的inode为0  
+  
+    if(!open_dir(inode_num)){  
+        printf("打开根目录失败!\n");
+        return 0;
+    }
+
+    return 1;
+}
+
+
+//分析命令
+int analyse(char* str)
+{
+    int i;
+    for(i = 0; i < 5; i++) cmd[i][0] = '\0';
+    sscanf(str, "%s %s %s %s %s",cmd[0], cmd[1], cmd[2], cmd[3], cmd[4]);
+
+    for(i = 1; i < 17; i++)
+    {
+        if(strcmp(cmd[0], SYS_CMD[i]) == 0)
+        {
+            return i;
+        }
+    }
+    return 0;
+}
+
+
+//创建目录
+int create_dir(char *name) {				//在当前的目录下创建目录
+	int i = 0;
+	if(curr_dir->dir_count == 8) {			//如果父目录已满，则创建失败
+		printf("当前目录已满,创建失败!\n");
+		return 0;
+	}
+	if(name[0] == '\0') {
+		printf("目录名为空，创建失败!\n");
+		return 0;
+	}
+	Dir_Node *new_dir = (Dir_Node *)malloc(sizeof(Dir_Node));
+	strcpy(new_dir->dir_name,name);
+	for(i = 0;i < 8;i++) new_dir->child_dir[i] = NULL;
+	new_dir->dir_count = 0;
+	for(i = 0;i < 16;i++) new_dir->child_file[i] = NULL;
+	new_dir->file_count = 0;
+	new_dir->parent = curr_dir;
+
+	curr_dir->child_dir[curr_dir->dir_count] = new_dir;	//修改父目录的控制信息
+	curr_dir->dir_count++;
+
+	return 1;
+}
+
+
+
+//创建文件
+int create_file(char *name) {				//在当前目录下创建文件
+	if(curr_dir->file_count == 16) {         //如果父目录已满，则创建失败
+		printf("当前目录已满，创建失败!\n");
+		return 0;
+	}
+	if(name[0] == '\0') {
+		printf("文件名为空，创建失败!\n");
+		return 0;
+	}
+	file_node *new_file = (file_node *)malloc(sizeof(file_node));
+	strcpy(new_file->file_name,name);
+	new_file->parent = curr_dir;
+
+	curr_dir->child_file[curr_dir->file_count] = new_file;
+	curr_dir->file_count++;
+
+	return 1;
+}
+
+//删除目录
+int del_dir(char *name) {           //删除目录的主调函数，前提是知道了删除目录的名字
+	int i = 0;
+	int flag = 0;
+	if(name[0] == '\0') {
+		printf("目录名为空，删除失败!\n");
+		return 0;
+	}
+	for(i = 0;i < 8;i++) {
+		if(curr_dir->child_dir[i]){
+			if(strcmp(curr_dir->child_dir[i]->dir_name,name) == 0) {
+				flag = 1;
+				break;
+			}
+		}
+		else break;
+	}
+	if(flag) {
+		free(curr_dir->child_dir[i]);
+		curr_dir->dir_count--;
+		for(;i < 8;i++) curr_dir->child_dir[i] = curr_dir->child_dir[i+1];
+		return 1;
+	}
+	else {
+		printf("无此目录，删除失败！\n");
+		return 0;
+	}
+}
+
+
+//删除文件
+int del_file(char *name) {           //删除文件的主调函数，前提是知道了删除文件的名字
+	int i = 0;
+	int flag = 0;
+	if(name[0] == '\0') {
+		printf("文件名为空，删除失败!\n");
+		return 0;
+	}
+	for(i = 0;i < 16;i++) {
+		if(curr_dir->child_file[i]){
+			if(strcmp(curr_dir->child_file[i]->file_name,name) == 0) {
+				flag = 1;
+				break;
+			}
+		}
+		else break;
+	}
+	if(flag == 0) {
+		printf("无此文件，删除失败！\n");
+		return 0;
+	}
+	else {
+		free(curr_dir->child_file[i]);
+		curr_dir->file_count--;
+		for(;i < 16;i++) curr_dir->child_file[i] = curr_dir->child_file[i+1];
+	}
+	return 1;
+}
+
+
+
+
+
+//改变目录
+int change_dir(char *name) {	//改变工作目录
+	int i = 0;
+	int flag = 0;
+	if(name[0] == '\0') {
+		printf("目录名为空，改变失败!\n");
+		return 0;
+	}
+	if(strcmp(name,".") == 0) flag = 1;
+	else if(strcmp(name,"..") == 0) flag = 2;
+	else {
+		for(i = 0;i < curr_dir->dir_count;i++) {
+			if(strcmp(curr_dir->child_dir[i]->dir_name,name) == 0) {
+				flag = 3;
+				break;
+			}
+		}
+	}
+	if(flag == 1) return 1;
+	else if(flag == 2) {
+		if(curr_dir->parent) curr_dir = curr_dir->parent;
+		else printf("当前为根目录!\n");
+		return 2;
+	}
+	else if(flag == 3) {
+		curr_dir = curr_dir->child_dir[i];
+		return 3;
+	}
+	else {
+		printf("无此目录，进入失败！\n");
+		return 0;
+	}
+}
+
+
+//显示当前目录下的文件和子目录信息
+int show_dir_file() {	
+	int i = 0;
+	while(curr_dir->child_dir[i]){
+		printf("[D]%s\t",curr_dir->child_dir[i]->dir_name);
+		if(i >= 7) break;
+		else i++;
+	}
+	if(i) printf("\n");
+	i = 0;
+	while(curr_dir->child_file[i]){
+		printf("[F]%s\t",curr_dir->child_file[i]->file_name);
+		if(i >= 15) break;
+		else i++;
+	}
+	if(i) printf("\n");
+	return 0;
+}
+
+//显示帮助信息
+void help()
+{
+    printf("command: \n\
+    help    ---  show help menu \n\
+    ls      ---  list the digest of the directory's children \n\
+    cd      ---  change directory \n\
+    mkdir   ---  make directory   \n\
+    touch   ---  create a new file \n\
+    cat     ---  read a file \n\
+    write   ---  write something to a file \n\
+    rm      ---  delete a directory or a file \n\
+    cp      ---  cp a directory file to another directory or file (not finish)\n\
+    mv      ---  rename a file or directory \n\
+    exit    ---  exit this system\n");
+}
