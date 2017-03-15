@@ -46,6 +46,7 @@ typedef struct File_node {
 	char file_name[32];			//文件名
 	int block[BlkPerFile];		//文件占用的磁盘块编号
 	int blk_count;				//文件占用磁盘块数
+	int size_rest;				//文件一个磁盘块不满时占用的字节数
 	int parent;					//父目录索引
 }File_Node;
 
@@ -188,10 +189,7 @@ int check_name(char *name) {
 int apply_d_node() {
 	int i = 0;
 	for(i = 0;i < DNodeNum;i++) {
-		if(!super_blk.dnode_map[i]) {
-			super_blk.dnode_map[i] = 1;
-			return i;
-		}
+		if(!super_blk.dnode_map[i]) return i;
 	}
 	return -1;
 }
@@ -200,14 +198,19 @@ int apply_d_node() {
 int apply_f_node() {
 	int i = 0;
 	for(i = 0;i < FNodeNum;i++) {
-		if(!super_blk.fnode_map[i]) {
-			super_blk.fnode_map[i] = 1;
-			return i;
-		}
+		if(!super_blk.fnode_map[i]) return i;
 	}
 	return -1;
 }
 
+//申请新的磁盘块
+int apply_blk() {
+	int i = 0;
+	for(i = 0;i < BlkNum;i++) {
+		if(!super_blk.blk_map[i]) return i;
+	}
+	return -1;
+}
 
 //创建目录
 int create_dir(char *name) {				//在当前的目录下创建目录
@@ -227,8 +230,9 @@ int create_dir(char *name) {				//在当前的目录下创建目录
 	i = apply_d_node();
 	if(i == -1) {
 		printf("目录节点已满，申请目录节点失败!\n");
-		return 0;	
+		return 0;
 	}
+	super_blk.dnode_map[i] = 1;
 
 	//新建新目录节点
 	buff_dir_node[curr_dir.dir_count].dir_num = i;
@@ -265,9 +269,19 @@ int create_file(char *name) {				//在当前目录下创建文件
 		printf("文件节点已满，申请文件节点失败!\n");
 		return 0;	
 	}
+	j = apply_blk();
+	if(j == -1) {
+		printf("文件节点已满，申请文件节点失败!\n");
+		return 0;
+	}
+	super_blk.fnode_map[i] = 1;
+	super_blk.blk_map[j] = 1;
+
 	buff_file_node[curr_dir.file_count].file_num = i;
 	strcpy(buff_file_node[curr_dir.file_count].file_name,name);
-	buff_file_node[curr_dir.file_count].blk_count = 0;
+	buff_file_node[curr_dir.file_count].block[0] = j;
+	buff_file_node[curr_dir.file_count].blk_count = 1;
+	buff_file_node[curr_dir.file_count].size_rest = 0;
 	buff_file_node[curr_dir.file_count].parent = curr_dir.dir_num;
 
 	curr_dir.child_file[curr_dir.file_count] = i;
@@ -466,20 +480,10 @@ int help() {
 }
 
 //写文件
-int apply_blk() {
-	int i = 0;
-	for(i = 0;i < BlkNum;i++) {
-		if(!super_blk.blk_map[i]) {
-			return i;break;
-		}
-	}
-	return -1;
-}
-
 int write_file(char *name) {
 	int flag = 0;
 	int i = 0;
-	int blk_num = 0;
+	int blk_num = 0,size_rest = 0;
     char temp[1024];
 	if(name[0] == '\0') {
 		printf("文件名为空，写入失败!\n");
@@ -493,20 +497,36 @@ int write_file(char *name) {
 	}
 	if(flag) {
 		fgets(temp,1024,stdin);
-		super_blk.blk_map[buff_file_node[i].block[0]] = 0;
-		blk_num = apply_blk();
-		if(blk_num == -1) {
-			printf("磁盘块已满！\n");
-			return 0;
+		size_rest = strlen(temp)-1;
+		if((size_rest + buff_file_node[i].size_rest) > 1024) {
+			if(buff_file_node[i].blk_count >= 80) {
+				printf("文件已经最大，写入失败!\n");
+				return 0;
+			}
+			blk_num = apply_blk();
+			if(blk_num == -1) {
+				printf("磁盘块已满，写入失败！\n");
+				return 0;
+			}
+			else {
+				char temp_buff[1024];
+				super_blk.blk_map[blk_num] = 1;
+				buff_file_node[i].block[buff_file_node[i].blk_count] = blk_num;
+				buff_file_node[i].blk_count++;
+				fseek(Disk,BlockBeg+sizeof(char)*(buff_file_node[i].block[buff_file_node[i].blk_count-2])+buff_file_node[i].size_rest,SEEK_SET);
+				fwrite(temp,sizeof(char)*(1024-buff_file_node[i].size_rest),1,Disk);
+				fseek(Disk,BlockBeg+sizeof(char)*blk_num,SEEK_SET);
+				fwrite(temp+1024-buff_file_node[i].size_rest,sizeof(char)*(size_rest-1024+buff_file_node[i].size_rest),1,Disk);
+				buff_file_node[i].size_rest = size_rest-1024+buff_file_node[i].size_rest;
+				return 1;
+			}
 		}
 		else {
-			super_blk.blk_map[blk_num] = 1;
-			buff_file_node[i].block[buff_file_node[i].blk_count] = blk_num;
-			buff_file_node[i].blk_count = 1;
-			fseek(Disk,BlockBeg+sizeof(char)*blk_num,SEEK_SET);
-			fwrite(temp,sizeof(temp),1,Disk);
+			fseek(Disk,BlockBeg+sizeof(char)*(buff_file_node[i].block[buff_file_node[i].blk_count-1])+buff_file_node[i].size_rest,SEEK_SET);
+			fwrite(temp,sizeof(char)*size_rest,1,Disk);
+			buff_file_node[i].size_rest += size_rest;
+			return 1;
 		}
-		return 1;  
 	}
 	else {
 		printf("当前目录下无此文件，写入失败!\n");
@@ -532,10 +552,17 @@ int read_file(char* name) {
 	}
 
 	if(flag) {
-		for(j = 0;j < buff_file_node[i].blk_count;j++) {
+		for(j = 0;j < buff_file_node[i].blk_count-1;j++) {
 			fseek(Disk,BlockBeg+sizeof(char)*buff_file_node[i].block[j],SEEK_SET);  
 			fread(&temp,sizeof(temp),1,Disk);
 			printf("%s",temp);
+		}
+		if(buff_file_node[i].size_rest) {
+			fseek(Disk,BlockBeg+sizeof(char)*buff_file_node[i].block[buff_file_node[i].blk_count-1],SEEK_SET);  
+			fread(&temp,sizeof(char)*(buff_file_node[i].size_rest),1,Disk);
+			temp[buff_file_node[i].size_rest] = '\0';
+			printf("%s",temp);
+			printf("\n");
 		}
     	return 1;  
 	}
