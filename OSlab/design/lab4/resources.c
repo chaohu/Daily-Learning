@@ -45,7 +45,7 @@ char *CPU_UseRate() {
 		total = total_t;	//此次数据保存
 		idle = idle_t;
 	}
-	sprintf(temp_cpu,"cpu使用率：%0.1f%%",cpu_used_percent);
+	sprintf(temp_cpu,"cpu使用率:\t%0.1f%%",cpu_used_percent);
 	return temp_cpu;
 }
 
@@ -65,7 +65,7 @@ char *MEM_UseRate() {
 	char name[32];
 	float MemFree = 0,MemTotal = 0;
 	float Mem_UseRate = 0;
-	char *temp_mem = (char *)malloc(sizeof(char) * 20);
+	char *temp_mem = (char *)malloc(sizeof(char) * 100);
 	if((fp = fopen("/proc/meminfo","r")) == NULL) {
 		perror("fopen /proc/meminfo");
 		exit(1);
@@ -78,7 +78,7 @@ char *MEM_UseRate() {
     sscanf(buffer,"%s %f %s",name,&MemFree,name);  
 	
 	Mem_UseRate = (MemTotal-MemFree) / MemTotal;
-	sprintf(temp_mem,"内存使用率：%0.2f%%",Mem_UseRate);
+	sprintf(temp_mem,"MemTotal:\t%0.0fKB\nMemFree:\t\t%0.0fKB\n内存使用率:\t%0.5f%%",MemTotal,MemFree,Mem_UseRate);
 
 	fclose(fp);
 	return temp_mem;

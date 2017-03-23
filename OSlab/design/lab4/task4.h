@@ -28,7 +28,7 @@ typedef struct {
 
 #define PROC_NAME_LINE 1    //名称所在行
 #define PROC_PID_LINE 5     //pid所在行
-#define PROC_STATE_LINE 2
+#define PROC_STATE_LINE 2	//进程状态所在行
 #define PROC_VMSIZE_LINE 17 //虚拟内存所在行
 
 

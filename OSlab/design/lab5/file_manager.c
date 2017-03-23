@@ -14,7 +14,6 @@
 #define EXIT 9
 
 #define DISK "disk.dat"			//磁盘块号文件
-#define BUFF "buff.dat"			//读写文件的缓冲文件
 #define DNodeNum 128 			//目录节点数目
 #define FNodeNum 1024			//文件节点数目
 #define BlkNum (80 * 1024)		//磁盘块的数目
@@ -470,11 +469,10 @@ int help() {
     cd      ---  change directory \n\
     mkdir   ---  make directory   \n\
     touch   ---  create a new file \n\
-    cat     ---  read a file \n\
+    rmf     ---  delete a file \n\
+    rmd     ---  delete a directory \n\
     write   ---  write something to a file \n\
-    rm      ---  delete a directory or a file \n\
-    cp      ---  cp a directory file to another directory or file (not finish)\n\
-    mv      ---  rename a file or directory \n\
+    read    ---  read a file \n\
     exit    ---  exit this system\n");
 	return 1;
 }
