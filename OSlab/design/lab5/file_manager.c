@@ -86,7 +86,7 @@ int main() {
     char input[128];
 	Disk = fopen(DISK,"r+");			//打开模拟文件块文件
 	if(!Disk) {
-		printf("模拟磁盘文件打开失败！");
+		printf("模拟磁盘文件打开失败！\n");
 		return 0;
 	}
 	init_fs();
