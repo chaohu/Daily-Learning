@@ -17,3 +17,7 @@ task3
 task4
 test1
 test2
+
+
+#忽略ACM编程训练的可执行文件
+add
