@@ -2,42 +2,55 @@
 #include <math.h>
 using namespace std;
 
-int gcd(int a,int b);
+unsigned long long gcd(unsigned long long a,unsigned long long b);
 
 int main() {
-	int N = 0,M = 0;
-	int a = 0;
-	int x = 0,y = 0,z = 0;
-	int i = 1,j = 1,k = 1;
+	unsigned long long N = 0,M = 0;
+	unsigned long long a = 0;
+	unsigned long long x = 0,y = 0,z = 0;
+	unsigned long long i = 1,j = 1,k = 1;
+	unsigned long long l = 0,m = 0,n = 0;
 	cin>>N>>M;
 	a = gcd(N,M);
-	while(i*i < N) {
+	l = sqrt(N);
+	if(l*l == N) {
+		x++;
+		l--;
+	}
+	m = sqrt(M);
+	if(m*m == M) {
+		y++;
+		m--;
+	}
+	n = sqrt(a);
+	if(n*n == a) {
+		z++;
+		n--;
+	}
+	while(i <= l) {
 		if(N%i == 0) {
 			x+=2;
 		}
 		i++;
 	}
-	if(i*i == N) x++;
-	while(j*j < M) {
+	while(j <= m) {
 		if(M%j == 0) {
 			y+=2;
 		}
 		j++;
 	}
-	if(j*j == M) y++;
-	while(k*k < a) {
+	while(k <= n) {
 		if(a%k == 0) {
 			z+=2;
 		}
 		k++;
 	}
-	if(k*k == a) z++;
 	i = x*y;
 	a = gcd(i,z);
 	cout<<i/a<<' '<<z/a;
 	return 0;
 }
 
-int gcd(int a,int b) {
+unsigned long long gcd(unsigned long long a,unsigned long long b) {
 	return (b>0) ? gcd(b,a%b):a;
 }

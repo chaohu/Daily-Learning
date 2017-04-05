@@ -21,3 +21,4 @@ test2
 
 #忽略ACM编程训练的可执行文件
 add
+op_slim
