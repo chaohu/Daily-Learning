@@ -17,6 +17,7 @@ public class ChatServer {
             while(true) {
                 // 每当接收到客户端的Socket请求，服务器端也相应的创建一个Socket
                 SocketBean socketBean = new SocketBean();
+                socketBean.setId(DataUtil.getTimeId());
                 socketBean.setSocket(server.accept());
                 mSocketList.add(socketBean);
                 // 每连接一个客户端，启动一个ServerThread线程为该客户端服务

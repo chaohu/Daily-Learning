@@ -6,8 +6,12 @@ import java.net.Socket;
  * Created by huchao on 17-4-6.
  */
 public class SocketBean {
-    private String id = "";
-    private String deviceId = "";
+    private String id = null;
+    private Socket socket;
+    private String deviceId = null;
+    private String nickName = null;
+    private String loginTime = null;
+
 
     public String getId() {
         return id;
@@ -48,10 +52,5 @@ public class SocketBean {
     public void setSocket(Socket socket) {
         this.socket = socket;
     }
-
-    private String nickName = "";
-    private String loginTime = "";
-    private Socket socket;
-
 
 }

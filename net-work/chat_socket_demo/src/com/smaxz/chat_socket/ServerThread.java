@@ -17,8 +17,7 @@ public class ServerThread extends Thread {
     @Override
     public void run() {
         try {
-            String content;
-            String info_s = "";
+            String info_s;
             JSONObject info_j;
             InputStream is;
             InputStreamReader isr;
@@ -27,19 +26,18 @@ public class ServerThread extends Thread {
             isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
             // 循环不断地从Socket中读取客户端发送过来的数据
-            while ((content = br.readLine()) != null) {
-                info_s += content;
-            }
-            info_j = new JSONObject(info_s);
-            System.out.println(info_j.getString("action"));
-            if(info_j.getString("action").equals("LOGIN")) {
-                login(info_j.getString("deviceId"),info_j.getString("nickName"),info_j.getString("loginTime"));
-            } else if(info_j.getString("action").equals("LOGOUT")) {
-                logout(info_j.getString("deviceId"));
-            } else if(info_j.getString("action").equals("SENDMSG")) {
-                sendmsg(info_j.getString("otherName"),info_j.getString("otherId"),info_j.getString("selfId"),info_j.getString("message"));
-            } else if(info_j.getString("action").equals("GETLIST")) {
-                getlist(info_j.getString("deviceId"));
+            while ((info_s = br.readLine()) != null) {
+                info_j = new JSONObject(info_s);
+                System.out.println(info_j.getString("action"));
+                if(info_j.getString("action").equals("LOGIN")) {
+                    login(info_j.getString("deviceId"),info_j.getString("nickName"),info_j.getString("loginTime"));
+                } else if(info_j.getString("action").equals("LOGOUT")) {
+                    logout(info_j.getString("deviceId"));
+                } else if(info_j.getString("action").equals("SENDMSG")) {
+                    sendmsg(info_j.getString("otherName"),info_j.getString("otherId"),info_j.getString("selfId"),info_j.getString("message"));
+                } else if(info_j.getString("action").equals("GETLIST")) {
+                    getlist(info_j.getString("deviceId"));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
