@@ -5,8 +5,7 @@
 	> Created Time: 2017年07月11日 星期二 16时31分50秒
  ************************************************************************/
 
-#include<iostream>
-using namespace std;
+#include <stdio.h>
 #include <omp.h>
 
 int test() {
@@ -24,7 +23,7 @@ int main() {
 	for(int i = 0;i <= 9;i++) {
 		test();
 		A[i] = B[i] + C[i];
-		cout<<A[i]<<"\n";
+		printf("result:%d\n",A[i]);
 	}
 
 	return 0;
