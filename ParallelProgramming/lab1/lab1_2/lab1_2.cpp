@@ -8,12 +8,6 @@
 #include <stdio.h>
 #include <omp.h>
 
-int test() {
-	for(int i = 0;i < 10000;i++) {
-	}
-	return 0;
-}
-
 int main() {
 	int A[10] = {0,0,0,0,0,0,0,0,0,0};
 	int B[10] = {0,1,2,3,4,5,6,7,8,9};
@@ -21,7 +15,6 @@ int main() {
 	
 	#pragma omp parallel for
 	for(int i = 0;i <= 9;i++) {
-		test();
 		A[i] = B[i] + C[i];
 		printf("result:%d\n",A[i]);
 	}
