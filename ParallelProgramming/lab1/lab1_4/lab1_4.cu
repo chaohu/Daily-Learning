@@ -35,6 +35,7 @@ void addWithCuda(int *c, const int *a, const int *b, size_t size) {
 	cudaMalloc((void**)&dev_c, size * sizeof(int));
 	cudaMalloc((void**)&dev_a, size * sizeof(int));
 	cudaMalloc((void**)&dev_b, size * sizeof(int));
+	printf("%d\n",cudaStatus);
 	// Copy input vectors from host memory to GPU buffers.
 	cudaMemcpy(dev_a, a, size * sizeof(int), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_b, b, size * sizeof(int), cudaMemcpyHostToDevice);
