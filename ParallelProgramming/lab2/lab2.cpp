@@ -25,7 +25,7 @@ void *convolution(void *con_arg) {
 	int i = 0,j = 0,k = 0;
 	struct _con_arg *temp = (struct _con_arg*)con_arg;
 	const int n = temp->img->channels();
-	printf("start:%d-end:%d\n",temp->start,temp->end);
+	//printf("start:%d-end:%d\n",temp->start,temp->end);
 	for(i = temp->start;i <= temp->end;i++) {
 		const uchar *previous = temp->img->ptr<const uchar>(i-1);
 		const uchar *current = temp->img->ptr<const uchar>(i);

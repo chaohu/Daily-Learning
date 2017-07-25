@@ -1,6 +1,7 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include <stdio.h>
+#include <time.h>
 #include <opencv2/opencv.hpp>
 using namespace cv;
 
@@ -57,6 +58,7 @@ int main() {
 
 // Helper function for using CUDA to convolution in parallel.
 void conWithCuda(const Mat *img, Mat *result, size_t size) {
+	clock_t start,end;
 	int *dev_size = 0;
 	int *dev_rows = 0;
 	int *dev_cols = 0;
@@ -75,16 +77,19 @@ void conWithCuda(const Mat *img, Mat *result, size_t size) {
 	cudaMemcpy(dev_rows, &(img->rows), sizeof(int), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_cols, &(img->cols), sizeof(int), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_img, img->ptr<uchar>(0), img->rows * img->cols * sizeof(uchar) * 3, cudaMemcpyHostToDevice);
+	start = clock();
 	// Launch a kernel on the GPU with one thread for each element.
 	conKernel<<<1, size>>>(dev_img, dev_result, dev_size, dev_rows, dev_cols);
 	// cudaThreadSynchronize waits for the kernel to finish, and returns
 	// any errors encountered during the launch.
 	cudaThreadSynchronize();
 	// Copy output vector from GPU buffer to host memory.
+	end = clock();
 	cudaMemcpy(result->ptr<uchar>(0), dev_result, img->rows * img->cols * sizeof(uchar) * 3, cudaMemcpyDeviceToHost);
 	cudaFree(dev_size);
 	cudaFree(dev_rows);
 	cudaFree(dev_cols);
 	cudaFree(dev_img);
 	cudaFree(dev_result);
+	printf("time=%fs\n",((double)(end-start)/CLOCKS_PER_SEC));
 }

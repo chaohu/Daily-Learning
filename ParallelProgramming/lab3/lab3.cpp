@@ -6,6 +6,7 @@
  ************************************************************************/
 
 #include <omp.h>
+#include <time.h>
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
@@ -14,6 +15,7 @@ using namespace cv;
 
 int main() {
 	int i = 0;
+	clock_t start,end;
 	Mat img = imread("/home/huchao/Study/hehe.jpg");
 	Mat result;
 
@@ -29,7 +31,8 @@ int main() {
 	const int n = img.channels();
 	cout<<rows<<"\t"<<cols<<"\n";
 	
-	#pragma omp parallel for
+	start = clock();
+	#pragma omp parallel for num_threads(10)
 	for(i = 1;i < rows - 1;i++) {
 		const uchar *previous = img.ptr<const uchar>(i-1);
 		const uchar *current = img.ptr<const uchar>(i);
@@ -43,8 +46,10 @@ int main() {
 				output[j*n+k] = saturate_cast<uchar>((-7)*current[j*n+k] + previous[(j-1)*n+k] + previous[j*n+k] + previous[(j+1)*n+k] + current[(j-1)*n+k] + current[(j+1)*n+k] + next[(j-1)*n+k] + next[j*n+k] + next[(j+1)*n+k]);
 			}
 		}
-		printf("rows:%d\n",i);
+		//printf("rows:%d\n",i);
 	}
+	end = clock();
+	printf("time=%fs\n",((double)(end-start)/CLOCKS_PER_SEC));
 
 	//result.row(0).setTo(Scalar(0,0,0));
 	//result.row(result.rows-1).setTo(Scalar(0,0,0));
