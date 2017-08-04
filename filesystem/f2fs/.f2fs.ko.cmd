@@ -1,1 +1,0 @@
-cmd_/root/linux-3.14/fs/f2fs/f2fs.ko := ld -r -m elf_x86_64 -T /root/linux-3.14/scripts/module-common.lds --build-id  -o /root/linux-3.14/fs/f2fs/f2fs.ko /root/linux-3.14/fs/f2fs/f2fs.o /root/linux-3.14/fs/f2fs/f2fs.mod.o

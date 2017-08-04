@@ -1,2 +1,0 @@
-/root/linux-3.14/fs/f2fs/f2fs.ko
-/root/linux-3.14/fs/f2fs/dir.o /root/linux-3.14/fs/f2fs/file.o /root/linux-3.14/fs/f2fs/inode.o /root/linux-3.14/fs/f2fs/namei.o /root/linux-3.14/fs/f2fs/hash.o /root/linux-3.14/fs/f2fs/super.o /root/linux-3.14/fs/f2fs/inline.o /root/linux-3.14/fs/f2fs/checkpoint.o /root/linux-3.14/fs/f2fs/gc.o /root/linux-3.14/fs/f2fs/data.o /root/linux-3.14/fs/f2fs/node.o /root/linux-3.14/fs/f2fs/segment.o /root/linux-3.14/fs/f2fs/recovery.o /root/linux-3.14/fs/f2fs/debug.o /root/linux-3.14/fs/f2fs/xattr.o /root/linux-3.14/fs/f2fs/acl.o
